@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
   <title>Booking</title>
@@ -13,7 +14,10 @@
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
   <style>
-    body { font-family: 'Noto Sans Thai', sans-serif; }
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+    }
+
     select {
       appearance: none;
       background-image:
@@ -22,61 +26,169 @@
       background-position: right 0.75rem center;
       padding-right: 2rem;
     }
+
     .loading-overlay {
-      position: fixed; top:0; left:0; width:100%; height:100%;
-      background: rgba(30,41,59,0.8);
-      display: none; align-items:center; justify-content:center; z-index:50;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(30, 41, 59, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
     }
+
     .loading-spinner {
-      border:8px solid #fff; border-top:8px solid #1e293b;
-      border-radius:50%; width:60px; height:60px; animation:spin 1s linear infinite;
+      border: 8px solid #fff;
+      border-top: 8px solid #1e293b;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
     }
-    @keyframes spin { to { transform:rotate(360deg); } }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     .popup {
-      position: fixed; top:0; left:0; width:100%; height:100%;
-      background: rgba(30,41,59,0.5);
-      display: none; align-items:center; justify-content:center; z-index:60;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(30, 41, 59, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
     }
+
     .popup-content {
-      background:#fff; padding:1.5rem; border-radius:0.5rem; width:90%; max-width:320px;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      width: 90%;
+      max-width: 320px;
     }
+
     /* Flatpickr container centering */
     #inlineCalendar-wrapper {
-      max-width: 320px; margin: 0 auto 1rem;
+      max-width: 420px;
+      margin: 0 auto 1rem;
     }
+
     #inlineCalendar .flatpickr-calendar.inline {
-      width:100% !important; border-radius:0.75rem; box-shadow:none;
+      width: 100% !important;
+      border-radius: 0.75rem;
+      box-shadow: none;
     }
+
     #inlineCalendar .flatpickr-day {
-      padding:0.75rem; border-radius:0.5rem; margin:2px;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin: 2px;
     }
+
     #inlineCalendar .flatpickr-day.today {
-      border:1px solid #4ade80 !important;
+      border: 1px solid #4ade80 !important;
     }
+
     #inlineCalendar .flatpickr-day.selected {
-      background:#10b981 !important; color:#fff !important;
+      background: #10b981 !important;
+      color: #fff !important;
     }
+
     #inlineCalendar .flatpickr-day.past {
-      opacity:0.4; pointer-events:none;
+      opacity: 0.4;
+      pointer-events: none;
     }
+
+    .dayContainer {
+      width: 380px !important;
+      min-width: 380px !important;
+      max-width: 380px !important;
+      margin: auto;
+    }
+
+    .flatpickr-day {
+      max-width: 50px !important;
+      height: 50px !important;
+      line-height: 50px !important;
+    }
+
+    .flatpickr-weekdays {
+      height: 50px !important;
+    }
+
+    .flatpickr-days {
+      width: 380px !important;
+    }
+
+    .flatpickr-months .flatpickr-prev-month {
+      height: 40px;
+      padding: 15px;
+    }
+
+    .flatpickr-calendar {
+      width: 380px !important;
+      webkit-box-shadow: none !important;
+      box-shadow: none !important;
+      margin: auto;
+    }
+
     #timeDropdown {
-      display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
     }
+
     .time-option {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:0.75rem; border-radius:0.5rem; background:#fff;
-      box-shadow:0 1px 2px rgba(0,0,0,0.1); cursor:pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
     }
-    .time-option.selected { background:#10b981; color:#fff; }
+
+    .time-option.selected {
+      background: #10b981;
+      color: #fff;
+    }
+
     .badge {
-      border-radius:9999px; padding:0.25rem 0.5rem;
-      font-size:0.75rem; font-weight:600; min-width:2.5rem; text-align:center;
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      min-width: 2.5rem;
+      text-align: center;
     }
-    .badge.available { background:#dcfce7; color:#166534; }
-    .badge.full      { background:#fee2e2; color:#b91c1c; }
-    .opacity-50 { opacity:0.5; pointer-events:none; }
+
+    .badge.available {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.full {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .opacity-50 {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   </style>
 </head>
+
 <body class="bg-white min-h-screen flex flex-col">
 
   <!-- Loading Spinner -->
@@ -92,7 +204,7 @@
   <div class="w-full max-w-md mx-auto p-4 flex-1">
 
     <!-- Header -->
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between border-b py-4 mb-4">
       <div>
         <p id="greetingPrefix" class="text-sm text-gray-500">สวัสดีตอนเช้า</p>
         <h1 id="greetingName" class="text-xl font-bold">LINE NAME</h1>
@@ -104,53 +216,63 @@
     <form id="bookingForm" novalidate>
 
       <!-- Step 1: เลือกบริการ -->
-      <div class="step" id="step1">
+      <div class="step min-h-screen" id="step1">
         <div id="serviceCards" class="grid grid-cols-2 gap-4 mb-6"></div>
-        <button type="button" id="nextToStep2" class="w-full py-3 bg-black text-white rounded-lg font-bold">
+        <button type="button" id="nextToStep2" class="w-full p-4 bg-black text-white rounded-lg font-bold">
           ขั้นตอนถัดไป
         </button>
       </div>
 
       <!-- Step 2: เลือกวันที่ / เวลา -->
       <div class="step hidden" id="step2">
-        <label class="block mb-2 font-semibold">เลือกวันที่:</label>
-        <div id="inlineCalendar-wrapper">
+        <label class="block mb-2 font-semibold text-center">เลือกวันที่</label>
+        <div id="inlineCalendar-wrapper " class="border rounded-xl p-2 mb-2">
           <div id="inlineCalendar"></div>
         </div>
-        <label class="block mb-2 font-semibold">เลือกเวลา:</label>
+        <label class="block mb-2 font-semibold text-center">เลือกเวลา</label>
         <div id="timeDropdown" class="mb-6">
           <div class="text-gray-400 text-sm text-center py-2">ยังไม่ได้เลือกวัน</div>
         </div>
-        <div class="flex justify-between">
-          <button type="button" id="backToStep1" class="px-4 py-2 border rounded-lg font-bold">ย้อนกลับ</button>
-          <button type="button" id="nextToStep3" class="px-4 py-2 bg-black text-white rounded-lg font-bold">ถัดไป</button>
+        <div class="flex justify-between space-x-2">
+          <button type="button" id="backToStep1" class="w-1/3  p-4  border rounded-lg font-bold">ย้อนกลับ</button>
+          <button type="button" id="nextToStep3"
+            class="w-2/3 p-4 bg-black text-white rounded-lg font-bold">ถัดไป</button>
         </div>
       </div>
 
       <!-- Step 3: กรอกข้อมูลส่วนตัว -->
       <div class="step hidden" id="step3">
-        <input type="text" id="name" name="name" placeholder="ชื่อ-สกุล" class="w-full mb-3 rounded-lg border p-3" required />
-        <input type="tel" id="phonenumber" name="phonenumber" placeholder="เบอร์ติดต่อ" class="w-full mb-3 rounded-lg border p-3" required />
-        <textarea id="note" name="note" rows="4" placeholder="หมายเหตุ" class="w-full mb-6 rounded-lg border p-3"></textarea>
-        <div class="flex justify-between">
-          <button type="button" id="backToStep2" class="px-4 py-2 border rounded-lg font-bold">ย้อนกลับ</button>
-          <button type="button" id="nextToStep4" class="px-4 py-2 bg-black text-white rounded-lg font-bold">ถัดไป</button>
+        <input type="text" id="name" name="name" placeholder="ชื่อ-สกุล" class="w-full mb-3 rounded-lg border p-3"
+          required />
+        <input type="tel" id="phonenumber" name="phonenumber" placeholder="เบอร์ติดต่อ"
+          class="w-full mb-3 rounded-lg border p-3" required />
+        <textarea id="note" name="note" rows="4" placeholder="หมายเหตุ"
+          class="w-full mb-6 rounded-lg border p-3"></textarea>
+        <div class="flex justify-between  space-x-2">
+          <button type="button" id="backToStep2" class="w-1/3 p-4 border rounded-lg font-bold">ย้อนกลับ</button>
+          <button type="button" id="nextToStep4"
+            class="w-2/3 p-4 bg-black text-white rounded-lg font-bold">ถัดไป</button>
         </div>
       </div>
 
       <!-- Step 4: ตรวจสอบข้อมูล -->
       <div class="step hidden" id="step4">
         <div class="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
-          <div class="flex justify-between"><span>บริการ</span><span id="confirmService" class="font-semibold"></span></div>
-          <div class="flex justify-between"><span>วันที่</span><span id="confirmDate" class="font-semibold"></span></div>
+          <div class="flex justify-between"><span>บริการ</span><span id="confirmService" class="font-semibold"></span>
+          </div>
+          <div class="flex justify-between"><span>วันที่</span><span id="confirmDate" class="font-semibold"></span>
+          </div>
           <div class="flex justify-between"><span>เวลา</span><span id="confirmTime" class="font-semibold"></span></div>
-          <div class="flex justify-between"><span>ชื่อ-สกุล</span><span id="confirmName" class="font-semibold"></span></div>
-          <div class="flex justify-between"><span>เบอร์ติดต่อ</span><span id="confirmPhone" class="font-semibold"></span></div>
-          <div class="flex justify-between"><span>หมายเหตุ</span><span id="confirmNote" class="font-semibold"></span></div>
+          <div class="flex justify-between"><span>ชื่อ-สกุล</span><span id="confirmName" class="font-semibold"></span>
+          </div>
+          <div class="flex justify-between"><span>เบอร์ติดต่อ</span><span id="confirmPhone"
+              class="font-semibold"></span></div>
+          <div class="flex justify-between"><span>หมายเหตุ</span><span id="confirmNote" class="font-semibold"></span>
+          </div>
         </div>
-        <div class="flex justify-between">
-          <button type="button" id="backToStep3" class="px-4 py-2 border rounded-lg font-bold">ย้อนกลับ</button>
-          <button type="submit" id="confirmBooking" class="w-full py-3 bg-black text-white rounded-lg font-bold ml-4">
+        <div class="flex justify-between  space-x-2">
+          <button type="button" id="backToStep3" class="w-1/3 p-4 border rounded-lg font-bold">ย้อนกลับ</button>
+          <button type="submit" id="confirmBooking" class="w-2/3 p-4 bg-black text-white rounded-lg font-bold ml-4">
             ยืนยันการนัดหมาย
           </button>
         </div>
@@ -183,29 +305,29 @@
 
     function showStep(step) {
       document.querySelectorAll('.step').forEach(el => el.classList.add('hidden'));
-      document.getElementById('step'+step).classList.remove('hidden');
+      document.getElementById('step' + step).classList.remove('hidden');
       currentStep = step;
       if (step === 4) updateConfirmation();
     }
 
-    function updateConfirmation(){
+    function updateConfirmation() {
       document.getElementById('confirmService').textContent = document.getElementById('selectedServiceNames').value;
-      document.getElementById('confirmName').textContent    = document.getElementById('name').value;
-      document.getElementById('confirmPhone').textContent   = document.getElementById('phonenumber').value;
-      document.getElementById('confirmNote').textContent    = document.getElementById('note').value || '-';
-      document.getElementById('confirmDate').textContent    = selectedDate.split('-').reverse().join('/');
-      document.getElementById('confirmTime').textContent    = document.getElementById('time').value;
+      document.getElementById('confirmName').textContent = document.getElementById('name').value;
+      document.getElementById('confirmPhone').textContent = document.getElementById('phonenumber').value;
+      document.getElementById('confirmNote').textContent = document.getElementById('note').value || '-';
+      document.getElementById('confirmDate').textContent = selectedDate.split('-').reverse().join('/');
+      document.getElementById('confirmTime').textContent = document.getElementById('time').value;
     }
 
-    function showPopup(message){
+    function showPopup(message) {
       popupContent.innerHTML = `<div class="text-center py-4">${message}</div>
                                 <div class="text-center mt-4">
                                   <button onclick="hidePopup()" class="px-4 py-2 bg-gray-300 rounded-lg">ปิด</button>
                                 </div>`;
       popup.style.display = 'flex';
     }
-    function hidePopup(){ popup.style.display = 'none'; }
-    function showLoading(on){ loadingOverlay.style.display = on ? 'flex' : 'none'; }
+    function hidePopup() { popup.style.display = 'none'; }
+    function showLoading(on) { loadingOverlay.style.display = on ? 'flex' : 'none'; }
 
     async function fetchMonthAvailability(year, month) {
       try {
@@ -218,13 +340,13 @@
 
     function formatDate(d) {
       const y = d.getFullYear();
-      const m = ('0'+(d.getMonth()+1)).slice(-2);
-      const day = ('0'+d.getDate()).slice(-2);
+      const m = ('0' + (d.getMonth() + 1)).slice(-2);
+      const day = ('0' + d.getDate()).slice(-2);
       return `${y}-${m}-${day}`;
     }
     function initCalendar() {
-      const today = new Date(); today.setHours(0,0,0,0);
-      fetchMonthAvailability(today.getFullYear(), ('0'+(today.getMonth()+1)).slice(-2));
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      fetchMonthAvailability(today.getFullYear(), ('0' + (today.getMonth() + 1)).slice(-2));
       flatpickr("#inlineCalendar", {
         inline: true,
         locale: 'th',
@@ -237,7 +359,7 @@
               || monthAvailability[key] === 'full';
           }
         ],
-        onDayCreate: (dObj,dStr,fp,dayElem) => {
+        onDayCreate: (dObj, dStr, fp, dayElem) => {
           const key = formatDate(dayElem.dateObj);
           if (dayElem.dateObj < today) {
             dayElem.classList.add('past');
@@ -248,8 +370,8 @@
             dayElem.classList.add("flatpickr-disabled");
           }
         },
-        onMonthChange: async (sd,ds,fp) => {
-          await fetchMonthAvailability(fp.currentYear, ('0'+(fp.currentMonth+1)).slice(-2));
+        onMonthChange: async (sd, ds, fp) => {
+          await fetchMonthAvailability(fp.currentYear, ('0' + (fp.currentMonth + 1)).slice(-2));
           fp.redraw();
         },
         onChange: (selectedDates, dateStr) => {
@@ -264,21 +386,21 @@
       });
     }
 
-    async function checkAvailability(dateStr){
+    async function checkAvailability(dateStr) {
       try {
         const res = await fetch(`${WEB_APP_URL}?action=checkAvailability&date=${dateStr}`);
-        const avail = await res.json().then(j=>j.availability);
+        const avail = await res.json().then(j => j.availability);
         timeDropdown.innerHTML = '';
-        Object.entries(avail).forEach(([t,i])=>{
+        Object.entries(avail).forEach(([t, i]) => {
           const div = document.createElement('div');
           div.className = 'time-option'; div.dataset.value = t;
           const spanT = document.createElement('span'); spanT.textContent = t;
           const badge = document.createElement('span');
-          badge.className = 'badge ' + (i.remaining>0?'available':'full');
+          badge.className = 'badge ' + (i.remaining > 0 ? 'available' : 'full');
           badge.textContent = `${i.remaining}/${i.total}`;
-          if (i.status!=='Available') div.classList.add('opacity-50');
+          if (i.status !== 'Available') div.classList.add('opacity-50');
           else div.onclick = () => {
-            [...timeDropdown.children].forEach(c=>c.classList.remove('selected'));
+            [...timeDropdown.children].forEach(c => c.classList.remove('selected'));
             div.classList.add('selected');
             time.value = t;
           };
@@ -295,11 +417,11 @@
       time.value = '';
     }
 
-    async function fetchServiceData(){
+    async function fetchServiceData() {
       try {
         const res = await fetch(`${WEB_APP_URL}?action=fetchServices`);
         const services = await res.json();
-        services.forEach(s=>{
+        services.forEach(s => {
           const c = document.createElement('div');
           c.className = 'p-4 border rounded-lg cursor-pointer';
           c.innerHTML = `<div class="font-bold">${s.name}</div>
@@ -311,31 +433,31 @@
           };
           serviceCards.appendChild(c);
         });
-      } catch(e){ console.error(e); }
+      } catch (e) { console.error(e); }
     }
-    function updateSelectedServices(){
+    function updateSelectedServices() {
       const sel = [...serviceCards.querySelectorAll('.bg-green-100')];
-      const ids = sel.map(c=>c.dataset.id);
-      const names = sel.map(c=>`${c.dataset.name} (${c.dataset.price})`).join(', ');
+      const ids = sel.map(c => c.dataset.id);
+      const names = sel.map(c => `${c.dataset.name} (${c.dataset.price})`).join(', ');
       selectedServices.value = JSON.stringify(ids);
       selectedServiceNames.value = names;
     }
 
-    async function fetchHolidayDates(){
+    async function fetchHolidayDates() {
       try {
         const res = await fetch(`${WEB_APP_URL}?action=checkAvailability&getHolidays=true`);
-        holidayDates = await res.json().then(j=>j.holidays);
-      } catch(e){ console.error(e); }
+        holidayDates = await res.json().then(j => j.holidays);
+      } catch (e) { console.error(e); }
     }
 
     // ส่ง Flex Message ยืนยันการจอง
     async function sendFlexMessage() {
       const services = document.getElementById('selectedServiceNames').value;
-      const name     = document.getElementById('name').value;
-      const phone    = document.getElementById('phonenumber').value;
-      const date     = selectedDate.split('-').reverse().join('/');
-      const timeVal  = document.getElementById('time').value;
-      const note     = document.getElementById('note').value || '-';
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phonenumber').value;
+      const date = selectedDate.split('-').reverse().join('/');
+      const timeVal = document.getElementById('time').value;
+      const note = document.getElementById('note').value || '-';
 
       const bubble = {
         type: 'bubble',
@@ -375,22 +497,23 @@
 
     // การนำทางและการส่งฟอร์ม
     document.getElementById('nextToStep2').onclick = () => {
-      if (!JSON.parse(selectedServices.value||'[]').length) {
+      if (!JSON.parse(selectedServices.value || '[]').length) {
         showPopup('กรุณาเลือกบริการอย่างน้อย 1 รายการ');
-        return; }
+        return;
+      }
       showStep(2);
     };
     document.getElementById('backToStep1').onclick = () => showStep(1);
     document.getElementById('nextToStep3').onclick = () => {
       if (!selectedDate) { showPopup('กรุณาเลือกวันที่'); return; }
-      if (!time.value)    { showPopup('กรุณาเลือกเวลา'); return; }
+      if (!time.value) { showPopup('กรุณาเลือกเวลา'); return; }
       showStep(3);
     };
     document.getElementById('backToStep2').onclick = () => showStep(2);
     document.getElementById('nextToStep4').onclick = () => {
-      const nameVal  = document.getElementById('name').value.trim();
+      const nameVal = document.getElementById('name').value.trim();
       const phoneVal = document.getElementById('phonenumber').value.trim();
-      if (!nameVal)  { showPopup('กรุณากรอกชื่อ-สกุล'); return; }
+      if (!nameVal) { showPopup('กรุณากรอกชื่อ-สกุล'); return; }
       if (!phoneVal) { showPopup('กรุณากรอกเบอร์ติดต่อ'); return; }
       showStep(4);
     };
@@ -404,41 +527,51 @@
       try {
         const fd = new FormData(bookingForm);
         fd.append('date', selectedDate);
-        await fetch(WEB_APP_URL, { method:'POST', body:fd });
+        await fetch(WEB_APP_URL, { method: 'POST', body: fd });
         await sendFlexMessage();
         showPopup('สำเร็จ! การนัดหมายเสร็จสมบูรณ์');
-      } catch(e) {
+      } catch (e) {
         console.error(e);
         showPopup('ส่งข้อมูลไม่สำเร็จ');
       } finally {
         isSubmitting = false; showLoading(false);
       }
     };
+    const ENABLE_LIFF = true; // ← เปลี่ยนเป็น true เมื่อจะเปิดใช้งานอีกครั้ง
 
     document.addEventListener('DOMContentLoaded', async () => {
       showLoading(true);
       const hr = new Date().getHours();
       greetingPrefix.textContent = getGreeting(hr);
-      await liff.init({ liffId: LIFF_ID });
-      if (!liff.isLoggedIn()) { liff.login(); }
-      else {
+      if (ENABLE_LIFF) {
+        await liff.init({ liffId: LIFF_ID });
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
         const profile = await liff.getProfile();
         greetingName.textContent = profile.displayName;
         greetingAvatar.src = profile.pictureUrl;
         userlineid.value = profile.userId;
-        await fetchServiceData();
-        await fetchHolidayDates();
-        initCalendar();
+      } else {
+        // กรณีปิด LIFF ชั่วคราว: ซ่อนข้อมูลที่ต้องใช้โปรไฟล์
+        greetingName.textContent = 'ผู้ใช้งานทดสอบ';
+        greetingAvatar.style.display = 'none';
+        userlineid.value = 'OFFLINE_MODE';
       }
+
+      await fetchServiceData();
+      await fetchHolidayDates();
+      initCalendar();
       showLoading(false);
     });
 
     // ดึงลิสต์บริการและวันหยุด
-    async function fetchServiceData(){
+    async function fetchServiceData() {
       try {
         const res = await fetch(`${WEB_APP_URL}?action=fetchServices`);
         const services = await res.json();
-        services.forEach(s=>{
+        services.forEach(s => {
           const c = document.createElement('div');
           c.className = 'p-4 border rounded-lg cursor-pointer';
           c.innerHTML = `<div class="font-bold">${s.name}</div>
@@ -450,19 +583,20 @@
           };
           serviceCards.appendChild(c);
         });
-      } catch(e){ console.error(e); }
+      } catch (e) { console.error(e); }
     }
-    function updateSelectedServices(){
+    function updateSelectedServices() {
       const sel = [...serviceCards.querySelectorAll('.bg-green-100')];
-      selectedServices.value = JSON.stringify(sel.map(c=>c.dataset.id));
-      selectedServiceNames.value = sel.map(c=>`${c.dataset.name} (${c.dataset.price})`).join(', ');
+      selectedServices.value = JSON.stringify(sel.map(c => c.dataset.id));
+      selectedServiceNames.value = sel.map(c => `${c.dataset.name} (${c.dataset.price})`).join(', ');
     }
-    async function fetchHolidayDates(){
+    async function fetchHolidayDates() {
       try {
         const res = await fetch(`${WEB_APP_URL}?action=checkAvailability&getHolidays=true`);
-        holidayDates = await res.json().then(j=>j.holidays);
-      } catch(e){ console.error(e); }
+        holidayDates = await res.json().then(j => j.holidays);
+      } catch (e) { console.error(e); }
     }
   </script>
 </body>
+
 </html>
