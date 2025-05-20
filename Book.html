@@ -5,8 +5,11 @@
   <meta charset="UTF-8" />
   <title>Booking</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+  <!-- Flatpickr CSS/JS + Thai locale -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
@@ -104,33 +107,27 @@
       opacity: 0.4;
       pointer-events: none;
     }
-
     .dayContainer {
       margin: auto;
     }
-
     .flatpickr-day {
       max-width: 40px !important;
       height: 40px !important;
       line-height: 40px !important;
     }
-
     .flatpickr-weekdays {
       height: 50px !important;
     }
-
     .flatpickr-days {
       width: 320px !important;
     }
-
     .flatpickr-months .flatpickr-prev-month {
       height: 40px;
       padding: 15px;
     }
-
     .flatpickr-calendar {
       width: 320px !important;
-      -webkit-box-shadow: none !important;
+      webkit-box-shadow: none !important;
       box-shadow: none !important;
       margin: auto;
     }
@@ -185,16 +182,19 @@
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
+  <!-- Loading Spinner -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-spinner"></div>
   </div>
 
+  <!-- Popup -->
   <div class="popup" id="popup">
     <div class="popup-content" id="popupContent"></div>
   </div>
 
   <div class="w-full max-w-md mx-auto p-4 flex-1">
 
+    <!-- Header -->
     <div class="flex items-center justify-between border-b rounded-xl bg-black p-4 mb-4">
       <div>
         <p id="greetingPrefix" class="text-sm text-gray-200">สวัสดีตอนเช้า</p>
@@ -203,8 +203,10 @@
       <img id="greetingAvatar" src="" alt="Avatar" class="w-12 h-12 rounded-full bg-gray-200" />
     </div>
 
+    <!-- Booking Form -->
     <form id="bookingForm" novalidate>
 
+      <!-- Step 1: เลือกบริการ -->
       <div class="step min-h-screen" id="step1">
         <div id="serviceCards" class="grid grid-cols-2 gap-4 mb-6"></div>
         <button type="button" id="nextToStep2" class="w-full p-4 bg-black text-white rounded-lg font-bold">
@@ -212,6 +214,7 @@
         </button>
       </div>
 
+      <!-- Step 2: เลือกวันที่ / เวลา -->
       <div class="step hidden" id="step2">
         <label class="block mb-2 font-semibold text-center">เลือกวันที่</label>
         <div id="inlineCalendar-wrapper " class="border bg-white rounded-xl p-2 mb-2">
@@ -222,12 +225,13 @@
           <div class="text-gray-400 text-sm text-center py-2">ยังไม่ได้เลือกวัน</div>
         </div>
         <div class="flex justify-between space-x-2">
-          <button type="button" id="backToStep1" class="w-1/3 bg-white p-4 border rounded-lg font-bold">ย้อนกลับ</button>
+          <button type="button" id="backToStep1" class="w-1/3 bg-white  p-4  border rounded-lg font-bold">ย้อนกลับ</button>
           <button type="button" id="nextToStep3"
             class="w-2/3 p-4 bg-black text-white rounded-lg font-bold">ถัดไป</button>
         </div>
       </div>
 
+      <!-- Step 3: กรอกข้อมูลส่วนตัว -->
       <div class="step hidden" id="step3">
         <input type="text" id="name" name="name" placeholder="ชื่อ-สกุล" class="w-full mb-3 rounded-lg border p-3"
           required />
@@ -235,13 +239,14 @@
           class="w-full mb-3 rounded-lg border p-3" required />
         <textarea id="note" name="note" rows="4" placeholder="หมายเหตุ"
           class="w-full mb-6 rounded-lg border p-3"></textarea>
-        <div class="flex justify-between space-x-2">
+        <div class="flex justify-between  space-x-2">
           <button type="button" id="backToStep2" class="w-1/3 bg-white p-4 border rounded-lg font-bold">ย้อนกลับ</button>
           <button type="button" id="nextToStep4"
             class="w-2/3 p-4 bg-black text-white rounded-lg font-bold">ถัดไป</button>
         </div>
       </div>
 
+      <!-- Step 4: ตรวจสอบข้อมูล -->
       <div class="step hidden" id="step4">
         <div class="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
           <div class="flex justify-between"><span>บริการ</span><span id="confirmService" class="font-semibold"></span>
@@ -256,7 +261,7 @@
           <div class="flex justify-between"><span>หมายเหตุ</span><span id="confirmNote" class="font-semibold"></span>
           </div>
         </div>
-        <div class="flex justify-between space-x-2">
+        <div class="flex justify-between  space-x-2">
           <button type="button" id="backToStep3" class="w-1/3 bg-white p-4 border rounded-lg font-bold">ย้อนกลับ</button>
           <button type="submit" id="confirmBooking" class="w-2/3 p-4 bg-black text-white rounded-lg font-bold ml-4">
             ยืนยันการนัดหมาย
@@ -264,6 +269,7 @@
         </div>
       </div>
 
+      <!-- Hidden fields -->
       <input type="hidden" id="time" name="time" />
       <input type="hidden" id="selectedServices" name="selectedServices" />
       <input type="hidden" id="selectedServiceNames" name="selectedServiceNames" />
@@ -277,10 +283,8 @@
     let holidayDates = [], monthAvailability = {}, selectedDate = '';
     let currentStep = 1, isSubmitting = false;
 
-    // IMPORTANT: Replace with your deployed Web App URL
-    const WEB_APP_URL = 'YOUR_DEPLOYED_WEB_APP_URL';
-    // IMPORTANT: Replace with your LIFF ID
-    const LIFF_ID = 'YOUR_LIFF_ID'; 
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw-Yjv94ffGn98tweURPh1cxDfegwcffZg8dZ_YsZDqwxi2L4G6Q_hIETG1Wv5IMP3V/exec';
+    const LIFF_ID = '2007432636-DpowZgEb';
 
     function getGreeting(hour) {
       if (hour >= 5 && hour < 12) return 'สวัสดีตอนเช้า';
@@ -319,16 +323,9 @@
     async function fetchMonthAvailability(year, month) {
       try {
         const res = await fetch(`${WEB_APP_URL}?action=getMonthAvailability&year=${year}&month=${month}`);
-        const data = await res.json();
-        if (data.error) {
-            console.error('Error fetching month availability:', data.error);
-            showPopup('โหลดข้อมูลปฏิทินไม่สำเร็จ: ' + data.error);
-            return;
-        }
-        monthAvailability = data;
+        monthAvailability = await res.json();
       } catch (e) {
         console.error('fetchMonthAvailability error', e);
-        showPopup('โหลดข้อมูลปฏิทินไม่สำเร็จ');
       }
     }
 
@@ -338,14 +335,9 @@
       const day = ('0' + d.getDate()).slice(-2);
       return `${y}-${m}-${day}`;
     }
-
-    async function initCalendar() {
-      const today = new Date(); 
-      today.setHours(0, 0, 0, 0);
-
-      // Fetch initial month availability before initializing flatpickr
-      await fetchMonthAvailability(today.getFullYear(), ('0' + (today.getMonth() + 1)).slice(-2));
-
+    function initCalendar() {
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      fetchMonthAvailability(today.getFullYear(), ('0' + (today.getMonth() + 1)).slice(-2));
       flatpickr("#inlineCalendar", {
         inline: true,
         locale: 'th',
@@ -353,41 +345,30 @@
         disable: [
           date => {
             const key = formatDate(date);
-            const todayFormatted = formatDate(today); // For disabling past dates correctly
-            // Disable past dates, holidays, and full days based on monthAvailability
             return date < today
               || holidayDates.includes(key)
-              || monthAvailability[key] === 'full'
-              || monthAvailability[key] === 'past'; // Use 'past' status from GAS
+              || monthAvailability[key] === 'full';
           }
         ],
         onDayCreate: (dObj, dStr, fp, dayElem) => {
           const key = formatDate(dayElem.dateObj);
-          const todayFormatted = formatDate(today);
-          
           if (dayElem.dateObj < today) {
             dayElem.classList.add('past');
           } else if (holidayDates.includes(key)) {
-            dayElem.textContent = "❌"; // Show X for holidays
-            dayElem.classList.add("flatpickr-disabled");
+            dayElem.textContent = "❌";
           } else if (monthAvailability[key] === 'full') {
-            dayElem.textContent = "เต็ม"; // Show "เต็ม" for full days
+            dayElem.textContent = "เต็ม";
             dayElem.classList.add("flatpickr-disabled");
-          } else if (monthAvailability[key] === 'past') { // Ensure dates marked as 'past' by GAS are disabled too
-              dayElem.classList.add('past');
-              dayElem.classList.add("flatpickr-disabled");
           }
         },
-        onMonthChange: async (selectedDates, dateStr, fp) => {
-          showLoading(true);
+        onMonthChange: async (sd, ds, fp) => {
           await fetchMonthAvailability(fp.currentYear, ('0' + (fp.currentMonth + 1)).slice(-2));
           fp.redraw();
-          showLoading(false);
         },
         onChange: (selectedDates, dateStr) => {
           selectedDate = dateStr;
           if (dateStr) {
-            timeDropdown.innerHTML = `<div class="text-gray-800 text-sm text-center py-2">กำลังโหลด...</div>`;
+            timeDropdown.innerHTML = `<div class="text-gray-800 text-sm text-center py-2">โปรดรอสักครู่..</div>`;
             checkAvailability(dateStr);
           } else {
             resetTimeDropdown();
@@ -397,25 +378,10 @@
     }
 
     async function checkAvailability(dateStr) {
-      showLoading(true);
       try {
         const res = await fetch(`${WEB_APP_URL}?action=checkAvailability&date=${dateStr}`);
-        const data = await res.json();
-        if (data.error) {
-            console.error('Error checking availability:', data.error);
-            showPopup('โหลดช่วงเวลาไม่สำเร็จ: ' + data.error);
-            resetTimeDropdown(); // Clear time options on error
-            return;
-        }
-
-        const avail = data.availability;
+        const avail = await res.json().then(j => j.availability);
         timeDropdown.innerHTML = '';
-        if (Object.keys(avail).length === 0) {
-            timeDropdown.innerHTML = `<div class="text-gray-400 text-sm text-center py-2">ไม่มีช่วงเวลาที่เลือกได้สำหรับวันนี้</div>`;
-            time.value = ''; // Clear selected time if no options
-            return;
-        }
-
         Object.entries(avail).forEach(([t, i]) => {
           const div = document.createElement('div');
           div.className = 'time-option'; div.dataset.value = t;
@@ -423,28 +389,20 @@
           const badge = document.createElement('span');
           badge.className = 'badge ' + (i.remaining > 0 ? 'available' : 'full');
           badge.textContent = `${i.remaining}/${i.total}`;
-          
-          if (i.status !== 'Available') { // Status is 'เต็ม' or 'ไม่ว่าง'
-            div.classList.add('opacity-50');
-            div.style.cursor = 'not-allowed'; // Indicate not clickable
-          } else {
-            div.onclick = () => {
-              [...timeDropdown.children].forEach(c => c.classList.remove('selected'));
-              div.classList.add('selected');
-              time.value = t;
-            };
-          }
+          if (i.status !== 'Available') div.classList.add('opacity-50');
+          else div.onclick = () => {
+            [...timeDropdown.children].forEach(c => c.classList.remove('selected'));
+            div.classList.add('selected');
+            time.value = t;
+          };
           div.append(spanT, badge);
           timeDropdown.appendChild(div);
         });
       } catch (e) {
         showPopup('โหลดช่วงเวลาไม่สำเร็จ');
         console.error(e);
-      } finally {
-        showLoading(false);
       }
     }
-
     function resetTimeDropdown() {
       timeDropdown.innerHTML = `<div class="text-gray-400 text-sm text-center py-2">ยังไม่ได้เลือกวัน</div>`;
       time.value = '';
@@ -454,17 +412,11 @@
       try {
         const res = await fetch(`${WEB_APP_URL}?action=fetchServices`);
         const services = await res.json();
-        if (services.error) {
-            console.error('Error fetching services:', services.error);
-            showPopup('โหลดรายการบริการไม่สำเร็จ: ' + services.error);
-            return;
-        }
-
         services.forEach(s => {
           const c = document.createElement('div');
           c.className = 'p-4 border rounded-lg cursor-pointer';
           c.innerHTML = `<div class="font-bold">${s.name}</div>
-                         <div class="text-sm text-gray-600">ราคา: ${s.price} บาท</div>`;
+                         <div class="text-sm text-gray-600">ราคา: ${s.price}</div>`;
           c.dataset.id = s.id; c.dataset.name = s.name; c.dataset.price = s.price;
           c.onclick = () => {
             c.classList.toggle('bg-gray-300');
@@ -472,16 +424,12 @@
           };
           serviceCards.appendChild(c);
         });
-      } catch (e) { 
-        console.error('fetchServiceData error', e); 
-        showPopup('โหลดรายการบริการไม่สำเร็จ');
-      }
+      } catch (e) { console.error(e); }
     }
-
     function updateSelectedServices() {
       const sel = [...serviceCards.querySelectorAll('.bg-gray-300')];
       const ids = sel.map(c => c.dataset.id);
-      const names = sel.map(c => `${c.dataset.name} (${c.dataset.price} บาท)`).join(', ');
+      const names = sel.map(c => `${c.dataset.name} (${c.dataset.price})`).join(', ');
       selectedServices.value = JSON.stringify(ids);
       selectedServiceNames.value = names;
     }
@@ -489,17 +437,8 @@
     async function fetchHolidayDates() {
       try {
         const res = await fetch(`${WEB_APP_URL}?action=checkAvailability&getHolidays=true`);
-        const data = await res.json();
-        if (data.error) {
-            console.error('Error fetching holidays:', data.error);
-            showPopup('โหลดข้อมูลวันหยุดไม่สำเร็จ: ' + data.error);
-            return;
-        }
-        holidayDates = data.holidays;
-      } catch (e) { 
-        console.error('fetchHolidayDates error', e); 
-        showPopup('โหลดข้อมูลวันหยุดไม่สำเร็จ');
-      }
+        holidayDates = await res.json().then(j => j.holidays);
+      } catch (e) { console.error(e); }
     }
 
     // ส่ง Flex Message ยืนยันการจอง
@@ -579,73 +518,75 @@
       try {
         const fd = new FormData(bookingForm);
         fd.append('date', selectedDate);
-        
-        const response = await fetch(WEB_APP_URL, { method: 'POST', body: fd });
-        const textResponse = await response.text(); // Get raw text response
-        console.log('Server response:', textResponse); // Log for debugging
-
-        if (!response.ok) {
-            // Check if it's a known error message from GAS
-            if (textResponse.includes('ช่วงเวลาที่เลือกเต็มแล้ว')) {
-                throw new Error(textResponse);
-            }
-            throw new Error('Server responded with an error: ' + textResponse);
-        }
-
+        await fetch(WEB_APP_URL, { method: 'POST', body: fd });
         await sendFlexMessage();
         showPopup('สำเร็จ! การนัดหมายเสร็จสมบูรณ์');
       } catch (e) {
-        console.error('Booking submission error:', e);
-        showPopup('ส่งข้อมูลไม่สำเร็จ: ' + e.message);
+        console.error(e);
+        showPopup('ส่งข้อมูลไม่สำเร็จ');
       } finally {
         isSubmitting = false; showLoading(false);
       }
     };
-    const ENABLE_LIFF = true; 
+    const ENABLE_LIFF = true; // ← เปลี่ยนเป็น true เมื่อจะเปิดใช้งานอีกครั้ง
 
     document.addEventListener('DOMContentLoaded', async () => {
       showLoading(true);
       const hr = new Date().getHours();
       greetingPrefix.textContent = getGreeting(hr);
-
       if (ENABLE_LIFF) {
-        try {
-          await liff.init({ liffId: LIFF_ID });
-          if (!liff.isLoggedIn()) {
-            liff.login();
-            return; // Stop execution if not logged in
-          }
-          const profile = await liff.getProfile();
-          greetingName.textContent = profile.displayName;
-          greetingAvatar.src = profile.pictureUrl;
-          userlineid.value = profile.userId;
-        } catch (err) {
-          console.error('LIFF initialization failed', err);
-          showPopup('การเริ่มต้น LIFF ล้มเหลว โปรดลองอีกครั้ง');
-          showLoading(false);
-          return; // Stop execution on LIFF error
+        await liff.init({ liffId: LIFF_ID });
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
         }
+        const profile = await liff.getProfile();
+        greetingName.textContent = profile.displayName;
+        greetingAvatar.src = profile.pictureUrl;
+        userlineid.value = profile.userId;
       } else {
+        // กรณีปิด LIFF ชั่วคราว: ซ่อนข้อมูลที่ต้องใช้โปรไฟล์
         greetingName.textContent = 'ผู้ใช้งานทดสอบ';
         greetingAvatar.style.display = 'none';
         userlineid.value = 'OFFLINE_MODE';
       }
 
-      // Use Promise.all to fetch data concurrently
-      try {
-        await Promise.all([
-          fetchServiceData(),
-          fetchHolidayDates()
-        ]);
-        await initCalendar(); // initCalendar also fetches month availability
-      } catch (e) {
-        console.error('Initial data fetch error:', e);
-        showPopup('โหลดข้อมูลเริ่มต้นไม่สำเร็จ โปรดลองอีกครั้ง');
-      } finally {
-        showLoading(false);
-      }
+      await fetchServiceData();
+      await fetchHolidayDates();
+      initCalendar();
+      showLoading(false);
     });
 
+    // ดึงลิสต์บริการและวันหยุด
+    async function fetchServiceData() {
+      try {
+        const res = await fetch(`${WEB_APP_URL}?action=fetchServices`);
+        const services = await res.json();
+        services.forEach(s => {
+          const c = document.createElement('div');
+          c.className = 'p-4 border rounded-lg cursor-pointer';
+          c.innerHTML = `<div class="font-bold">${s.name}</div>
+                         <div class="text-sm text-gray-600">ราคา: ${s.price}</div>`;
+          c.dataset.id = s.id; c.dataset.name = s.name; c.dataset.price = s.price;
+          c.onclick = () => {
+            c.classList.toggle('bg-gray-300');
+            updateSelectedServices();
+          };
+          serviceCards.appendChild(c);
+        });
+      } catch (e) { console.error(e); }
+    }
+    function updateSelectedServices() {
+      const sel = [...serviceCards.querySelectorAll('.bg-gray-300')];
+      selectedServices.value = JSON.stringify(sel.map(c => c.dataset.id));
+      selectedServiceNames.value = sel.map(c => `${c.dataset.name} (${c.dataset.price})`).join(', ');
+    }
+    async function fetchHolidayDates() {
+      try {
+        const res = await fetch(`${WEB_APP_URL}?action=checkAvailability&getHolidays=true`);
+        holidayDates = await res.json().then(j => j.holidays);
+      } catch (e) { console.error(e); }
+    }
   </script>
 </body>
 
