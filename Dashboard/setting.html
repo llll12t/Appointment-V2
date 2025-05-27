@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ตั้งค่าทั่วไป</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="Config.js"></script> <!-- ต้องกำหนด CONFIG_URL -->
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+  <aside class="w-64 bg-white p-4 shadow">
+    <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+    <nav>
+      <a href="service.html" class="block mb-2">บริการ</a>
+      <a href="member.html" class="block mb-2 ">จัดการสมาชิก</a>
+      <a href="#" class="block mb-2 font-bold text-blue-600">ตั้งค่า</a>
+    </nav>
+  </aside>
+  <section class="w-1/2 p-6 rounded shadow mb-6">
+    <h2 class="text-xl font-semibold mb-4">ตั้งค่าช่วงเวลา</h2>
+    <button onclick="showTimeSlotForm()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">➕ เพิ่มช่วงเวลา</button>
+    <div id="timeSlotFormSection" class="hidden mb-4">
+      <form id="timeSlotForm" class="grid grid-cols-3 gap-4 items-center">
+        <input name="ไอดี" class="border p-2 rounded" readonly placeholder="ID อัตโนมัติ">
+        <input name="ช่วงเวลา" type="time" required class="border p-2 rounded">
+        <input name="สลอต" type="number" required class="border p-2 rounded">
+        <button type="submit" class="col-span-3 bg-green-600 text-white px-4 py-2 rounded">💾 บันทึก</button>
+      </form>
+    </div>
+    <div id="timeSlotTable" class="overflow-x-auto"></div>
+  </section>
+
+  <!-- ตั้งค่าวันหยุด -->
+  <section class="w-1/2 p-6 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">ตั้งค่าวันหยุด</h2>
+    <div class="flex gap-2 mb-4">
+      <input id="holidayInput" type="date" class="border p-2 rounded">
+      <button onclick="addHoliday()" class="bg-blue-500 text-white px-4 py-2 rounded">➕ เพิ่มวันหยุด</button>
+    </div>
+    <div id="holidayTable" class="overflow-x-auto"></div>
+  </section>
+
+  <script>
+    function showTimeSlotForm() {
+      document.getElementById('timeSlotFormSection').classList.remove('hidden');
+    }
+
+    document.getElementById('timeSlotForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const data = {};
+      new FormData(this).forEach((v, k) => data[k] = v);
+      fetch(CONFIG_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'insertOrUpdateTimeSlot', data })
+      }).then(r => r.json()).then(() => {
+        this.reset();
+        loadTimeSlots();
+        Swal.fire('สำเร็จ', 'บันทึกข้อมูลเรียบร้อย', 'success');
+      });
+    });
+
+    function loadTimeSlots() {
+      fetch(`${CONFIG_URL}?action=fetchTimeSlots`).then(r => r.json()).then(data => {
+        let html = `
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-200"><tr>
+              <th class="p-2">ไอดี</th>
+              <th class="p-2">ช่วงเวลา</th>
+              <th class="p-2">สลอต</th>
+              <th class="p-2">จัดการ</th>
+            </tr></thead><tbody>`;
+        data.forEach(t => {
+          html += `<tr class="border-t">
+            <td class="p-2">${t['ไอดี']}</td>
+            <td class="p-2">${t['ช่วงเวลา']}</td>
+            <td class="p-2">${t['สลอต']}</td>
+            <td class="p-2">
+              <button onclick="editTimeSlot('${t['ไอดี']}')" class="bg-green-500 text-white px-2 py-1 rounded">แก้ไข</button>
+              <button onclick="deleteTimeSlot('${t['ไอดี']}')" class="bg-red-500 text-white px-2 py-1 rounded">ลบ</button>
+            </td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('timeSlotTable').innerHTML = html;
+      });
+    }
+
+    function editTimeSlot(id) {
+      fetch(`${CONFIG_URL}?action=fetchTimeSlots`).then(r => r.json()).then(data => {
+        const t = data.find(x => x['ไอดี'] === id);
+        if (!t) return;
+        const form = document.getElementById('timeSlotForm');
+        form['ไอดี'].value = t['ไอดี'];
+        form['ช่วงเวลา'].value = t['ช่วงเวลา'];
+        form['สลอต'].value = t['สลอต'];
+        showTimeSlotForm();
+      });
+    }
+
+    function deleteTimeSlot(id) {
+      Swal.fire({ title: 'ลบช่วงเวลานี้?', showCancelButton: true }).then(res => {
+        if (res.isConfirmed) {
+          fetch(CONFIG_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'deleteTimeSlot', id })
+          }).then(() => {
+            loadTimeSlots();
+            Swal.fire('ลบแล้ว', '', 'success');
+          });
+        }
+      });
+    }
+
+    function addHoliday() {
+      const date = document.getElementById('holidayInput').value;
+      if (!date) return Swal.fire('กรุณาเลือกวันที่', '', 'warning');
+      fetch(CONFIG_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'addHoliday', date })
+      }).then(() => {
+        loadHolidays();
+        Swal.fire('เพิ่มวันหยุดแล้ว', '', 'success');
+      });
+    }
+
+    function loadHolidays() {
+      fetch(`${CONFIG_URL}?action=fetchHolidays`).then(r => r.json()).then(data => {
+        let html = `
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-200"><tr>
+              <th class="p-2">วันหยุด</th>
+              <th class="p-2">จัดการ</th>
+            </tr></thead><tbody>`;
+        data.forEach(d => {
+          html += `<tr class="border-t">
+            <td class="p-2">${d}</td>
+            <td class="p-2">
+              <button onclick="deleteHoliday('${d}')" class="bg-red-500 text-white px-2 py-1 rounded">ลบ</button>
+            </td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('holidayTable').innerHTML = html;
+      });
+    }
+
+    function deleteHoliday(date) {
+      Swal.fire({ title: `ลบ ${date}?`, showCancelButton: true }).then(res => {
+        if (res.isConfirmed) {
+          fetch(CONFIG_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'deleteHoliday', date })
+          }).then(() => {
+            loadHolidays();
+            Swal.fire('ลบแล้ว', '', 'success');
+          });
+        }
+      });
+    }
+
+    loadTimeSlots();
+    loadHolidays();
+  </script>
+</body>
+</html>

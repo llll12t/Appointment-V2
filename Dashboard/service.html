@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>บริการ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="Config.js"></script> <!-- ต้องกำหนด CONFIG_URL -->
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+  <aside class="w-64 bg-white p-4 shadow">
+    <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+    <nav>
+      <a href="#" class="block mb-2 font-bold text-blue-600">บริการ</a>
+      <a href="member.html" class="block mb-2">จัดการสมาชิก</a>
+      <a href="setting.html" class="block mb-2">ตั้งค่า</a>
+    </nav>
+  </aside>
+  <main class="flex-1 p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-semibold">จัดการบริการ</h1>
+      <button onclick="showAddForm()" class="bg-blue-600 text-white px-4 py-2 rounded">เพิ่มบริการ</button>
+    </div>
+
+    <!-- Form Section -->
+    <section id="formSection" class="bg-white p-4 rounded shadow hidden">
+      <h2 class="text-lg font-semibold mb-4" id="formTitle">เพิ่มบริการ</h2>
+      <form id="serviceForm" class="space-y-4">
+        <input type="text" name="ไอดี" placeholder="ระบบสร้างอัตโนมัติ" class="w-full p-2 border rounded" readonly>
+        <input type="text" name="รายการ" placeholder="ชื่อบริการ" required class="w-full p-2 border rounded">
+        <textarea name="รายละเอียด" placeholder="รายละเอียด" class="w-full p-2 border rounded"></textarea>
+        <input type="number" name="ราคา" placeholder="ราคา" required class="w-full p-2 border rounded">
+
+        <input type="file" id="imgInput" accept="image/*" class="w-full border p-2">
+        <img id="imgPreview" class="hidden w-32 h-20 mt-2 object-cover rounded">
+        <input type="hidden" name="รูปภาพOLD" id="รูปภาพOLD">
+
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded w-full">บันทึก</button>
+      </form>
+    </section>
+
+    <!-- Table Section -->
+    <section class="mt-6 bg-white p-4 rounded shadow">
+      <h2 class="text-lg font-semibold mb-2">รายการบริการ</h2>
+      <div id="serviceTable" class="overflow-x-auto"></div>
+    </section>
+  </main>
+
+  <script>
+    function showAddForm(title = 'เพิ่มบริการ') {
+      document.getElementById('formSection').classList.remove('hidden');
+      document.getElementById('formTitle').textContent = title;
+    }
+
+    function hideForm() {
+      document.getElementById('formSection').classList.add('hidden');
+    }
+
+    function setupPreview() {
+      document.getElementById('imgInput').addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = document.getElementById('imgPreview');
+          img.src = e.target.result;
+          img.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function processImage(inputId, oldId, obj) {
+      return new Promise(resolve => {
+        const input = document.getElementById(inputId);
+        if (input.files.length) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            obj['รูปภาพBase64'] = e.target.result.split(',')[1];
+            obj['รูปภาพMimeType'] = input.files[0].type;
+            resolve();
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          obj['รูปภาพBase64'] = '';
+          obj['รูปภาพMimeType'] = '';
+          obj['รูปภาพ'] = document.getElementById(oldId).value;
+          resolve();
+        }
+      });
+    }
+
+    function loadServices() {
+      fetch(`${CONFIG_URL}?action=fetchData`).then(r => r.json()).then(data => {
+        const services = Array.isArray(data) ? data : [];
+        let html = `<table class="min-w-full text-sm text-left"><thead class="bg-gray-200"><tr>
+          <th class="p-2">ไอดี</th><th class="p-2">รายการ</th><th class="p-2">รายละเอียด</th>
+          <th class="p-2">ราคา</th><th class="p-2">รูปภาพ</th><th class="p-2">จัดการ</th>
+        </tr></thead><tbody>`;
+        services.forEach(s => {
+          html += `<tr class="border-t">
+            <td class="p-2">${s['ไอดี']}</td>
+            <td class="p-2">${s['รายการ']}</td>
+            <td class="p-2">${s['รายละเอียด']}</td>
+            <td class="p-2">${s['ราคา']}</td>
+            <td class="p-2">${s['รูปภาพ'] ? `<img src="${s['รูปภาพ']}" class="w-16 h-12 object-cover rounded">` : `<span class="text-gray-400 italic">ไม่มี</span>`}</td>
+            <td class="p-2">
+              <button onclick="editService('${s['ไอดี']}')" class="bg-green-500 text-white px-2 py-1 rounded">แก้ไข</button>
+              <button onclick="deleteService('${s['ไอดี']}')" class="bg-red-500 text-white px-2 py-1 rounded">ลบ</button>
+            </td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('serviceTable').innerHTML = html;
+      });
+    }
+
+    document.getElementById('serviceForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const form = this;
+      const data = {};
+      Swal.fire({ title: 'กำลังบันทึก...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+
+      processImage('imgInput', 'รูปภาพOLD', data).then(() => {
+        new FormData(form).forEach((v, k) => data[k] = v);
+        fetch(CONFIG_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'insertOrUpdateService', data })
+        }).then(r => r.json()).then(() => {
+          Swal.close();
+          Swal.fire('สำเร็จ', '', 'success');
+          form.reset();
+          hideForm();
+          loadServices();
+        });
+      });
+    });
+
+    function editService(id) {
+      fetch(`${CONFIG_URL}?action=fetchData`).then(r => r.json()).then(data => {
+        const item = data.find(x => x['ไอดี'] === id);
+        if (!item) return;
+        const form = document.getElementById('serviceForm');
+        for (const k in item) {
+          if (form.elements[k]) form.elements[k].value = item[k];
+        }
+        document.getElementById('รูปภาพOLD').value = item['รูปภาพ'];
+        form.elements['ไอดี'].readOnly = true;
+        showAddForm('แก้ไขบริการ');
+      });
+    }
+
+    function deleteService(id) {
+      Swal.fire({ title: 'ลบหรือไม่?', showCancelButton: true }).then(res => {
+        if (res.isConfirmed) {
+          fetch(CONFIG_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'deleteService', id })
+          }).then(() => {
+            Swal.fire('ลบแล้ว', '', 'success');
+            loadServices();
+          });
+        }
+      });
+    }
+
+    setupPreview();
+    loadServices();
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>จัดการสมาชิก</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="Config.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+  <aside class="w-64 bg-white p-4 shadow">
+    <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+    <nav>
+      <a href="service.html" class="block mb-2">กิจกรรม</a>
+      <a href="#" class="block mb-2 font-bold text-blue-600">จัดการสมาชิก</a>
+      <a href="setting.html" class="block mb-2">ตั้งค่า</a>
+    </nav>
+  </aside>  <section class="bg-gray-100 p-10 rounded shadow w-full  mx-auto">
+    <h2 class="text-xl font-bold mb-4">📋 จัดการสมาชิก</h2>
+    <button onclick="showForm()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">➕ เพิ่มสมาชิก</button>
+
+    <div id="formSection" class="hidden mb-4">
+      <form id="memberForm" class="grid grid-cols-2 gap-4">
+        <input name="ไอดี" readonly class="border p-2 rounded col-span-2" placeholder="Auto ID">
+        <input name="UserID" placeholder="UserID" class="border p-2 rounded">
+        <input name="ชื่อ" placeholder="ชื่อ" required class="border p-2 rounded">
+        <input name="เบอร์โทร" placeholder="เบอร์โทร" required class="border p-2 rounded">
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded col-span-2">💾 บันทึก</button>
+      </form>
+    </div>
+
+    <div id="memberTable" class="overflow-x-auto"></div>
+  </section>
+
+  <script>
+    function showForm() {
+      document.getElementById('formSection').classList.remove('hidden');
+      document.getElementById('memberForm').reset();
+      document.querySelector('[name="ไอดี"]').value = '';
+    }
+
+    document.getElementById('memberForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const data = {};
+      new FormData(this).forEach((v, k) => data[k] = v);
+      fetch(CONFIG_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'insertOrUpdateMember', data })
+      }).then(r => r.json()).then(() => {
+        Swal.fire('สำเร็จ', 'บันทึกเรียบร้อย', 'success');
+        this.reset();
+        loadMembers();
+      });
+    });
+
+    function loadMembers() {
+      fetch(`${CONFIG_URL}?action=fetchMemberData`).then(r => r.json()).then(data => {
+        let html = `<table class="min-w-full text-sm text-left"><thead class="bg-gray-200"><tr>
+          <th class="p-2">ไอดี</th><th class="p-2">UserID</th><th class="p-2">ชื่อ</th>
+          <th class="p-2">เบอร์โทร</th><th class="p-2">Timestamp</th><th class="p-2">จัดการ</th>
+        </tr></thead><tbody>`;
+        data.forEach(m => {
+          html += `<tr class="border-t">
+            <td class="p-2">${m['ไอดี']}</td>
+            <td class="p-2 text-green-600">${m['UserID'] ? 'เชื่อม LINE OA เรียบร้อย' : '-'}</td>
+            <td class="p-2">${m['ชื่อ']}</td>
+            <td class="p-2">${m['เบอร์โทร']}</td>
+            <td class="p-2">${m['Timestamp']}</td>
+            <td class="p-2">
+              <button onclick="editMember('${m['ไอดี']}')" class="bg-green-500 text-white px-2 py-1 rounded">แก้ไข</button>
+              <button onclick="deleteMember('${m['ไอดี']}')" class="bg-red-500 text-white px-2 py-1 rounded">ลบ</button>
+            </td>
+          </tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('memberTable').innerHTML = html;
+      });
+    }
+
+    function editMember(id) {
+      fetch(`${CONFIG_URL}?action=fetchMemberData`).then(r => r.json()).then(data => {
+        const m = data.find(x => x['ไอดี'] === id);
+        if (!m) return;
+        const form = document.getElementById('memberForm');
+        for (const k in m) if (form.elements[k]) form.elements[k].value = m[k];
+        document.getElementById('formSection').classList.remove('hidden');
+      });
+    }
+
+    function deleteMember(id) {
+      Swal.fire({ title: 'ลบหรือไม่?', showCancelButton: true }).then(res => {
+        if (res.isConfirmed) {
+          fetch(CONFIG_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'deleteMember', id })
+          }).then(() => {
+            Swal.fire('ลบแล้ว', '', 'success');
+            loadMembers();
+          });
+        }
+      });
+    }
+
+    loadMembers();
+  </script>
+</body>
+</html>
