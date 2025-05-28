@@ -594,34 +594,26 @@
         function confirmAction(message, action, id) {
             showAlert(message, () => {
                 showLoading();
-                const url = new URL(DETAILS_SCRIPT_URL);
-                url.searchParams.append('action', action);
-                url.searchParams.append('id', id);
-                fetch(url.toString(), {
-                        method: 'GET'
+                fetch(`${DETAILS_SCRIPT_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
+                        method: 'POST'
                     })
                     .then(response => {
-                        if (!response.ok && response.type !== 'opaque') {
-                            return response.text().then(text => {
-                                throw new Error(`ดำเนินการไม่สำเร็จ: ${text || response.statusText }`)
-                            });
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
                         return response.text();
                     })
-                    .then(result => {
-                        console.log("Action result:", result);
-                        fetchInitialData().then(() => {
-                            showAlert('ดำเนินการสำเร็จ', null, null, false);
-                        });
+                    .then(text => {
+                        console.log('Action response:', text);
+                        hideLoading();
+                        showAlert('ดำเนินการสำเร็จ', fetchInitialData);
                     })
                     .catch(err => {
-                        console.error("Error performing action:", err);
-                        showAlert(`เกิดข้อผิดพลาด: ${err.message}`, null, null, false);
-                    })
-                    .finally(() => {
+                        console.error('Error during action:', err);
                         hideLoading();
+                        showAlert(`เกิดข้อผิดพลาดในการดำเนินการ: ${err.message}`);
                     });
-            }, () => {});
+            });
         }
     </script>
 </body>
