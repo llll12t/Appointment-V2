@@ -2,304 +2,292 @@
 <html lang="th">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>แอดมิน</title>
+    <meta charset="UTF-8" />
+    <title>Booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        /* คุณสามารถเพิ่มสไตล์เพิ่มเติมได้ที่นี่ */
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+		select {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+        .spinner {
+            width: 3rem;
+            height: 3rem;
+            border: .5rem solid #eee;
+            border-top: .5rem solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
-<body class="bg-slate-50 flex flex-col">
+<body class="bg-gradient-to-b from-purple-100 via-orange-100 to-white min-h-screen relative bg-fixed">
 
-    <!-- Main Content Area -->
-    <main class="max-w-4xl m-auto p-4 text-sm">
-        <!-- Filter Section -->
-        <div class="flex flex-wrap mb-4">
-            <div class="w-1/3 p-2">
-                <label for="statusFilter" class="block text-xs font-medium text-gray-700">ค้นหาตามสถานะ</label>
-                <select id="statusFilter" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
-                    <option value="">ทั้งหมด</option>
-                    <option value="รอการยืนยัน">รอการยืนยัน</option>
-                    <option value="ยืนยันแล้ว">ยืนยันแล้ว</option>
-                    <option value="ยกเลิก">ยกเลิก</option>
-                    <option value="เสร็จสิ้น">เสร็จสิ้น</option>
-                </select>
-            </div>
-            <div class="w-1/3 p-2">
-                <label for="serviceFilter" class="block text-xs font-medium text-gray-700">กรองตามบริการ</label>
-                <input type="text" id="serviceFilter" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg"
-                    placeholder="พิมพ์บริการ">
-            </div>
-            <div class="w-1/3 p-2">
-                <label for="dateSort" class="block text-xs font-medium text-gray-700">เรียงตามวันที่</label>
-                <select id="dateSort" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
-                    <option value="latest">วันที่ล่าสุด</option>
-                    <option value="oldest">วันที่เก่าสุด</option>
-                </select>
-            </div>
+    <!-- Loading Overlay (for confirm actions) -->
+    <div id="loadingOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Custom Alert -->
+    <div id="customAlertOverlay" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white p-6 rounded shadow-lg text-center w-72">
+            <p id="customAlertMessage" class="mb-4 text-gray-700 text-sm"></p>
+            <button id="customAlertOk" class="bg-indigo-600 text-white px-4 py-2 rounded">ตกลง</button>
         </div>
-        <div class="flex justify-end mb-4">
-            <button id="applyFiltersButton"
-                class="py-2 px-4 bg-slate-600 text-white rounded-lg hover:bg-slate-900">กรองข้อมูล</button>
+    </div>
+
+    <main class="max-w-md mx-auto p-4">
+        <h1 class="text-lg font-bold mb-4">รายการนัดหมายของคุณ</h1>
+
+        <div class="grid grid-cols-2 gap-2 mb-4">
+            <select id="statusFilter" class="p-2 border rounded-lg bg-white">
+                <option value="">ทั้งหมด</option>
+                <option value="รอการยืนยัน">รอการยืนยัน</option>
+                <option value="ยืนยันแล้ว">ยืนยันแล้ว</option>
+                <option value="ยกเลิก">ยกเลิก</option>
+                <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+            </select>
+            <select id="dateSort" class="p-2 border rounded-lg bg-white">
+                <option value="latest">วันที่ล่าสุด</option>
+                <option value="oldest">วันที่เก่าสุด</option>
+            </select>
         </div>
-        <!-- Table Display Section -->
-        <div class="overflow-x-auto">
-            <table class="min-w-full bg-white rounded-lg shadow-md">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 border-b border-gray-200 text-left text-sm font-semibold text-gray-700">
-                            ชื่อ</th>
-                        <th class="py-2 px-4 border-b border-gray-200 text-left text-sm font-semibold text-gray-700">
-                            วันที่นัดหมาย</th>
-                        <th class="py-2 px-4 border-b border-gray-200 text-center text-sm font-semibold text-gray-700">
-                            สถานะ</th>
-                        <th class="py-2 px-4 border-b border-gray-200 text-center text-sm font-semibold text-gray-700">
-                            Action</th>
-                    </tr>
-                </thead>
-                <tbody id="filteredData">
-                    <!-- Rows will be inserted here -->
-                </tbody>
-            </table>
-        </div>
+
+        <table class="w-full bg-white rounded shadow text-sm">
+            <thead>
+                <tr>
+                    <th class="bg-[#2F1A87] text-white p-2 text-left rounded-tl-lg">ชื่อ</th>
+                    <th class="bg-[#2F1A87] text-white p-2 text-left">วันที่</th>
+                    <th class="bg-[#2F1A87] text-white p-2 text-center">สถานะ</th>
+                    <th class="bg-[#2F1A87] text-white p-2 text-center rounded-tr-lg">ดู</th>
+                </tr>
+            </thead>
+            <tbody id="dataBody">
+                <!-- จะเติมข้อมูลที่นี่ -->
+            </tbody>
+        </table>
 
         <!-- Pagination Controls -->
-        <div id="paginationControls" class="mt-6 flex justify-center space-x-2">
-            <!-- Pagination buttons will be inserted here -->
-        </div>
+        <div id="pagination" class="flex justify-center mt-4 space-x-1"></div>
+
+        <input type="hidden" id="useridlineFilter" />
     </main>
 
+    <script src="Config.js"></script>
     <script>
-        const DETAILS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Yjv94ffGn98tweURPh1cxDfegwcffZg8dZ_YsZDqwxi2L4G6Q_hIETG1Wv5IMP3V/exec';
-        const CARDS_PER_PAGE = 5;
+        let currentData = [];
         let currentPage = 1;
-        let totalPages = 1;
+        const itemsPerPage = 10;
 
-        document.addEventListener('DOMContentLoaded', function () {
+        const showLoading = () => document.getElementById('loadingOverlay').classList.remove('hidden');
+        const hideLoading = () => document.getElementById('loadingOverlay').classList.add('hidden');
+        const showAlert = (msg, cb) => {
+            document.getElementById('customAlertMessage').textContent = msg;
+            document.getElementById('customAlertOverlay').classList.remove('hidden');
+            document.getElementById('customAlertOk').onclick = () => {
+                document.getElementById('customAlertOverlay').classList.add('hidden');
+                if (cb) cb();
+            };
+        };
 
-            function fetchAndPopulateCards() {
-                // แสดง SweetAlert2 loading ก่อนเริ่ม fetch
-                Swal.fire({
-                    title: 'กำลังโหลดข้อมูล...',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await liff.init({ liffId: LIFF_ID_HIS });
+                if (!liff.isLoggedIn()) {
+                    liff.login({ redirectUri: window.location.href });
+                    return;
+                }
+                const profile = await liff.getProfile();
+                document.getElementById('useridlineFilter').value = profile.userId;
+                ['statusFilter', 'dateSort'].forEach(id =>
+                    document.getElementById(id).addEventListener('change', loadData)
+                );
+                loadData();
+            } catch (err) {
+                console.error('LIFF Error:', err);
+                showAlert('LIFF โหลดไม่สำเร็จ: ' + err.message);
+            }
+        });
+
+        async function loadData() {
+            const tbody = document.getElementById('dataBody');
+            const paginationEl = document.getElementById('pagination');
+            // แสดงข้อความกำลังโหลดในตาราง
+            tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-gray-500">กำลังโหลดข้อมูล...</td></tr>';
+            paginationEl.innerHTML = '';
+
+            try {
+                const res = await fetch(`${DETAILS_SCRIPT_URL}?action=fetchBookings`);
+                const allData = await res.json();
+                const uid = document.getElementById('useridlineFilter').value;
+
+                const filtered = allData.filter(d => d.userlineid === uid)
+                    .map(d => ({
+                        ...d,
+                        parsedDate: new Date(d.date.split('-').reverse().join('-'))
+                    }));
+
+                const sorted = filtered.sort((a, b) => {
+                    return document.getElementById('dateSort').value === 'latest' ?
+                        b.parsedDate - a.parsedDate :
+                        a.parsedDate - b.parsedDate;
                 });
 
-                fetch(`${DETAILS_SCRIPT_URL}?action=fetchBookings`)
-                    .then(response => response.json())
-                    .then(details => {
-                        const filteredData = document.getElementById('filteredData');
-                        filteredData.innerHTML = '';
+                const status = document.getElementById('statusFilter').value.toLowerCase();
+                const final = sorted.filter(d =>
+                    !status || d.status.toLowerCase().includes(status)
+                );
 
-                        // Parse date strings into Date objects using DD-MM-YYYY format
-                        details.forEach(detail => {
-                            const [day, month, year] = detail.date.split('-');
-                            detail.parsedDate = new Date(`${year}-${month}-${day}`);
-                        });
-
-                        // Sort by date based on the selected sorting option
-                        const dateSort = document.getElementById('dateSort').value;
-                        details.sort((a, b) => {
-                            return dateSort === 'latest' ? b.parsedDate - a.parsedDate : a.parsedDate - b.parsedDate;
-                        });
-
-                        // Apply filters
-                        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
-                        const serviceFilter = document.getElementById('serviceFilter').value.toLowerCase();
-
-                        let filteredDetails = details.filter(detail => {
-                            const matchesStatus = statusFilter === '' || detail.status.toLowerCase().includes(statusFilter);
-                            const matchesService = serviceFilter === '' || detail.service.toLowerCase().includes(serviceFilter);
-                            return matchesStatus && matchesService;
-                        });
-
-                        totalPages = Math.ceil(filteredDetails.length / CARDS_PER_PAGE);
-                        displayCards(filteredDetails, currentPage);
-                        createPaginationControls();
-
-                        // ตรวจสอบว่ามีการจองที่สถานะ "รอการยืนยัน" หรือไม่ แล้วแสดงการแจ้งเตือน
-                        const pendingConfirmations = filteredDetails.filter(detail => detail.status === 'รอการยืนยัน');
-                        if (pendingConfirmations.length > 0) {
-                            Swal.fire({
-                                toast: true,
-                                position: 'top-end',
-                                icon: 'warning',
-                                title: `มีการจองที่รอการยืนยัน ${pendingConfirmations.length} รายการ`,
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true
-                            });
-                        }
-
-                        // ซ่อน SweetAlert2 loading หลังจากโหลดเสร็จ
-                        Swal.close();
-                    })
-                    .catch(error => {
-                        console.error('Error fetching user details:', error);
-                        Swal.fire('ข้อผิดพลาด!', 'เกิดข้อผิดพลาดในการโหลดข้อมูล.', 'error');
-                    });
+                currentData = final;
+                currentPage = 1;
+                displayPage(currentPage);
+            } catch (err) {
+                console.error(err);
+                showAlert('โหลดข้อมูลล้มเหลว');
             }
+        }
 
-            function displayCards(details, page) {
-                const filteredData = document.getElementById('filteredData');
-                filteredData.innerHTML = '';
+        function displayPage(page) {
+            const tbody = document.getElementById('dataBody');
+            tbody.innerHTML = '';
 
-                const startIndex = (page - 1) * CARDS_PER_PAGE;
-                const endIndex = startIndex + CARDS_PER_PAGE;
-                const detailsToDisplay = details.slice(startIndex, endIndex);
+            if (currentData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-gray-500">ไม่พบข้อมูล</td></tr>';
+            } else {
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const pageData = currentData.slice(start, end);
 
-                detailsToDisplay.forEach(detail => {
-                    // แสดงสถานะในคอนโซลเพื่อดีบัก
-                    console.log(`Processing booking ID: ${detail.idKey}, Status: ${detail.status}`);
-
+                pageData.forEach(item => {
+                    // แถวหลัก
                     const row = document.createElement('tr');
-
-                    // กำหนดไอคอนตามสถานะ
-                    let statusIcon = '';
-                    switch (detail.status) {
-                        case 'รอการยืนยัน':
-                            statusIcon = '⚠️';
-                            break;
-                        case 'ยืนยันแล้ว':
-                            statusIcon = '📌';
-                            break;
-                        case 'ยกเลิก':
-                            statusIcon = '❌';
-                            break;
-                        case 'เสร็จสิ้น':
-                            statusIcon = '✅';
-                            break;
-                        default:
-                            statusIcon = detail.status;
-                    }
-
-                    // Row สำหรับข้อมูลหลัก (ชื่อ, วันที่นัดหมาย, สถานะ และ Action)
                     row.innerHTML = `
-            <td class="py-2 px-4 border-b border-gray-200">${detail.name}</td>
-            <td class="py-2 px-4 border-b border-gray-200">${detail.date}</td>
-            <td class="py-2 px-4 border-b border-gray-200 text-center">${statusIcon}</td>
-            <td class="py-2 px-4 border-b border-gray-200 text-center">
-              <button class="view-btn bg-slate-900 text-white px-3 py-1 rounded-md hover:bg-slate-700" data-id="${detail.idKey}">คำสั่ง</button>
-            </td>
-          `;
-                    filteredData.appendChild(row);
+                        <td class="p-2 border-b">${item.name}</td>
+                        <td class="p-2 border-b">${item.date}</td>
+                        <td class="p-2 border-b text-center">${item.status}</td>
+                        <td class="p-2 border-b text-center">
+                            <button class="toggleDetail bg-indigo-600 text-white px-2 py-1 rounded">ดู</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
 
-                    // Row สำหรับรายละเอียดและ Action (ซ่อนเริ่มแรก)
+                    // แถวรายละเอียด (ซ่อนอยู่ก่อน)
                     const detailRow = document.createElement('tr');
                     detailRow.classList.add('hidden');
                     detailRow.innerHTML = `
-            <td colspan="4" class="py-2 px-4 border-b border-gray-200 bg-gray-50">
-                  <div>
-                    <p><strong>บริการ:</strong> ${detail.service}</p>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <p><strong>ชื่อ:</strong> ${detail.name}</p>
-                  <p><strong>เบอร์โทร:</strong> ${detail.phonenumber}</p>
-                  <p><strong>หมายเหตุ:</strong> ${detail.note}</p>
-                </div>
-                <div>
-                  <p><strong>ราคา:</strong> ${detail.price}</p>
-                  <p><strong>เวลา:</strong> ${detail.time}</p>
-                  <p><strong>สถานะ:</strong> ${detail.status}</p>
-                </div>
-              </div>
+                        <td colspan="4" class="bg-gray-50 p-4 text-sm">
+                            <div class="grid grid-cols-1 gap-1">
+                                <p><strong>ชื่อ:</strong> ${item.name}</p>
+                                <p><strong>เบอร์โทร:</strong> ${item.phonenumber}</p>
+                                <p><strong>บริการ:</strong> ${item.service}</p>
+                                <p><strong>ราคา:</strong> ${item.price}</p>
+                                <p><strong>วันที่:</strong> ${item.date}</p>
+                                <p><strong>เวลา:</strong> ${item.time}</p>
+                                <p><strong>หมายเหตุ:</strong> ${item.note || '-'}</p>
+                                <p><strong>สถานะ:</strong> ${item.status}</p>
+                                <div class="mt-3 flex gap-2">
+                                    <button class="confirmBtn bg-green-500 text-white px-4 py-1 rounded" ${item.status !== 'รอการยืนยัน' ? 'disabled style="opacity:.5"' : ''} data-id="${item.idKey}">ยืนยัน</button>
+                                    <button class="cancelBtn bg-red-500 text-white px-4 py-1 rounded" ${['ยกเลิก', 'เสร็จสิ้น'].includes(item.status) ? 'disabled style="opacity:.5"' : ''} data-id="${item.idKey}">ยกเลิก</button>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(detailRow);
 
-            </td>
-          `;
-                    filteredData.appendChild(detailRow);
+                    // สลับการแสดงรายละเอียด
+                    row.querySelector('.toggleDetail').onclick = () => {
+                        detailRow.classList.toggle('hidden');
+                    };
                 });
 
-                attachEventListeners();
-            }
-
-            function createPaginationControls() {
-                const paginationControls = document.getElementById('paginationControls');
-                paginationControls.innerHTML = '';
-
-                // Define the range of page buttons to show
-                const maxVisibleButtons = 5;
-                let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
-                let endPage = startPage + maxVisibleButtons - 1;
-
-                if (endPage > totalPages) {
-                    endPage = totalPages;
-                    startPage = Math.max(1, endPage - maxVisibleButtons + 1);
-                }
-
-                // Previous button
-                const prevButton = document.createElement('button');
-                prevButton.textContent = 'Previous';
-                prevButton.disabled = currentPage === 1;
-                prevButton.classList.add('px-4', 'py-2', 'bg-slate-600', 'text-white', 'rounded', 'hover:bg-slate-900', 'disabled:opacity-50');
-                prevButton.addEventListener('click', () => {
-                    if (currentPage > 1) {
-                        currentPage--;
-                        fetchAndPopulateCards();
-                    }
+                // ผูกเหตุการณ์ให้ปุ่มยืนยันและยกเลิก
+                document.querySelectorAll('.confirmBtn').forEach(btn => {
+                    btn.onclick = () => confirmAction('ยืนยันรายการนี้?', 'confirmBooking', btn.dataset.id);
                 });
-                paginationControls.appendChild(prevButton);
-
-                // Page number buttons
-                for (let i = startPage; i <= endPage; i++) {
-                    const pageButton = document.createElement('button');
-                    pageButton.textContent = i;
-                    pageButton.classList.add('px-4', 'py-2', 'bg-slate-600', 'text-white', 'rounded', 'hover:bg-slate-900');
-                    if (i === currentPage) {
-                        pageButton.classList.add('bg-slate-900');
-                    }
-                    pageButton.addEventListener('click', () => {
-                        currentPage = i;
-                        fetchAndPopulateCards();
-                    });
-                    paginationControls.appendChild(pageButton);
-                }
-
-                // Next button
-                const nextButton = document.createElement('button');
-                nextButton.textContent = 'Next';
-                nextButton.disabled = currentPage === totalPages;
-                nextButton.classList.add('px-4', 'py-2', 'bg-slate-600', 'text-white', 'rounded', 'hover:bg-slate-900', 'disabled:opacity-50');
-                nextButton.addEventListener('click', () => {
-                    if (currentPage < totalPages) {
-                        currentPage++;
-                        fetchAndPopulateCards();
-                    }
-                });
-                paginationControls.appendChild(nextButton);
-            }
-
-           
-
-            function toggleDetailRow(id) {
-                const rows = document.querySelectorAll('#filteredData tr');
-                rows.forEach(row => {
-                    const viewButton = row.querySelector('.view-btn');
-                    if (viewButton && viewButton.dataset.id === id) {
-                        const detailRow = row.nextElementSibling;
-                        if (detailRow) {
-                            detailRow.classList.toggle('hidden');
-                        }
-                    }
+                document.querySelectorAll('.cancelBtn').forEach(btn => {
+                    btn.onclick = () => confirmAction('ยกเลิกรายการนี้?', 'cancelBooking', btn.dataset.id);
                 });
             }
 
-         
+            renderPaginationControls();
+        }
 
-            document.getElementById('applyFiltersButton').addEventListener('click', function () {
-                currentPage = 1;
-                fetchAndPopulateCards();
+        function renderPaginationControls() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(currentData.length / itemsPerPage);
+            if (totalPages <= 1) return;
+
+            // ปุ่ม หน้าสุด
+            const firstBtn = document.createElement('button');
+            firstBtn.textContent = 'หน้าสุด';
+            firstBtn.dataset.page = 1;
+            firstBtn.className = `px-3 py-1 border rounded ${currentPage === 1 ? 'bg-indigo-600 text-white' : ''}`;
+            pagination.appendChild(firstBtn);
+
+            // ปุ่มหน้า 1-3
+            const pageCount = Math.min(3, totalPages);
+            for (let i = 1; i <= pageCount; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.dataset.page = i;
+                btn.className = `px-3 py-1 border rounded ${currentPage === i ? 'bg-indigo-600 text-white' : ''}`;
+                pagination.appendChild(btn);
+            }
+
+            // ปุ่ม หลังสุด
+            const lastBtn = document.createElement('button');
+            lastBtn.textContent = 'หลังสุด';
+            lastBtn.dataset.page = totalPages;
+            lastBtn.className = `px-3 py-1 border rounded ${currentPage === totalPages ? 'bg-indigo-600 text-white' : ''}`;
+            pagination.appendChild(lastBtn);
+
+            // ผูกเหตุการณ์ของปุ่มทั้งหมด
+            pagination.querySelectorAll('button').forEach(btn => {
+                btn.onclick = () => {
+                    currentPage = Number(btn.dataset.page);
+                    displayPage(currentPage);
+                };
             });
+        }
 
-            fetchAndPopulateCards();
-        });
+        function confirmAction(message, action, id) {
+            showAlert(message, () => {
+                showLoading();
+                fetch(`${DETAILS_SCRIPT_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
+                    method: 'POST',
+                })
+                    .then(() => {
+                        hideLoading();
+                        showAlert('ดำเนินการสำเร็จ', loadData);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        hideLoading();
+                        showAlert('เกิดข้อผิดพลาด');
+                    });
+            });
+        }
     </script>
-
 </body>
 
 </html>
