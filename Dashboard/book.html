@@ -13,8 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js" defer></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet" />
-    <!-- Assume Config.js defines WEB_APP_URL, LIFF_ID (though LIFF_ID won't be used here) -->
-    <script src="Config.js"></script>
+
 
     <style>
         body {
@@ -188,15 +187,23 @@
             </div>
             <h1 class="text-xl font-bold text-slate-800">BookingApp™</h1>
         </div>
-        <div class="bg-slate-50 p-3 rounded-lg mb-6">
-            <div class="flex items-center space-x-2">
-                <img src="https://i.pravatar.cc/40?u=dashboardUser" alt="User" class="w-8 h-8 rounded-full">
-                <div>
-                    <p class="text-sm font-semibold text-slate-700">Dashboard User</p>
-                    <p class="text-xs text-slate-500">พนักงาน</p>
+            <!-- ===================================================================
+            (B) แสดงชื่อผู้ดูแลที่ล็อกอินมาแล้ว (ดึงจาก localStorage.adminName)
+            =================================================================== -->
+            <div class="bg-slate-50 p-3 rounded-lg mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div>
+                            <p id="adminName" class="text-sm font-semibold text-slate-700 font-thai">Dashboard User</p>
+                            <p class="text-xs text-slate-500 font-thai">ผู้ดูแลระบบ</p>
+                        </div>
+                    </div>
+                    <!-- ปุ่ม Logout -->
+                    <button onclick="logout()" class="text-red-500 hover:text-red-700 text-sm font-thai">
+                        logout
+                    </button>
                 </div>
             </div>
-        </div>
         <nav class="flex-grow space-y-1">
             <p class="text-xs text-slate-400 uppercase font-semibold px-3 mb-2">Main Menu</p>
             <a href="book.html" class="flex items-center space-x-3 px-3 py-2.5 bg-indigo-100 text-indigo-700 rounded-md text-sm font-semibold">
@@ -350,8 +357,22 @@
             </div>
         </div>
     </main>
-
+    <!-- Assume Config.js defines WEB_APP_URL, LIFF_ID (though LIFF_ID won't be used here) -->
+    <script src="Config.js"></script>
     <script>
+        // (A) เมื่อ DOM โหลดเสร็จ ให้แสดงชื่อผู้ดูแลจาก localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+        const adminName = localStorage.getItem('adminName') || 'Admin';
+        document.getElementById('adminName').textContent = adminName;
+        });
+        
+        // (B) ฟังก์ชัน Logout: เคลียร์ localStorage แล้วไปหน้า login.html
+        function logout() {
+        localStorage.removeItem('isAdminLoggedIn');
+        localStorage.removeItem('adminName');
+        window.location.href = 'login.html';
+        }
+
         const $ = (id) => document.getElementById(id);
         let monthAvailability = {},
             selectedDate = '';
