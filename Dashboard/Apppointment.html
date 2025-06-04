@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BordUp™ - Appointment Management</title>
+    <title>Appointment Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet" />
@@ -266,6 +266,20 @@
 
     <script>
         const DETAILS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Yjv94ffGn98tweURPh1cxDfegwcffZg8dZ_YsZDqwxi2L4G6Q_hIETG1Wv5IMP3V/exec';
+                // (A) เมื่อ DOM โหลดเสร็จ ให้แสดงชื่อผู้ดูแลจาก localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminName = localStorage.getItem('adminName') || 'Admin';
+            document.getElementById('adminName').textContent = adminName;
+        });
+
+        // (B) ฟังก์ชัน Logout: เคลียร์ localStorage แล้วไปหน้า login.html
+        function logout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            localStorage.removeItem('adminName');
+            window.location.href = 'login.html';
+        }
+
+
         let allAppointmentsData = [];
         let currentView = 'kanban'; // 'kanban' or 'list'
         let currentPage = 1;
