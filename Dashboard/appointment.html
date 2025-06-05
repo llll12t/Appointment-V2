@@ -637,7 +637,7 @@
                     .then(text => {
                         console.log('Action response:', text);
                         hideLoading();
-                        showAlert('ดำเนินการสำเร็จ', fetchInitialData);
+                        fetchInitialData();
                     })
                     .catch(err => {
                         console.error('Error during action:', err);
