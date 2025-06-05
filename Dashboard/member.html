@@ -160,10 +160,13 @@
 
         // (B) ฟังก์ชัน Logout: เคลียร์ localStorage แล้วไปหน้า login.html
         function logout() {
-            localStorage.removeItem('isAdminLoggedIn');
-            localStorage.removeItem('adminName');
-            window.location.href = 'login.html';
-        }
+              localStorage.removeItem('isAdminLoggedIn');
+              localStorage.removeItem('adminName');
+              // ล้างข้อมูลในตารางสมาชิกบน UI
+              document.getElementById('memberTableContainer').innerHTML = '';
+              // เด้งไปหน้า login หรือหน้า Home
+              window.location.href = 'login.html';
+            }
 
         const memberSearchInput = document.getElementById('memberSearch');
         let allMembersData = []; // Store all members for client-side search
