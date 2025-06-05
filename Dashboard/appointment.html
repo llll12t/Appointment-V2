@@ -276,17 +276,26 @@
         const DETAILS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Yjv94ffGn98tweURPh1cxDfegwcffZg8dZ_YsZDqwxi2L4G6Q_hIETG1Wv5IMP3V/exec';
                 // (A) เมื่อ DOM โหลดเสร็จ ให้แสดงชื่อผู้ดูแลจาก localStorage
         document.addEventListener('DOMContentLoaded', () => {
-            const adminName = localStorage.getItem('adminName') || 'Admin';
-            document.getElementById('adminName').textContent = adminName;
-        });
+    // ตรวจสอบสถานะล็อกอิน
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      // ถ้าไม่ได้ล็อกอิน ให้เด้งไปหน้า login ทันที
+      window.location.href = 'login.html';
+      return; // หยุดการทำงานที่เหลือบนหน้านี้
+    }
 
-        // (B) ฟังก์ชัน Logout: เคลียร์ localStorage แล้วไปหน้า login.html
-        function logout() {
-            localStorage.removeItem('isAdminLoggedIn');
-            localStorage.removeItem('adminName');
-            window.location.href = 'login.html';
-        }
+    // กรณีล็อกอินแล้ว ให้มาดึงชื่อ admin และโหลดข้อมูลสมาชิกตามเดิม
+    const adminName = localStorage.getItem('adminName') || 'Admin';
+    document.getElementById('adminName').textContent = adminName;
+    loadMembers();
+  });
 
+  // ฟังก์ชัน Logout (เหมือนเดิม)
+  function logout() {
+    localStorage.removeItem('isAdminLoggedIn');
+    localStorage.removeItem('adminName');
+    window.location.href = 'login.html';
+  }
 
         let allAppointmentsData = [];
         let currentView = 'kanban'; // 'kanban' or 'list'
