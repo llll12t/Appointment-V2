@@ -164,18 +164,27 @@
    <!-- Assume Config.js defines WEB_APP_URL -->
     <script src="Config.js"></script>
     <script>
-        // (A) เมื่อ DOM โหลดเสร็จ ให้แสดงชื่อผู้ดูแลจาก localStorage
         document.addEventListener('DOMContentLoaded', () => {
+            // ตรวจสอบสถานะล็อกอิน
+            const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+            if (!isLoggedIn) {
+              // ถ้าไม่ได้ล็อกอิน ให้เด้งไปหน้า login ทันที
+              window.location.href = 'login.html';
+              return; // หยุดการทำงานที่เหลือบนหน้านี้
+            }
+        
+            // กรณีล็อกอินแล้ว ให้มาดึงชื่อ admin และโหลดข้อมูลสมาชิกตามเดิม
             const adminName = localStorage.getItem('adminName') || 'Admin';
             document.getElementById('adminName').textContent = adminName;
-        });
-
-        // (B) ฟังก์ชัน Logout: เคลียร์ localStorage แล้วไปหน้า login.html
-        function logout() {
+            loadMembers();
+          });
+        
+          // ฟังก์ชัน Logout (เหมือนเดิม)
+          function logout() {
             localStorage.removeItem('isAdminLoggedIn');
             localStorage.removeItem('adminName');
             window.location.href = 'login.html';
-        }
+          }
 
         const serviceSearchInput = document.getElementById('serviceSearch');
         let allServicesData = []; // Store all services for client-side search
