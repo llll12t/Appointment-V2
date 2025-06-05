@@ -152,28 +152,27 @@
     </main>
 
     <script>
-       document.addEventListener('DOMContentLoaded', () => {
-    // ตรวจสอบสถานะล็อกอิน
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      // ถ้าไม่ได้ล็อกอิน ให้เด้งไปหน้า login ทันที
-      window.location.href = 'login.html';
-      return; // หยุดการทำงานที่เหลือบนหน้านี้
-    }
-
-    // กรณีล็อกอินแล้ว ให้มาดึงชื่อ admin และโหลดข้อมูลสมาชิกตามเดิม
-    const adminName = localStorage.getItem('adminName') || 'Admin';
-    document.getElementById('adminName').textContent = adminName;
-    loadMembers();
-  });
-
-  // ฟังก์ชัน Logout (เหมือนเดิม)
-  function logout() {
-    localStorage.removeItem('isAdminLoggedIn');
-    localStorage.removeItem('adminName');
-    window.location.href = 'login.html';
-  }
-
+        document.addEventListener('DOMContentLoaded', () => {
+        // ตรวจสอบสถานะล็อกอิน
+        const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        if (!isLoggedIn) {
+        // ถ้าไม่ได้ล็อกอิน ให้เด้งไปหน้า login ทันที
+        window.location.href = 'login.html';
+        return; // หยุดการทำงานที่เหลือบนหน้านี้
+        }
+        
+        // กรณีล็อกอินแล้ว ให้มาดึงชื่อ admin และโหลดข้อมูลสมาชิกตามเดิม
+        const adminName = localStorage.getItem('adminName') || 'Admin';
+        document.getElementById('adminName').textContent = adminName;
+        loadMembers();
+        });
+        
+        // ฟังก์ชัน Logout (เหมือนเดิม)
+        function logout() {
+        localStorage.removeItem('isAdminLoggedIn');
+        localStorage.removeItem('adminName');
+        window.location.href = 'login.html';
+        }
         const memberSearchInput = document.getElementById('memberSearch');
         let allMembersData = []; // Store all members for client-side search
 
