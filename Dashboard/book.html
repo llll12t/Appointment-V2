@@ -345,8 +345,10 @@
                     <input type="hidden" id="time" name="time" />
                     <input type="hidden" id="selectedServices" name="selectedServices" />
                     <input type="hidden" id="selectedServiceNames" name="selectedServiceNames" />
-                    <input type="hidden" id="userlineid" name="userlineid" value="DASHBOARD_USER" />
+                   <!-- เปลี่ยนเป็นแบบนี้ (ลบ input id="loggedInAdminName" ที่เคยเพิ่มไปก่อนหน้านี้ออกด้วย) -->
+                    <input type="hidden" id="userlineid" name="userlineid" />
                     <input type="hidden" name="action" value="makeBooking" />
+
                 </form>
             </div>
         </div>
@@ -673,8 +675,8 @@
             showLoading(true);
             updateStepIndicator(); // Initial call for step 1
             
-            // For dashboard, we don't need LIFF init. UserID is hardcoded or fetched differently.
-            $('userlineid').value = 'DASHBOARD_INTERNAL_USER'; // Example User ID
+            const adminNameForBooking = localStorage.getItem('adminName') || 'Unknown Admin';
+            document.getElementById('userlineid').value = adminNameForBooking; // <<< เปลี่ยนตรงนี้
 
             await Promise.allSettled([
                 fetchServiceData(),
