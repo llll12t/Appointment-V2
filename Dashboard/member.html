@@ -152,21 +152,27 @@
     </main>
 
     <script>
-        // (A) เมื่อ DOM โหลดเสร็จ ให้แสดงชื่อผู้ดูแลจาก localStorage
-        document.addEventListener('DOMContentLoaded', () => {
-            const adminName = localStorage.getItem('adminName') || 'Admin';
-            document.getElementById('adminName').textContent = adminName;
-        });
+       document.addEventListener('DOMContentLoaded', () => {
+    // ตรวจสอบสถานะล็อกอิน
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      // ถ้าไม่ได้ล็อกอิน ให้เด้งไปหน้า login ทันที
+      window.location.href = 'login.html';
+      return; // หยุดการทำงานที่เหลือบนหน้านี้
+    }
 
-        // (B) ฟังก์ชัน Logout: เคลียร์ localStorage แล้วไปหน้า login.html
-        function logout() {
-              localStorage.removeItem('isAdminLoggedIn');
-              localStorage.removeItem('adminName');
-              // ล้างข้อมูลในตารางสมาชิกบน UI
-              document.getElementById('memberTableContainer').innerHTML = '';
-              // เด้งไปหน้า login หรือหน้า Home
-              window.location.href = 'login.html';
-            }
+    // กรณีล็อกอินแล้ว ให้มาดึงชื่อ admin และโหลดข้อมูลสมาชิกตามเดิม
+    const adminName = localStorage.getItem('adminName') || 'Admin';
+    document.getElementById('adminName').textContent = adminName;
+    loadMembers();
+  });
+
+  // ฟังก์ชัน Logout (เหมือนเดิม)
+  function logout() {
+    localStorage.removeItem('isAdminLoggedIn');
+    localStorage.removeItem('adminName');
+    window.location.href = 'login.html';
+  }
 
         const memberSearchInput = document.getElementById('memberSearch');
         let allMembersData = []; // Store all members for client-side search
