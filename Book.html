@@ -5,15 +5,11 @@
     <meta charset="UTF-8" />
     <title>Booking</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com" defer></script>
-    <!-- LIFF SDK -->
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js" defer></script>
-    <!-- Flatpickr CSS/JS + Thai locale -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js" defer></script>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet" />
@@ -368,110 +364,100 @@
 </head>
 
 <body class="bg-gradient-to-b from-purple-100 via-orange-100 to-white min-h-screen relative bg-fixed">
-    <!-- Loading Spinner -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
     </div>
 
-    <!-- Popup -->
     <div class="popup" id="popup">
         <div class="popup-content" id="popupContent"></div>
     </div>
 
     <div class="w-full max-w-md mx-auto p-4 flex-1 flex flex-col">
-        <!-- Header -->
         <div id="header" class="flex items-center p-4">
             <img id="greetingAvatar" src alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-element mr-4" />
             <div>
-                <p id="greetingPrefix" class="text-base">สวัสดีตอนเช้า</p>
+                <p id="greetingPrefix" class="text-base"></p>
                 <h1 id="greetingName" class="text-primary font-bold text-lg"> LINE NAME </h1>
+            </div>
+            <div class="ml-auto">
+                <select id="languageSelector" class="bg-card border-element rounded-md text-sm px-2 py-1">
+                    <option value="th">ไทย</option>
+                    <option value="en">English</option>
+                </select>
             </div>
         </div>
 
-        <!-- Booking Form -->
         <form id="bookingForm" novalidate class="flex flex-col flex-1 relative">
-            <!-- Step 1: เลือกบริการ -->
             <div class="step step-active" id="step1">
-                <label class="block mb-3 text-lg text-center text-base font-semibold">
-            เลือกบริการ
-          </label>
+                <label class="block mb-3 text-lg text-center text-base font-semibold" data-key="step1.title">
+            </label>
                 <div id="serviceCards" class="grid grid-cols-2 gap-4 mb-6"></div>
-                <button type="button" id="nextToStep2" class="btn btn-primary w-full">
-            ถัดไป
+                <button type="button" id="nextToStep2" class="btn btn-primary w-full" data-key="step1.button">
           </button>
             </div>
 
-            <!-- Step 2: เลือกวันที่ / เวลา -->
             <div class="step hidden" id="step2">
-                <label class="block mb-1 text-center text-base font-semibold">
-            เลือกวันที่
+                <label class="block mb-1 text-center text-base font-semibold" data-key="step2.dateLabel">
           </label>
                 <div id="inlineCalendar-wrapper" class="mb-4">
                     <div id="inlineCalendar"></div>
                 </div>
-                <label class="block mb-2 text-center text-base font-semibold">
-            เลือกเวลา
+                <label class="block mb-2 text-center text-base font-semibold" data-key="step2.timeLabel">
           </label>
                 <div id="timeDropdown" class="mb-6 min-h-[50px]">
                     <div class="text-placeholder text-sm text-center py-2 col-span-full">
-                        ยังไม่ได้เลือกวัน
                     </div>
                 </div>
                 <div class="flex space-x-3">
-                    <button type="button" id="backToStep1" class="btn btn-secondary flex-1">
-              ย้อนกลับ
+                    <button type="button" id="backToStep1" class="btn btn-secondary flex-1" data-key="step2.back">
             </button>
-                    <button type="button" id="nextToStep3" class="btn btn-primary flex-1">
-              ถัดไป
+                    <button type="button" id="nextToStep3" class="btn btn-primary flex-1" data-key="step2.next">
             </button>
                 </div>
             </div>
 
-            <!-- Step 3: กรอกข้อมูลส่วนตัว -->
             <div class="step hidden" id="step3">
-                <label class="block mb-3 text-lg text-center text-base font-semibold">
-            ข้อมูลติดต่อ </label>
+                <label class="block mb-3 text-lg text-center text-base font-semibold" data-key="step3.title">
+          </label>
                 <input type="text" id="name" name="name" placeholder="ชื่อ-สกุล" class="mb-3 border-element" required />
                 <input type="tel" id="phonenumber" name="phonenumber" placeholder="เบอร์ติดต่อ" class="mb-3 border-element" required />
                 <textarea id="note" name="note" rows="3" placeholder="หมายเหตุ (ถ้ามี)" class="mb-6 p-2 resize-none border-element"></textarea>
                 <div class="flex space-x-3">
-                    <button type="button" id="backToStep2" class="btn btn-secondary flex-1"> ย้อนกลับ </button>
-                    <button type="button" id="nextToStep4" class="btn btn-primary flex-1"> ถัดไป </button>
+                    <button type="button" id="backToStep2" class="btn btn-secondary flex-1" data-key="step3.back"> </button>
+                    <button type="button" id="nextToStep4" class="btn btn-primary flex-1" data-key="step3.next"> </button>
                 </div>
             </div>
 
-            <!-- Step 4: ตรวจสอบข้อมูล -->
             <div class="step hidden" id="step4">
-                <label class="block mb-3 text-lg text-center text-base font-semibold">
-            ตรวจสอบข้อมูล </label>
+                <label class="block mb-3 text-lg text-center text-base font-semibold" data-key="step4.title">
+            </label>
                 <div class="bg-card p-4 rounded-lg mb-6 space-y-3">
-                    <div class="flex justify-between items-center border-b  pb-2">
-                        <span>บริการ:</span><span id="confirmService" class="font-semibold"></span>
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <span data-key="step4.serviceLabel"></span><span id="confirmService" class="font-semibold"></span>
                     </div>
                     <div class="flex justify-between items-center border-b pb-2">
-                        <span>วันที่:</span><span id="confirmDate" class="font-semibold"></span>
+                        <span data-key="step4.dateLabel"></span><span id="confirmDate" class="font-semibold"></span>
                     </div>
-                    <div class="flex justify-between items-center border-b  pb-2">
-                        <span>เวลา:</span><span id="confirmTime" class="font-semibold"></span>
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <span data-key="step4.timeLabel"></span><span id="confirmTime" class="font-semibold"></span>
                     </div>
-                    <div class="flex justify-between items-center border-b  pb-2">
-                        <span>ชื่อ:</span><span id="confirmName" class="font-semibold text-right"></span>
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <span data-key="step4.nameLabel"></span><span id="confirmName" class="font-semibold text-right"></span>
                     </div>
-                    <div class="flex justify-between items-center border-b  pb-2">
-                        <span>เบอร์:</span><span id="confirmPhone" class="font-semibold"></span>
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <span data-key="step4.phoneLabel"></span><span id="confirmPhone" class="font-semibold"></span>
                     </div>
                     <div class="flex justify-between items-start pt-1">
-                        <span>หมายเหตุ:</span>
+                        <span data-key="step4.noteLabel"></span>
                         <span id="confirmNote" class="font-semibold text-right max-w-[60%] break-words"></span>
                     </div>
                 </div>
                 <div class="flex space-x-3">
-                    <button type="button" id="backToStep3" class="btn btn-secondary flex-1"> ย้อนกลับ </button>
-                    <button type="submit" id="confirmBooking" class="btn btn-primary flex-1"> ยืนยันการจอง </button>
+                    <button type="button" id="backToStep3" class="btn btn-secondary flex-1" data-key="step4.back"></button>
+                    <button type="submit" id="confirmBooking" class="btn btn-primary flex-1" data-key="step4.confirm"></button>
                 </div>
             </div>
 
-            <!-- Hidden Inputs -->
             <input type="hidden" id="time" name="time" />
             <input type="hidden" id="selectedServices" name="selectedServices" />
             <input type="hidden" id="selectedServiceNames" name="selectedServiceNames" />
@@ -480,6 +466,7 @@
         </form>
     </div>
     <script src="Config.js"></script>
+    <script src="language.js"></script>
     <script>
         const ENABLE_LIFF = true;
 
@@ -488,6 +475,34 @@
             selectedDate = '';
         let currentVisibleStep = 'step1';
         let flatpickrInstance = null;
+        let currentLanguage = 'th';
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+            const langData = translations[lang];
+
+            // Update all elements with data-key attribute
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (langData[key]) {
+                    el.textContent = langData[key];
+                }
+            });
+
+            // Update specific dynamic texts
+            $('greetingPrefix').textContent = getGreeting(new Date().getHours(), lang);
+            document.querySelector('#timeDropdown .text-placeholder').textContent = langData['step2.placeholder'];
+            $('name').placeholder = langData['step3.namePlaceholder'];
+            $('phonenumber').placeholder = langData['step3.phonePlaceholder'];
+            $('note').placeholder = langData['step3.notePlaceholder'];
+            
+            // Re-render Flatpickr
+            if (flatpickrInstance) {
+                flatpickrInstance.set('locale', lang);
+                flatpickrInstance.redraw();
+            }
+        }
 
         function showLoading(on) {
             const overlay = $('loadingOverlay');
@@ -503,8 +518,9 @@
             }
         }
 
-        function showPopup(msg, isSuccess = false) {
+        function showPopup(msgKey, isSuccess = false) {
             showLoading(false);
+            const msg = translations[currentLanguage][msgKey];
             const icon = isSuccess ?
                 `<svg class="w-12 h-12 text-base mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round"
@@ -516,7 +532,7 @@
             $('popupContent').innerHTML = `
           <div class="py-4 text-center">${icon}<p>${msg}</p></div>
           <div class="mt-4 text-center">
-            <button onclick="hidePopup()" class="btn btn-secondary w-full sm:w-auto px-6">ปิด</button>
+            <button onclick="hidePopup()" class="btn btn-secondary w-full sm:w-auto px-6" data-key="popup.close">${translations[currentLanguage]['popup.close']}</button>
           </div>`;
             const popupEl = $('popup');
             popupEl.style.display = 'flex';
@@ -550,16 +566,13 @@
             });
         }
 
-        function getGreeting(hour) {
-            return hour < 12 ?
-                'สวัสดีตอนเช้า' :
-                hour < 13 ?
-                'สวัสดีตอนเที่ยง' :
-                hour < 17 ?
-                'สวัสดีตอนบ่าย' :
-                hour < 19 ?
-                'สวัสดีตอนเย็น' :
-                'ราตรีสวัสดิ์';
+        function getGreeting(hour, lang) {
+            const greetings = {
+                th: ['สวัสดีตอนเช้า', 'สวัสดีตอนเที่ยง', 'สวัสดีตอนบ่าย', 'สวัสดีตอนเย็น', 'ราตรีสวัสดิ์'],
+                en: ['Good morning', 'Good noon', 'Good afternoon', 'Good evening', 'Good night']
+            };
+            const index = hour < 12 ? 0 : hour < 13 ? 1 : hour < 17 ? 2 : hour < 19 ? 3 : 4;
+            return greetings[lang][index];
         }
 
         async function initLiff() {
@@ -595,7 +608,7 @@
                 monthAvailability = await res.json();
             } catch {
                 monthAvailability = {};
-                showPopup('ไม่สามารถโหลดปฏิทินได้');
+                showPopup('popup.calendarError');
             }
         }
 
@@ -606,6 +619,10 @@
                 const services = await res.json();
                 const container = $('serviceCards');
                 container.innerHTML = '';
+                if (services.length === 0) {
+                    container.innerHTML = `<div class="col-span-2 text-center text-placeholder text-sm p-4">${translations[currentLanguage]['service.noService']}</div>`;
+                    return;
+                }
                 services.forEach((s) => {
                     const c = document.createElement('div');
                     c.className =
@@ -615,7 +632,7 @@
                     c.dataset.price = s.price;
                     c.innerHTML = `
               <div class="font-bold text-md mb-1 text--primary-light">${s.name}</div>
-              <div class="text-sm text-placeholder">ราคา: ${s.price} บาท</div>
+              <div class="text-sm text-placeholder" data-price="${s.price}">ราคา: ${s.price} บาท</div>
             `;
                     c.onclick = () => {
                         c.classList.toggle('selected');
@@ -624,7 +641,7 @@
                     container.appendChild(c);
                 });
             } catch {
-                showPopup('ไม่สามารถโหลดบริการได้');
+                showPopup('popup.serviceError');
             }
         }
 
@@ -651,7 +668,7 @@
         function initCalendar() {
             flatpickrInstance = flatpickr('#inlineCalendar', {
                 inline: true,
-                locale: 'th',
+                locale: currentLanguage,
                 dateFormat: 'Y-m-d',
                 minDate: 'today',
                 disable: [
@@ -666,7 +683,7 @@
                 onDayCreate: (dObj, dStr, fp, dayElem) => {
                     const k = formatDate(dayElem.dateObj);
                     if ((window.holidayDates || []).includes(k)) {
-                        dayElem.innerHTML += `<span class="block text-xs text-error opacity-75 mt-[-8px]">หยุด</span>`;
+                        dayElem.innerHTML += `<span class="block text-xs text-error opacity-75 mt-[-8px]">${translations[currentLanguage]['calendar.holiday']}</span>`;
                     }
                 },
                 onMonthChange: async(_, __, fp) => {
@@ -681,7 +698,7 @@
                     else
                         $(
                             'timeDropdown',
-                        ).innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">ยังไม่ได้เลือกวัน</div>`;
+                        ).innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">${translations[currentLanguage]['step2.placeholder']}</div>`;
                 },
             });
         }
@@ -689,7 +706,7 @@
         async function checkAvailability(dateStr) {
             $(
                 'timeDropdown',
-            ).innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">โปรดรอสักครู่...</div>`;
+            ).innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">${translations[currentLanguage]['step2.loading']}</div>`;
             try {
                 const res = await fetch(
                     `${WEB_APP_URL}?action=checkAvailability&date=${dateStr}`,
@@ -701,8 +718,8 @@
             } catch (e) {
                 $(
                     'timeDropdown',
-                ).innerHTML = `<div class="text-error text-sm text-center py-2 col-span-full">ไม่สามารถโหลดเวลาได้</div>`;
-                showPopup(e.message || 'โหลดเวลาไม่สำเร็จ');
+                ).innerHTML = `<div class="text-error text-sm text-center py-2 col-span-full">${translations[currentLanguage]['step2.error']}</div>`;
+                showPopup('popup.timeError');
             }
         }
 
@@ -710,7 +727,7 @@
             const td = $('timeDropdown');
             td.innerHTML = '';
             if (!Object.keys(avail).length) {
-                td.innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">ไม่มีช่วงเวลาว่าง</div>`;
+                td.innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">${translations[currentLanguage]['step2.noTime']}</div>`;
                 return;
             }
             Object.entries(avail).forEach(([t, i]) => {
@@ -767,22 +784,22 @@
         // Navigation & Validation
         $('nextToStep2').onclick = () => {
             if (!JSON.parse($('selectedServices').value || '[]').length)
-                return showPopup('กรุณาเลือกบริการอย่างน้อย 1 รายการ');
+                return showPopup('popup.serviceNeeded');
             navigateToStep('step2');
         };
         $('backToStep1').onclick = () => navigateToStep('step1');
         $('nextToStep3').onclick = () => {
-            if (!selectedDate) return showPopup('กรุณาเลือกวันที่');
-            if (!$('time').value) return showPopup('กรุณาเลือกเวลา');
+            if (!selectedDate) return showPopup('popup.dateNeeded');
+            if (!$('time').value) return showPopup('popup.timeNeeded');
             navigateToStep('step3');
         };
         $('backToStep2').onclick = () => navigateToStep('step2');
         $('nextToStep4').onclick = () => {
-            if (!$('name').value.trim()) return showPopup('กรุณากรอกชื่อ-สกุล');
+            if (!$('name').value.trim()) return showPopup('popup.nameNeeded');
             if (!$('phonenumber').value.trim())
-                return showPopup('กรุณากรอกเบอร์ติดต่อ');
+                return showPopup('popup.phoneNeeded');
             if (!/^[0-9]{9,10}$/.test($('phonenumber').value.trim()))
-                return showPopup('รูปแบบเบอร์ติดต่อไม่ถูกต้อง');
+                return showPopup('popup.phoneFormatError');
             updateConfirmation();
             navigateToStep('step4');
         };
@@ -813,16 +830,16 @@
                     throw new Error(result.message || 'การจองไม่สำเร็จ');
             } catch (err) {
                 console.error('Submit error:', err);
-                return showPopup(err.message || 'ส่งข้อมูลไม่สำเร็จ');
+                return showPopup('popup.submitError');
             }
             showLoading(false);
-            showPopup('การจองสำเร็จแล้ว!', true);
+            showPopup('popup.bookingSuccess', true);
             await sendFlexMessage();
             $('bookingForm').reset();
             updateSelectedServices();
             $(
                 'timeDropdown',
-            ).innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">ยังไม่ได้เลือกวัน</div>`;
+            ).innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">${translations[currentLanguage]['step2.placeholder']}</div>`;
             $('time').value = '';
             selectedDate = '';
             if (flatpickrInstance) flatpickrInstance.clear();
@@ -877,7 +894,7 @@
                     backgroundColor: varToHex('--primary'),
                     contents: [{
                         type: 'text',
-                        text: 'ยืนยันการจองสำเร็จ',
+                        text: translations[currentLanguage]['flex.header'],
                         weight: 'bold',
                         size: 'xs',
                         align: 'center',
@@ -892,7 +909,7 @@
                     backgroundColor: varToHex('--bg-card'),
                     contents: [{
                             type: 'text',
-                            text: 'บริการ:',
+                            text: translations[currentLanguage]['flex.serviceLabel'],
                             size: 'sm',
                             color: varToHex('--text-main')
                         },
@@ -901,15 +918,15 @@
                             margin: 'md',
                             color: varToHex('--text-main')
                         },
-                        makeFieldBox('วันที่', date),
-                        makeFieldBox('เวลา', timeVal), {
+                        makeFieldBox(translations[currentLanguage]['flex.dateLabel'], date),
+                        makeFieldBox(translations[currentLanguage]['flex.timeLabel'], timeVal), {
                             type: 'separator',
                             margin: 'md',
                             color: varToHex('--text-main')
                         },
-                        makeFieldBox('ชื่อ', name),
-                        makeFieldBox('เบอร์', phone),
-                        makeFieldBox('หมายเหตุ', note),
+                        makeFieldBox(translations[currentLanguage]['flex.nameLabel'], name),
+                        makeFieldBox(translations[currentLanguage]['flex.phoneLabel'], phone),
+                        makeFieldBox(translations[currentLanguage]['flex.noteLabel'], note),
                     ],
                 },
                 styles: {
@@ -921,7 +938,7 @@
             try {
                 await liff.sendMessages([{
                     type: 'flex',
-                    altText: 'รายละเอียดการจองของคุณ',
+                    altText: translations[currentLanguage]['flex.altText'],
                     contents: bubble,
                 }, ]);
             } catch (e) {
@@ -958,9 +975,12 @@
 
         document.addEventListener('DOMContentLoaded', async() => {
             showLoading(true);
+            const savedLang = localStorage.getItem('appLang') || 'th';
+            document.getElementById('languageSelector').value = savedLang;
+            setLanguage(savedLang);
+            
             $(currentVisibleStep).classList.add('step-active');
             $(currentVisibleStep).classList.remove('hidden');
-            $('greetingPrefix').textContent = getGreeting(new Date().getHours());
             if (ENABLE_LIFF) await initLiff();
             else offlineProfile();
             await Promise.allSettled([
@@ -973,6 +993,12 @@
             ]);
             initCalendar();
             showLoading(false);
+        });
+
+        document.getElementById('languageSelector').addEventListener('change', (e) => {
+            const newLang = e.target.value;
+            localStorage.setItem('appLang', newLang);
+            setLanguage(newLang);
         });
     </script>
 </body>
