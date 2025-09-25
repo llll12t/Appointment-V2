@@ -383,6 +383,7 @@
                 <select id="languageSelector" class="bg-card border-element rounded-md text-sm px-2 py-1">
                     <option value="th">ไทย</option>
                     <option value="en">English</option>
+                    <option value="my">မြန်မာ</option>
                 </select>
             </div>
         </div>
@@ -569,7 +570,8 @@
         function getGreeting(hour, lang) {
             const greetings = {
                 th: ['สวัสดีตอนเช้า', 'สวัสดีตอนเที่ยง', 'สวัสดีตอนบ่าย', 'สวัสดีตอนเย็น', 'ราตรีสวัสดิ์'],
-                en: ['Good morning', 'Good noon', 'Good afternoon', 'Good evening', 'Good night']
+                en: ['Good morning', 'Good noon', 'Good afternoon', 'Good evening', 'Good night'],
+                my: ['မင်္ဂလာနံနက်ခင်းပါ', 'မင်္ဂလာနေ့လည်ခင်းပါ', 'မင်္ဂလာနေ့ခင်းပါ', 'မင်္ဂလာညနေခင်းပါ', 'မင်္ဂလာညချမ်းပါ']
             };
             const index = hour < 12 ? 0 : hour < 13 ? 1 : hour < 17 ? 2 : hour < 19 ? 3 : 4;
             return greetings[lang][index];
