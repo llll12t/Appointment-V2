@@ -9,10 +9,9 @@
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;700&family=Noto+Sans+Myanmar:wght@400;700&display=swap" rel="stylesheet" />
 
     <style>
          :root {
@@ -52,6 +51,14 @@
             /* red-50 */
             --badge-full-text: #b91c1c;
             /* red-700 */
+        }
+        
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', 'Noto Sans Myanmar', sans-serif;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overscroll-behavior-y: contain;
         }
         /* Utility classes */
         
@@ -136,14 +143,6 @@
             width: 90%;
             max-width: 350px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-        
-        body {
-            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
-            margin: 0;
-            background-color: var(--bg);
-            color: var(--text-main);
-            overscroll-behavior-y: contain;
         }
         
          ::selection {
@@ -478,6 +477,33 @@
         let flatpickrInstance = null;
         let currentLanguage = 'th';
 
+        // Function to dynamically load Flatpickr locale file
+        async function loadFlatpickrLocale(lang) {
+            const head = document.getElementsByTagName('head')[0];
+            const oldScript = document.getElementById('flatpickr-locale-script');
+            if (oldScript) {
+                head.removeChild(oldScript);
+            }
+            if (lang !== 'en') { // 'en' is default locale, no need to load
+                const script = document.createElement('script');
+                script.id = 'flatpickr-locale-script';
+                script.src = `https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/${lang}.js`;
+                script.defer = true;
+                script.onload = () => {
+                    if (flatpickrInstance) {
+                        flatpickrInstance.set('locale', flatpickr.l10ns[lang]);
+                        flatpickrInstance.redraw();
+                    }
+                };
+                head.appendChild(script);
+            } else {
+                if (flatpickrInstance) {
+                    flatpickrInstance.set('locale', flatpickr.l10ns.default);
+                    flatpickrInstance.redraw();
+                }
+            }
+        }
+
         function setLanguage(lang) {
             currentLanguage = lang;
             document.documentElement.lang = lang;
@@ -498,11 +524,9 @@
             $('phonenumber').placeholder = langData['step3.phonePlaceholder'];
             $('note').placeholder = langData['step3.notePlaceholder'];
             
-            // Re-render Flatpickr
-            if (flatpickrInstance) {
-                flatpickrInstance.set('locale', lang);
-                flatpickrInstance.redraw();
-            }
+            // Handle Flatpickr locale
+            loadFlatpickrLocale(lang);
+
         }
 
         function showLoading(on) {
@@ -979,7 +1003,6 @@
             showLoading(true);
             const savedLang = localStorage.getItem('appLang') || 'th';
             document.getElementById('languageSelector').value = savedLang;
-            setLanguage(savedLang);
             
             $(currentVisibleStep).classList.add('step-active');
             $(currentVisibleStep).classList.remove('hidden');
@@ -994,6 +1017,7 @@
                 ),
             ]);
             initCalendar();
+            setLanguage(savedLang);
             showLoading(false);
         });
 
