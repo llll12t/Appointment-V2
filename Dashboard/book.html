@@ -12,38 +12,41 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js" defer></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;700&display=swap"
+        rel="stylesheet" />
 
 
     <style>
         body {
             font-family: 'Inter', 'Noto Sans Thai', sans-serif;
         }
-        
+
         .font-thai {
             font-family: 'Noto Sans Thai', sans-serif;
         }
-        
+
         .table-scroll-container::-webkit-scrollbar {
             /* For potential tables if added later */
             width: 6px;
             height: 6px;
         }
-        
+
         .table-scroll-container::-webkit-scrollbar-thumb {
             background-color: #cbd5e1;
             border-radius: 3px;
         }
-        
+
         .table-scroll-container::-webkit-scrollbar-track {
             background-color: #f1f5f9;
         }
-        
+
         .hidden-strict {
             display: none !important;
         }
+
         /* Flatpickr Dashboard Styling */
-        
+
         .flatpickr-calendar {
             background: #fff !important;
             /* white */
@@ -57,7 +60,7 @@
             max-width: 340px;
             /* Adjust as needed */
         }
-        
+
         .flatpickr-months .flatpickr-month {
             background: #f8fafc !important;
             /* slate-50 */
@@ -65,25 +68,25 @@
             /* slate-800 */
             fill: #1e293b !important;
         }
-        
+
         .flatpickr-months .flatpickr-prev-month,
         .flatpickr-months .flatpickr-next-month {
             color: #475569 !important;
             /* slate-600 */
             fill: #475569 !important;
         }
-        
+
         .flatpickr-weekdays {
             background: #f1f5f9 !important;
             /* slate-100 */
         }
-        
+
         .flatpickr-weekday {
             color: #334155 !important;
             /* slate-700 */
             font-weight: 600 !important;
         }
-        
+
         .flatpickr-day {
             color: #334155 !important;
             /* slate-700 */
@@ -92,21 +95,21 @@
             margin: 1px;
             transition: background-color 0.2s ease, border-color 0.2s ease;
         }
-        
+
         .flatpickr-innerContainer {
             justify-content: center !important;
         }
-        
+
         .flatpickr-day:hover {
             background-color: #e2e8f0 !important;
             /* slate-200 */
         }
-        
+
         .flatpickr-day.today {
             border-color: #6366f1 !important;
             /* indigo-500 */
         }
-        
+
         .flatpickr-day.selected,
         .flatpickr-day.startRange,
         .flatpickr-day.endRange {
@@ -115,7 +118,7 @@
             border-color: #4f46e5 !important;
             color: #fff !important;
         }
-        
+
         .flatpickr-day.flatpickr-disabled,
         .flatpickr-day.prevMonthDay,
         .flatpickr-day.nextMonthDay {
@@ -123,7 +126,13 @@
             /* slate-400 */
             opacity: 0.7;
         }
-        
+
+        /* ซ่อนวันที่ของเดือนอื่น ๆ */
+        .flatpickr-day.prevMonthDay,
+        .flatpickr-day.nextMonthDay {
+            visibility: hidden !important;
+        }
+
         .flatpickr-day .day-holiday-indicator {
             font-size: 0.65rem;
             color: #ef4444;
@@ -134,12 +143,13 @@
             transform: translateX(-50%);
             line-height: 1;
         }
+
         /* Step Transition */
-        
+
         .step-transition {
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
-        
+
         .step-hidden {
             opacity: 0;
             transform: translateY(20px);
@@ -148,7 +158,7 @@
             /* To allow smooth transition without content jump */
             width: 100%;
         }
-        
+
         .step-visible {
             opacity: 1;
             transform: translateY(0);
@@ -156,8 +166,9 @@
             position: relative;
             /* Take up space */
         }
+
         /* Loading Spinner */
-        
+
         .spinner {
             width: 3rem;
             height: 3rem;
@@ -168,7 +179,7 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
             to {
                 transform: rotate(360deg);
@@ -183,47 +194,76 @@
     <aside class="w-64 bg-white p-5 border-r border-slate-200 flex flex-col fixed inset-y-0 left-0 z-30">
         <div class="flex items-center space-x-2 mb-8">
             <div class="bg-indigo-600 p-2 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
             </div>
             <h1 class="text-xl font-bold text-slate-800">BookingApp™</h1>
         </div>
-            <!-- ===================================================================
+        <!-- ===================================================================
             (B) แสดงชื่อผู้ดูแลที่ล็อกอินมาแล้ว (ดึงจาก localStorage.adminName)
             =================================================================== -->
-            <div class="bg-slate-50 p-3 rounded-lg mb-6">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-2">
-                        <div>
-                            <p id="adminName" class="text-sm font-semibold text-slate-700 font-thai">Dashboard User</p>
-                            <p class="text-xs text-slate-500 font-thai">ผู้ดูแลระบบ</p>
-                        </div>
+        <div class="bg-slate-50 p-3 rounded-lg mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div>
+                        <p id="adminName" class="text-sm font-semibold text-slate-700 font-thai">Dashboard User</p>
+                        <p class="text-xs text-slate-500 font-thai">ผู้ดูแลระบบ</p>
                     </div>
-                    <!-- ปุ่ม Logout -->
-                    <button onclick="logout()" class="text-red-500 hover:text-red-700 text-sm font-thai">
-                        logout
-                    </button>
                 </div>
+                <!-- ปุ่ม Logout -->
+                <button onclick="logout()" class="text-red-500 hover:text-red-700 text-sm font-thai">
+                    logout
+                </button>
             </div>
+        </div>
         <nav class="flex-grow space-y-1">
             <p class="text-xs text-slate-400 uppercase font-semibold px-3 mb-2">Main Menu</p>
-            <a href="book.html" class="flex items-center space-x-3 px-3 py-2.5 bg-indigo-100 text-indigo-700 rounded-md text-sm font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <a href="book.html"
+                class="flex items-center space-x-3 px-3 py-2.5 bg-indigo-100 text-indigo-700 rounded-md text-sm font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
                 <span>สร้างการจอง</span>
             </a>
-            <a href="appointment.html" class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <a href="appointment.html"
+                class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
                 <span>จัดการนัดหมาย</span></a>
-            <a href="service.html" class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            <a href="service.html"
+                class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
                 <span>บริการ</span>
             </a>
-            <a href="member.html" class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <a href="member.html"
+                class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
                 <span>จัดการสมาชิก</span>
             </a>
-            <a href="setting.html" class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <a href="setting.html"
+                class="flex items-center space-x-3 px-3 py-2.5 text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-medium font-thai">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
                 <span>ตั้งค่า</span>
             </a>
         </nav>
@@ -232,23 +272,27 @@
     <!-- Main Content -->
     <main class="ml-64 flex-1 flex flex-col">
         <header class="bg-white border-b border-slate-200 p-4 flex items-center justify-between sticky top-0 z-20">
-            <h1 class="text-xl font-semibold text-slate-700 font-thai">สร้างการจองใหม่</h1>        
+            <h1 class="text-xl font-semibold text-slate-700 font-thai">สร้างการจองใหม่</h1>
         </header>
 
         <div class="flex-1 p-6 overflow-y-auto">
             <div class="max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-lg shadow-lg">
                 <!-- Loading Overlay for main content -->
-                <div id="loadingOverlay" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50 hidden-strict">
+                <div id="loadingOverlay"
+                    class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50 hidden-strict">
                     <div class="spinner"></div>
                 </div>
 
                 <!-- Progress Bar (Optional but good for multi-step) -->
                 <div class="mb-8">
                     <div class="flex justify-between mb-1">
-                        <span id="stepIndicator" class="text-sm font-medium text-indigo-600 font-thai">ขั้นตอน 1 จาก 4</span>
+                        <span id="stepIndicator" class="text-sm font-medium text-indigo-600 font-thai">ขั้นตอน 1 จาก
+                            4</span>
                     </div>
                     <div class="w-full bg-slate-200 rounded-full h-2.5">
-                        <div id="progressBar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300 ease-out" style="width: 25%"></div>
+                        <div id="progressBar"
+                            class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300 ease-out"
+                            style="width: 25%"></div>
                     </div>
                 </div>
 
@@ -257,11 +301,14 @@
                     <!-- Step 1: เลือกบริการ -->
                     <div id="step1" class="step-transition step-visible">
                         <h2 class="text-xl font-semibold text-slate-700 mb-1 text-center font-thai">เลือกบริการ</h2>
-                        <p class="text-sm text-slate-500 mb-6 text-center font-thai">กรุณาเลือกบริการที่ต้องการอย่างน้อย 1 รายการ</p>
+                        <p class="text-sm text-slate-500 mb-6 text-center font-thai">กรุณาเลือกบริการที่ต้องการอย่างน้อย
+                            1 รายการ</p>
                         <div id="serviceCards" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-                            <p class="col-span-full text-center text-slate-500 font-thai py-4">กำลังโหลดรายการบริการ...</p>
+                            <p class="col-span-full text-center text-slate-500 font-thai py-4">กำลังโหลดรายการบริการ...
+                            </p>
                         </div>
-                        <button type="button" id="nextToStep2" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">
+                        <button type="button" id="nextToStep2"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">
                             ถัดไป →
                         </button>
                     </div>
@@ -271,19 +318,26 @@
                         <h2 class="text-xl font-semibold text-slate-700 mb-4 text-center font-thai">เลือกวันและเวลา</h2>
                         <div class="grid md:grid-cols-2 gap-6 items-start">
                             <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1 font-thai">เลือกวันที่</label>
+                                <label
+                                    class="block text-sm font-medium text-slate-700 mb-1 font-thai">เลือกวันที่</label>
                                 <div id="inlineCalendar" class="bg-white rounded-lg"></div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1 font-thai">เลือกเวลา</label>
-                                <div id="timeDropdown" class="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200 min-h-[100px]">
-                                    <p class="col-span-full text-sm text-slate-500 text-center py-4 font-thai">กรุณาเลือกวันก่อน</p>
+                                <div id="timeDropdown"
+                                    class="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200 min-h-[100px]">
+                                    <p class="col-span-full text-sm text-slate-500 text-center py-4 font-thai">
+                                        กรุณาเลือกวันก่อน</p>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-8 flex space-x-3">
-                            <button type="button" id="backToStep1" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-lg text-sm font-thai">← ย้อนกลับ</button>
-                            <button type="button" id="nextToStep3" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">ถัดไป →</button>
+                            <button type="button" id="backToStep1"
+                                class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-lg text-sm font-thai">←
+                                ย้อนกลับ</button>
+                            <button type="button" id="nextToStep3"
+                                class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">ถัดไป
+                                →</button>
                         </div>
                     </div>
 
@@ -292,66 +346,97 @@
                         <h2 class="text-xl font-semibold text-slate-700 mb-6 text-center font-thai">ข้อมูลติดต่อ</h2>
                         <div class="space-y-4">
                             <div>
-                                <label for="name" class="block text-sm font-medium text-slate-700 font-thai">ชื่อ-สกุล <span class="text-red-500">*</span></label>
-                                <input type="text" id="name" name="name" placeholder="กรอกชื่อ-นามสกุล" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
+                                <label for="name" class="block text-sm font-medium text-slate-700 font-thai">ชื่อ-สกุล
+                                    <span class="text-red-500">*</span></label>
+                                <input type="text" id="name" name="name" placeholder="กรอกชื่อ-นามสกุล" required
+                                    class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
                             </div>
                             <div>
-                                <label for="phonenumber" class="block text-sm font-medium text-slate-700 font-thai">เบอร์ติดต่อ <span class="text-red-500">*</span></label>
-                                <input type="tel" id="phonenumber" name="phonenumber" placeholder="กรอกเบอร์โทรศัพท์" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
+                                <label for="phonenumber"
+                                    class="block text-sm font-medium text-slate-700 font-thai">เบอร์ติดต่อ <span
+                                        class="text-red-500">*</span></label>
+                                <input type="tel" id="phonenumber" name="phonenumber" placeholder="กรอกเบอร์โทรศัพท์"
+                                    required
+                                    class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
                             </div>
                             <div>
-                                <label for="idcard" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประจำตัวประชาชน <span class="text-red-500">*</span></label>
-                                <input type="text" id="idcard" name="idcard" placeholder="กรอกหมายเลขประจำตัวประชาชน" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
+                                <label for="idcard"
+                                    class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประจำตัวประชาชน
+                                    <span class="text-red-500">*</span></label>
+                                <input type="text" id="idcard" name="idcard" placeholder="กรอกหมายเลขประจำตัวประชาชน"
+                                    required
+                                    class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
                             </div>
                             <div>
-                                <label for="social_security_number" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประกันสังคม <span class="text-red-500">*</span></label>
-                                <input type="text" id="social_security_number" name="social_security_number" placeholder="กรอกหมายเลขประกันสังคม" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
+                                <label for="social_security_number"
+                                    class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประกันสังคม <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" id="social_security_number" name="social_security_number"
+                                    placeholder="กรอกหมายเลขประกันสังคม" required
+                                    class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
                             </div>
                             <div>
-                                <label for="note" class="block text-sm font-medium text-slate-700 font-thai">หมายเหตุ (ถ้ามี)</label>
-                                <textarea id="note" name="note" rows="3" placeholder="รายละเอียดเพิ่มเติม..." class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none font-thai"></textarea>
+                                <label for="note" class="block text-sm font-medium text-slate-700 font-thai">หมายเหตุ
+                                    (ถ้ามี)</label>
+                                <textarea id="note" name="note" rows="3" placeholder="รายละเอียดเพิ่มเติม..."
+                                    class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none font-thai"></textarea>
                             </div>
                         </div>
                         <div class="mt-8 flex space-x-3">
-                            <button type="button" id="backToStep2" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-lg text-sm font-thai">← ย้อนกลับ</button>
-                            <button type="button" id="nextToStep4" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">ถัดไป →</button>
+                            <button type="button" id="backToStep2"
+                                class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-lg text-sm font-thai">←
+                                ย้อนกลับ</button>
+                            <button type="button" id="nextToStep4"
+                                class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">ถัดไป
+                                →</button>
                         </div>
                     </div>
 
                     <!-- Step 4: ตรวจสอบข้อมูล -->
                     <div id="step4" class="step-transition step-hidden">
-                        <h2 class="text-xl font-semibold text-slate-700 mb-6 text-center font-thai">ตรวจสอบข้อมูลการจอง</h2>
+                        <h2 class="text-xl font-semibold text-slate-700 mb-6 text-center font-thai">ตรวจสอบข้อมูลการจอง
+                        </h2>
                         <div class="bg-slate-50 p-4 sm:p-6 rounded-lg border border-slate-200 space-y-3 text-sm">
                             <div class="flex justify-between items-start border-b border-slate-200 pb-2 font-thai">
                                 <span class="text-slate-600">บริการ:</span>
                                 <div id="confirmService" class="font-semibold text-slate-800 text-right"></div>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
-                                <span class="text-slate-600">วันที่:</span><span id="confirmDate" class="font-semibold text-slate-800"></span>
+                                <span class="text-slate-600">วันที่:</span><span id="confirmDate"
+                                    class="font-semibold text-slate-800"></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
-                                <span class="text-slate-600">เวลา:</span><span id="confirmTime" class="font-semibold text-slate-800"></span>
+                                <span class="text-slate-600">เวลา:</span><span id="confirmTime"
+                                    class="font-semibold text-slate-800"></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
-                                <span class="text-slate-600">ชื่อ:</span><span id="confirmName" class="font-semibold text-slate-800 text-right"></span>
+                                <span class="text-slate-600">ชื่อ:</span><span id="confirmName"
+                                    class="font-semibold text-slate-800 text-right"></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
-                                <span class="text-slate-600">เบอร์ติดต่อ:</span><span id="confirmPhone" class="font-semibold text-slate-800"></span>
+                                <span class="text-slate-600">เบอร์ติดต่อ:</span><span id="confirmPhone"
+                                    class="font-semibold text-slate-800"></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
-                                <span class="text-slate-600">หมายเลขประจำตัวประชาชน:</span><span id="confirmIdCard" class="font-semibold text-slate-800"></span>
+                                <span class="text-slate-600">หมายเลขประจำตัวประชาชน:</span><span id="confirmIdCard"
+                                    class="font-semibold text-slate-800"></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
-                                <span class="text-slate-600">หมายเลขประกันสังคม:</span><span id="confirmSSN" class="font-semibold text-slate-800"></span>
+                                <span class="text-slate-600">หมายเลขประกันสังคม:</span><span id="confirmSSN"
+                                    class="font-semibold text-slate-800"></span>
                             </div>
                             <div class="flex justify-between items-start pt-1 font-thai">
                                 <span class="text-slate-600">หมายเหตุ:</span>
-                                <span id="confirmNote" class="font-semibold text-slate-800 text-right max-w-[60%] break-words"></span>
+                                <span id="confirmNote"
+                                    class="font-semibold text-slate-800 text-right max-w-[60%] break-words"></span>
                             </div>
                         </div>
                         <div class="mt-8 flex space-x-3">
-                            <button type="button" id="backToStep3" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-lg text-sm font-thai">← ย้อนกลับ</button>
-                            <button type="submit" id="confirmBooking" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">ยืนยันการจอง</button>
+                            <button type="button" id="backToStep3"
+                                class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-3 px-4 rounded-lg text-sm font-thai">←
+                                ย้อนกลับ</button>
+                            <button type="submit" id="confirmBooking"
+                                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg text-sm font-thai">ยืนยันการจอง</button>
                         </div>
                     </div>
 
@@ -359,7 +444,7 @@
                     <input type="hidden" id="time" name="time" />
                     <input type="hidden" id="selectedServices" name="selectedServices" />
                     <input type="hidden" id="selectedServiceNames" name="selectedServiceNames" />
-                   <!-- เปลี่ยนเป็นแบบนี้ (ลบ input id="loggedInAdminName" ที่เคยเพิ่มไปก่อนหน้านี้ออกด้วย) -->
+                    <!-- เปลี่ยนเป็นแบบนี้ (ลบ input id="loggedInAdminName" ที่เคยเพิ่มไปก่อนหน้านี้ออกด้วย) -->
                     <input type="hidden" id="userlineid" name="userlineid" />
                     <input type="hidden" name="action" value="makeBooking" />
 
@@ -370,27 +455,27 @@
     <!-- Assume Config.js defines WEB_APP_URL, LIFF_ID (though LIFF_ID won't be used here) -->
     <script src="Config.js"></script>
     <script>
-       document.addEventListener('DOMContentLoaded', () => {
-    // ตรวจสอบสถานะล็อกอิน
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      // ถ้าไม่ได้ล็อกอิน ให้เด้งไปหน้า login ทันที
-      window.location.href = 'login.html';
-      return; // หยุดการทำงานที่เหลือบนหน้านี้
-    }
+        document.addEventListener('DOMContentLoaded', () => {
+            // ตรวจสอบสถานะล็อกอิน
+            const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                // ถ้าไม่ได้ล็อกอิน ให้เด้งไปหน้า login ทันที
+                window.location.href = 'login.html';
+                return; // หยุดการทำงานที่เหลือบนหน้านี้
+            }
 
-    // กรณีล็อกอินแล้ว ให้มาดึงชื่อ admin และโหลดข้อมูลสมาชิกตามเดิม
-    const adminName = localStorage.getItem('adminName') || 'Admin';
-    document.getElementById('adminName').textContent = adminName;
-    loadMembers();
-  });
+            // กรณีล็อกอินแล้ว ให้มาดึงชื่อ admin และโหลดข้อมูลสมาชิกตามเดิม
+            const adminName = localStorage.getItem('adminName') || 'Admin';
+            document.getElementById('adminName').textContent = adminName;
+            loadMembers();
+        });
 
-  // ฟังก์ชัน Logout (เหมือนเดิม)
-  function logout() {
-    localStorage.removeItem('isAdminLoggedIn');
-    localStorage.removeItem('adminName');
-    window.location.href = 'login.html';
-  }
+        // ฟังก์ชัน Logout (เหมือนเดิม)
+        function logout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            localStorage.removeItem('adminName');
+            window.location.href = 'login.html';
+        }
 
         const $ = (id) => document.getElementById(id);
         let monthAvailability = {},
@@ -506,10 +591,13 @@
                 const res = await fetch(`${WEB_APP_URL}?action=checkAvailability&getHolidays=true`);
                 if (!res.ok) throw new Error('Network error fetching holidays');
                 const j = await res.json();
+                // รับค่าทั้งวันหยุดพิเศษ และวันหยุดประจำสัปดาห์
                 window.holidayDates = Array.isArray(j.holidays) ? j.holidays : [];
+                window.permanentHolidayDays = Array.isArray(j.permanentHolidays) ? j.permanentHolidays : [];
             } catch (err) {
                 console.error("fetchHolidayDates error:", err);
                 window.holidayDates = [];
+                window.permanentHolidayDays = [];
             }
         }
 
@@ -521,24 +609,39 @@
         }
 
         function initCalendar() {
+            // สร้าง custom locale ที่กำหนดวันอาทิตย์เป็นวันแรก
+            const customLocale = {
+                ...window.flatpickr.l10ns.th, // ใช้ภาษาไทย
+                firstDayOfWeek: 0 // แต่กำหนดใหม่ให้วันอาทิตย์ (0) เป็นวันแรก
+            };
+
             flatpickrInstance = flatpickr('#inlineCalendar', {
                 inline: true,
-                locale: 'th',
+                locale: customLocale, // ใช้ custom locale แทนชื่อ locale
                 dateFormat: 'Y-m-d',
                 minDate: 'today',
                 disable: [
                     (d) => {
                         const k = formatDateForFlatpickr(d);
-                        return ((window.holidayDates || []).includes(k) || monthAvailability[k] === 'full');
+                        // เพิ่มเงื่อนไข: ตรวจสอบว่าวันในสัปดาห์ (0=อาทิตย์, 6=เสาร์) ตรงกับวันหยุดประจำสัปดาห์หรือไม่
+                        const isPermanentHoliday = (window.permanentHolidayDays || []).includes(d.getDay());
+
+                        return isPermanentHoliday || (window.holidayDates || []).includes(k) || monthAvailability[k] === 'full';
                     },
                 ],
                 onDayCreate: (dObj, dStr, fp, dayElem) => {
                     const k = formatDateForFlatpickr(dayElem.dateObj);
-                    if ((window.holidayDates || []).includes(k)) {
+                    const date = dayElem.dateObj;
+
+                    // ตรวจสอบวันหยุดทั้ง 2 ประเภท
+                    const isSpecialHoliday = (window.holidayDates || []).includes(k);
+                    const isPermanentHoliday = (window.permanentHolidayDays || []).includes(date.getDay());
+
+                    if (isSpecialHoliday || isPermanentHoliday) {
                         dayElem.innerHTML += `<span class="day-holiday-indicator font-thai">หยุด</span>`;
                     }
                 },
-                onMonthChange: async(_, __, fp) => {
+                onMonthChange: async (_, __, fp) => {
                     showLoading(true);
                     await fetchMonthAvailability(fp.currentYear, fp.currentMonth + 1);
                     fp.redraw(); // Important to apply monthAvailability and holiday disabling
@@ -574,10 +677,10 @@
                 return;
             }
             Object.entries(avail).forEach(([time, info]) => {
-                        const div = document.createElement('button');
-                        div.type = 'button';
-                        div.className = `time-option p-2.5 border rounded-md text-center text-sm font-medium transition-all duration-150 ${info.remaining > 0 ? 'bg-white border-slate-300 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50' : 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'}`;
-                        div.innerHTML = `
+                const div = document.createElement('button');
+                div.type = 'button';
+                div.className = `time-option p-2.5 border rounded-md text-center text-sm font-medium transition-all duration-150 ${info.remaining > 0 ? 'bg-white border-slate-300 text-slate-700 hover:border-indigo-500 hover:bg-indigo-50' : 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed'}`;
+                div.innerHTML = `
                     <span class="block font-thai">${time}</span>
                     <span class="block text-xs mt-0.5 px-1.5 py-0.5 rounded-full ${info.remaining > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} font-thai">
                         ${info.remaining > 0 ? `${info.remaining} ว่าง` : 'เต็ม'}
@@ -592,8 +695,8 @@
         }
 
         function selectTime(time, el) {
-            Array.from($('timeDropdown').children).forEach(c => c.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600'));
-            el.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+            Array.from($('timeDropdown').children).forEach(c => c.classList.remove('bg-indigo-500', 'text-white'));
+            el.classList.add('bg-indigo-500', 'text-white');
             $('time').value = time;
         }
 
@@ -612,7 +715,7 @@
                 confirmServiceEl.textContent = rawServices;
             }
             // Format selectedDate (YYYY-MM-DD) to DD/MM/YYYY for display
-            const [year, month, day] = selectedDate ? selectedDate.split('-') : [null,null,null];
+            const [year, month, day] = selectedDate ? selectedDate.split('-') : [null, null, null];
             $('confirmDate').textContent = day ? `${day}/${month}/${year}` : '-';
             $('confirmTime').textContent = $('time').value || '-';
             $('confirmName').textContent = $('name').value || '-';
@@ -640,12 +743,12 @@
             const phoneVal = $('phonenumber').value.trim();
             const idCardVal = $('idcard').value.trim();
             const ssnVal = $('social_security_number').value.trim();
-        
+
             if (!nameVal) return showDashboardPopup('กรุณากรอกชื่อ-สกุล', 'warning');
             if (!phoneVal) return showDashboardPopup('กรุณากรอกเบอร์ติดต่อ', 'warning');
             if (!idCardVal) return showDashboardPopup('กรุณากรอกหมายเลขประจำตัวประชาชน', 'warning');
             if (!/^[0-9]{13}$/.test(idCardVal)) return showDashboardPopup('รูปแบบหมายเลขประจำตัวประชาชนไม่ถูกต้อง (13 หลัก)', 'warning');
-            if (!ssnVal) return showDashboardPopup('กรุณากรอกหมายเลขประกันสังคม', 'warning');          
+            if (!ssnVal) return showDashboardPopup('กรุณากรอกหมายเลขประกันสังคม', 'warning');
             if (!/^[0-9]{9,10}$/.test(phoneVal)) return showDashboardPopup('รูปแบบเบอร์ติดต่อไม่ถูกต้อง (9-10 หลัก)', 'warning');
             updateConfirmation();
             navigateToStep(4);
@@ -663,16 +766,16 @@
                 const response = await fetch(WEB_APP_URL, { method: 'POST', body: formData });
                 const text = await response.text(); // Read as text first
                 let result;
-                try { result = JSON.parse(text); } 
+                try { result = JSON.parse(text); }
                 catch { result = { success: response.ok, message: text }; } // Fallback if not JSON
 
                 if (!result.success) throw new Error(result.message || 'การจองไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
-                
+
                 showDashboardPopup('การจองของท่านสำเร็จแล้ว!', 'success');
                 // Reset form and state
                 $('bookingForm').reset();
                 updateSelectedServices(); // Clears selected service inputs
-                 Array.from(document.querySelectorAll('#serviceCards .selected-service')).forEach(card => {
+                Array.from(document.querySelectorAll('#serviceCards .selected-service')).forEach(card => {
                     card.classList.remove('selected-service', 'bg-indigo-500', 'text-white', 'border-indigo-500');
                     card.querySelector('h3').classList.remove('text-white');
                     card.querySelector('h3').classList.add('text-slate-700');
@@ -696,7 +799,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             showLoading(true);
             updateStepIndicator(); // Initial call for step 1
-            
+
             const adminNameForBooking = localStorage.getItem('adminName') || 'Unknown Admin';
             document.getElementById('userlineid').value = adminNameForBooking; // <<< เปลี่ยนตรงนี้
 
