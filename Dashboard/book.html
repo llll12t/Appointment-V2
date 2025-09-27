@@ -300,6 +300,14 @@
                                 <input type="tel" id="phonenumber" name="phonenumber" placeholder="กรอกเบอร์โทรศัพท์" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
                             </div>
                             <div>
+                                <label for="idcard" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประจำตัวประชาชน <span class="text-red-500">*</span></label>
+                                <input type="text" id="idcard" name="idcard" placeholder="กรอกหมายเลขประจำตัวประชาชน" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
+                            </div>
+                            <div>
+                                <label for="social_security_number" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประกันสังคม <span class="text-red-500">*</span></label>
+                                <input type="text" id="social_security_number" name="social_security_number" placeholder="กรอกหมายเลขประกันสังคม" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-thai">
+                            </div>
+                            <div>
                                 <label for="note" class="block text-sm font-medium text-slate-700 font-thai">หมายเหตุ (ถ้ามี)</label>
                                 <textarea id="note" name="note" rows="3" placeholder="รายละเอียดเพิ่มเติม..." class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none font-thai"></textarea>
                             </div>
@@ -329,6 +337,12 @@
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
                                 <span class="text-slate-600">เบอร์ติดต่อ:</span><span id="confirmPhone" class="font-semibold text-slate-800"></span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
+                                <span class="text-slate-600">หมายเลขประจำตัวประชาชน:</span><span id="confirmIdCard" class="font-semibold text-slate-800"></span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 font-thai">
+                                <span class="text-slate-600">หมายเลขประกันสังคม:</span><span id="confirmSSN" class="font-semibold text-slate-800"></span>
                             </div>
                             <div class="flex justify-between items-start pt-1 font-thai">
                                 <span class="text-slate-600">หมายเหตุ:</span>
@@ -603,6 +617,8 @@
             $('confirmTime').textContent = $('time').value || '-';
             $('confirmName').textContent = $('name').value || '-';
             $('confirmPhone').textContent = $('phonenumber').value || '-';
+            $('confirmIdCard').textContent = $('idcard').value || '-';
+            $('confirmSSN').textContent = $('social_security_number').value || '-';
             $('confirmNote').textContent = $('note').value.trim() || '-';
         }
 
@@ -622,8 +638,14 @@
         $('nextToStep4').onclick = () => {
             const nameVal = $('name').value.trim();
             const phoneVal = $('phonenumber').value.trim();
+            const idCardVal = $('idcard').value.trim();
+            const ssnVal = $('social_security_number').value.trim();
+        
             if (!nameVal) return showDashboardPopup('กรุณากรอกชื่อ-สกุล', 'warning');
             if (!phoneVal) return showDashboardPopup('กรุณากรอกเบอร์ติดต่อ', 'warning');
+            if (!idCardVal) return showDashboardPopup('กรุณากรอกหมายเลขประจำตัวประชาชน', 'warning');
+            if (!/^[0-9]{13}$/.test(idCardVal)) return showDashboardPopup('รูปแบบหมายเลขประจำตัวประชาชนไม่ถูกต้อง (13 หลัก)', 'warning');
+            if (!ssnVal) return showDashboardPopup('กรุณากรอกหมายเลขประกันสังคม', 'warning');          
             if (!/^[0-9]{9,10}$/.test(phoneVal)) return showDashboardPopup('รูปแบบเบอร์ติดต่อไม่ถูกต้อง (9-10 หลัก)', 'warning');
             updateConfirmation();
             navigateToStep(4);

@@ -1,5 +1,5 @@
-     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw-Yjv94ffGn98tweURPh1cxDfegwcffZg8dZ_YsZDqwxi2L4G6Q_hIETG1Wv5IMP3V/exec';
-     const DETAILS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-Yjv94ffGn98tweURPh1cxDfegwcffZg8dZ_YsZDqwxi2L4G6Q_hIETG1Wv5IMP3V/exec';
+     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz4J0kgkseIWm1VA2f_Z7i88eRmk0CU4gnQZC5bITaSNDfsxzy4TY6TD6wRCZSz3Kid/exec';
+     const DETAILS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx52mV2D_9JiKPO826l9cJjh6gE9wLKSd4BOSFipeHIsU-dwbgBLu6h06KfS398WbNo/exec';
 
      const LIFF_ID = '2007432636-DpowZgEb'; // Booking
      const LIFF_ID_HIS = '2007432636-ROyNVwOA'; // History

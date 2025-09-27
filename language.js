@@ -1,5 +1,10 @@
 const translations = {
     th: {
+        'greeting.morning': 'สวัสดีตอนเช้า',
+        'greeting.noon': 'สวัสดีตอนเที่ยง',
+        'greeting.afternoon': 'สวัสดีตอนบ่าย',
+        'greeting.evening': 'สวัสดีตอนเย็น',
+        'greeting.night': 'ราตรีสวัสดิ์',
         'step1.title': 'เลือกบริการ',
         'step1.button': 'ถัดไป',
         'step2.dateLabel': 'เลือกวันที่',
@@ -13,6 +18,8 @@ const translations = {
         'step3.title': 'ข้อมูลติดต่อ',
         'step3.namePlaceholder': 'ชื่อ-สกุล',
         'step3.phonePlaceholder': 'เบอร์ติดต่อ',
+        'step3.nationalIdPlaceholder': 'เลขที่บัตรประชาชน', // เพิ่มใหม่
+        'step3.socialSecurityPlaceholder': 'เลขที่ประกันสังคม', // เพิ่มใหม่
         'step3.notePlaceholder': 'หมายเหตุ (ถ้ามี)',
         'step3.back': 'ย้อนกลับ',
         'step3.next': 'ถัดไป',
@@ -22,6 +29,8 @@ const translations = {
         'step4.timeLabel': 'เวลา:',
         'step4.nameLabel': 'ชื่อ:',
         'step4.phoneLabel': 'เบอร์:',
+        'step4.nationalIdLabel': 'เลขบัตรประชาชน:', // เพิ่มใหม่
+        'step4.socialSecurityLabel': 'เลขประกันสังคม:', // เพิ่มใหม่
         'step4.noteLabel': 'หมายเหตุ:',
         'step4.back': 'ย้อนกลับ',
         'step4.confirm': 'ยืนยันการจอง',
@@ -49,6 +58,11 @@ const translations = {
         'flex.noteLabel': 'หมายเหตุ'
     },
     en: {
+        'greeting.morning': 'Good morning',
+        'greeting.noon': 'Good day',
+        'greeting.afternoon': 'Good afternoon',
+        'greeting.evening': 'Good evening',
+        'greeting.night': 'Good night',
         'step1.title': 'Select Service',
         'step1.button': 'Next',
         'step2.dateLabel': 'Select Date',
@@ -62,6 +76,8 @@ const translations = {
         'step3.title': 'Contact Information',
         'step3.namePlaceholder': 'Full Name',
         'step3.phonePlaceholder': 'Phone Number',
+        'step3.nationalIdPlaceholder': 'National ID Number', // เพิ่มใหม่
+        'step3.socialSecurityPlaceholder': 'Social Security Number', // เพิ่มใหม่
         'step3.notePlaceholder': 'Notes (optional)',
         'step3.back': 'Back',
         'step3.next': 'Next',
@@ -71,6 +87,8 @@ const translations = {
         'step4.timeLabel': 'Time:',
         'step4.nameLabel': 'Name:',
         'step4.phoneLabel': 'Phone:',
+        'step4.nationalIdLabel': 'National ID:', // เพิ่มใหม่
+        'step4.socialSecurityLabel': 'Social Security:', // เพิ่มใหม่
         'step4.noteLabel': 'Note:',
         'step4.back': 'Back',
         'step4.confirm': 'Confirm Booking',
@@ -98,6 +116,11 @@ const translations = {
         'flex.noteLabel': 'Note'
     },
     my: {
+        'greeting.morning': 'မင်္ဂလာနံနက်ခင်းပါ',
+        'greeting.noon': 'မင်္ဂလာနေ့လည်ခင်းပါ',
+        'greeting.afternoon': 'မင်္ဂလာနေ့လည်ခင်းပါ',
+        'greeting.evening': 'မင်္ဂလာညနေခင်းပါ',
+        'greeting.night': 'ကောင်းသောညပါ',
         'step1.title': 'ဝန်ဆောင်မှုရွေးချယ်ပါ',
         'step1.button': 'ရှေ့သို့',
         'step2.dateLabel': 'နေ့ရက်ရွေးချယ်ပါ',
@@ -111,6 +134,8 @@ const translations = {
         'step3.title': 'ဆက်သွယ်ရန်အချက်အလက်',
         'step3.namePlaceholder': 'အမည်အပြည့်အစုံ',
         'step3.phonePlaceholder': 'ဖုန်းနံပါတ်',
+        'step3.nationalIdPlaceholder': 'နိုင်ငံသားစိစစ်ရေးကတ်ပြားနံပါတ်', // เพิ่มใหม่
+        'step3.socialSecurityPlaceholder': 'လူမှုဖူလုံရေးနံပါတ်', // เพิ่มใหม่
         'step3.notePlaceholder': 'မှတ်ချက် (ရှိပါက)',
         'step3.back': 'နောက်သို့',
         'step3.next': 'ရှေ့သို့',
@@ -120,6 +145,8 @@ const translations = {
         'step4.timeLabel': 'အချိန်:',
         'step4.nameLabel': 'အမည်:',
         'step4.phoneLabel': 'ဖုန်းနံပါတ်:',
+        'step4.nationalIdLabel': 'နိုင်ငံသားစီစစ်ရေးကတ်ပြား:', // เพิ่มใหม่
+        'step4.socialSecurityLabel': 'လူမှုဖူလုံရေး:', // เพิ่มใหม่
         'step4.noteLabel': 'မှတ်ချက်:',
         'step4.back': 'နောက်သို့',
         'step4.confirm': 'အတည်ပြုရန်',

@@ -133,6 +133,15 @@
                         <label for="form-phone" class="block text-sm font-medium text-slate-700 font-thai">เบอร์โทร <span class="text-red-500">*</span></label>
                         <input type="tel" id="form-phone" name="เบอร์โทร" placeholder="08xxxxxxxx" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
                     </div>
+                    <div>
+                        <label for="form-idcard" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขบัตรประชาชน</label>   
+                        <input type="text" id="form-idcard" name="เลขที่บัตรประชาชน" placeholder="หมายเลขบัตรประชาชน 13 หลัก" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">    
+                    </div>
+                    <div>
+                        <label for="form-ssn" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประกันสังคม</label>       
+                        <input type="text" id="form-ssn" name="เลขที่ประกันสังคม" placeholder="หมายเลขประกันสังคม 13 หลัก" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai"> 
+                    </div>
+
                     <div class="md:col-span-2 flex justify-end space-x-3">
                         <button type="button" onclick="hideForm()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 px-4 rounded-md text-sm font-thai">ยกเลิก</button>
                         <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md text-sm flex items-center space-x-2 font-thai">
@@ -258,6 +267,8 @@
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">UserID (LINE)</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">ชื่อ</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เบอร์โทร</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เลขที่บัตรประชาชน</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เลขที่ประกันสังคม</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">วันที่บันทึก</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">จัดการ</th>
                 </tr>
@@ -277,6 +288,8 @@
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap text-slate-800 font-medium font-thai">${member['ชื่อ']}</td>
                 <td class="px-4 py-3 whitespace-nowrap text-slate-600 font-thai">${member['เบอร์โทร']}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-500 text-xs font-mono">${member['เลขที่บัตรประชาชน'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-500 text-xs font-mono">${member['เลขที่ประกันสังคม'] || '-'}</td>
                 <td class="px-4 py-3 whitespace-nowrap text-slate-500 text-xs font-thai">${member['Timestamp'] ? new Date(member['Timestamp']).toLocaleString('th-TH') : '-'}</td>
                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
                     <button onclick="editMember('${member['ไอดี']}')" class="text-indigo-600 hover:text-indigo-900 mr-3 font-thai">แก้ไข</button>
@@ -294,6 +307,8 @@
             const filteredMembers = allMembersData.filter(member => {
                 return (member['ชื่อ'] && member['ชื่อ'].toLowerCase().includes(searchTerm)) ||
                     (member['เบอร์โทร'] && member['เบอร์โทร'].includes(searchTerm)) ||
+                    (member['เลขที่บัตรประชาชน'] && member['เลขที่บัตรประชาชน'].includes(searchTerm)) ||
+                    (member['เลขที่ประกันสังคม'] && member['เลขที่ประกันสังคม'].includes(searchTerm)) ||
                     (member['ไอดี'] && member['ไอดี'].toLowerCase().includes(searchTerm));
             });
             renderMemberTable(filteredMembers);
