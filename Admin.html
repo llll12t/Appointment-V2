@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -79,7 +78,7 @@
     <table class="w-full bg-white rounded-lg shadow text-sm">
       <thead>
         <tr>
-          <th class="bg-[#2F1A87] text-white p-2 text-left rounded-tl-lg">ชื่อ</th>
+          <th class="bg-[#2F1A87] text-white p-2 text-left rounded-tl-lg">ชื่อ-นามสกุล</th>
           <th class="bg-[#2F1A87] text-white p-2 text-left">วันที่</th>
           <th class="bg-[#2F1A87] text-white p-2 text-center">สถานะ</th>
           <th class="bg-[#2F1A87] text-white p-2 text-center rounded-tr-lg">ดู</th>
@@ -211,8 +210,9 @@
 
       data.forEach(item => {
         const row = document.createElement('tr');
+        const fullName = (item.firstName || item.first_name || '') + ' ' + (item.lastName || item.last_name || '');
         row.innerHTML = `
-          <td class="p-2 border-b">${item.name}</td>
+          <td class="p-2 border-b">${fullName.trim() || '-'}</td>
           <td class="p-2 border-b">${item.date}</td>
           <td class="p-2 border-b text-center">${item.status}</td>
           <td class="p-2 border-b text-center">
@@ -225,16 +225,16 @@
         detailRow.classList.add('hidden');
         detailRow.innerHTML = `
           <td colspan="4" class="bg-gray-50 p-4 text-sm">
-            <p><strong>ชื่อ:</strong> ${item.name}</p>
-            <p><strong>เบอร์โทร:</strong> ${item.phonenumber}</p>
-            <p><strong>เลขบัตรประชาชน:</strong> ${item.national_id || '-'}</p>
-            <p><strong>เลขประกันสังคม:</strong> ${item.social_security_number || '-'}</p>
-            <p><strong>บริการ:</strong> ${item.service}</p>
-            <p><strong>ราคา:</strong> ${item.price}</p>
-            <p><strong>วันที่:</strong> ${item.date}</p>
-            <p><strong>เวลา:</strong> ${item.time}</p>
+            <p><strong>ชื่อ:</strong> ${(item.firstName || item.first_name || '-') + ' ' + (item.lastName || item.last_name || '')}</p>
+            <p><strong>เบอร์โทร:</strong> ${item.phonenumber || '-'}</p>
+            <p><strong>เลขบัตร/ประกัน:</strong> ${item.idCardOrSocial || item.id_card_or_social || '-'}</p>
+            <p><strong>โรค/แพ้:</strong> ${item.diseaseAllergy || item.disease_allergy || '-'}</p>
+            <p><strong>บริการ:</strong> ${item.service || '-'}</p>
+            <p><strong>ราคา:</strong> ${item.price || '-'}</p>
+            <p><strong>วันที่:</strong> ${item.date || '-'}</p>
+            <p><strong>เวลา:</strong> ${item.time || '-'}</p>
             <p><strong>หมายเหตุ:</strong> ${item.note || '-'}</p>
-            <p><strong>สถานะ:</strong> ${item.status}</p>
+            <p><strong>สถานะ:</strong> ${item.status || '-'}</p>
             <div class="mt-4 flex flex-wrap gap-2">
               <button class="actionBtn bg-yellow-500 text-white px-3 py-1 rounded" data-action="sendReminder" data-id="${item.idKey}">🔔 แจ้งเตือน</button>
               <button class="actionBtn bg-purple-600 text-white px-3 py-1 rounded" data-action="sendReminderWithPayment" data-id="${item.idKey}">🔔 แจ้งชำระ</button>

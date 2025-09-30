@@ -75,7 +75,7 @@
         <table class="w-full bg-white rounded shadow text-sm">
             <thead>
                 <tr>
-                    <th class="bg-[#2F1A87] text-white p-2 text-left rounded-tl-lg">ชื่อ</th>
+                    <th class="bg-[#2F1A87] text-white p-2 text-left rounded-tl-lg">ชื่อ-นามสกุล</th>
                     <th class="bg-[#2F1A87] text-white p-2 text-left">วันที่</th>
                     <th class="bg-[#2F1A87] text-white p-2 text-center">สถานะ</th>
                     <th class="bg-[#2F1A87] text-white p-2 text-center rounded-tr-lg">ดู</th>
@@ -178,10 +178,12 @@
                 const pageData = currentData.slice(start, end);
 
                 pageData.forEach(item => {
+                    // Support both new and old field names for compatibility
+                    const fullName = (item.firstName || item.first_name || '') + ' ' + (item.lastName || item.last_name || '');
                     // แถวหลัก
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td class="p-2 border-b">${item.name}</td>
+                        <td class="p-2 border-b">${fullName.trim() || '-'}</td>
                         <td class="p-2 border-b">${item.date}</td>
                         <td class="p-2 border-b text-center">${item.status}</td>
                         <td class="p-2 border-b text-center">
@@ -196,16 +198,16 @@
                     detailRow.innerHTML = `
                         <td colspan="4" class="bg-gray-50 p-4 text-sm">
                             <div class="grid grid-cols-1 gap-1">
-                                <p><strong>ชื่อ:</strong> ${item.name}</p>
-                                <p><strong>เบอร์โทร:</strong> ${item.phonenumber}</p>
-                                <p><strong>เลขบัตรประชาชน:</strong> ${item.national_id || '-'}</p>
-                                <p><strong>เลขประกันสังคม:</strong> ${item.social_security_number || '-'}</p>
-                                <p><strong>บริการ:</strong> ${item.service}</p>
-                                <p><strong>ราคา:</strong> ${item.price}</p>
-                                <p><strong>วันที่:</strong> ${item.date}</p>
-                                <p><strong>เวลา:</strong> ${item.time}</p>
+                                <p><strong>ชื่อ:</strong> ${fullName.trim() || '-'}</p>
+                                <p><strong>เบอร์โทร:</strong> ${item.phonenumber || '-'}</p>
+                                <p><strong>เลขบัตร/ประกัน:</strong> ${item.idCardOrSocial || item.id_card_or_social || '-'}</p>
+                                <p><strong>โรค/แพ้:</strong> ${item.diseaseAllergy || item.disease_allergy || '-'}</p>
+                                <p><strong>บริการ:</strong> ${item.service || '-'}</p>
+                                <p><strong>ราคา:</strong> ${item.price || '-'}</p>
+                                <p><strong>วันที่:</strong> ${item.date || '-'}</p>
+                                <p><strong>เวลา:</strong> ${item.time || '-'}</p>
                                 <p><strong>หมายเหตุ:</strong> ${item.note || '-'}</p>
-                                <p><strong>สถานะ:</strong> ${item.status}</p>
+                                <p><strong>สถานะ:</strong> ${item.status || '-'}</p>
                                 <div class="mt-3 flex gap-2">
                                     <button class="confirmBtn bg-green-500 text-white px-4 py-1 rounded" ${item.status !== 'รอการยืนยัน' ? 'disabled style="opacity:.5"' : ''} data-id="${item.idKey}">ยืนยัน</button>
                                     <button class="cancelBtn bg-red-500 text-white px-4 py-1 rounded" ${['ยกเลิก', 'เสร็จสิ้น'].includes(item.status) ? 'disabled style="opacity:.5"' : ''} data-id="${item.idKey}">ยกเลิก</button>
