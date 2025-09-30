@@ -693,7 +693,6 @@
                     c.dataset.price = s.price;
                     c.innerHTML = `
               <div class="font-bold text-md mb-1 text--primary-light">${s.name}</div>
-              <div class="text-sm text-placeholder">ราคา: ${s.price} บาท</div>
             `;
                     c.onclick = () => {
                         c.classList.toggle('selected');
@@ -811,7 +810,7 @@
         function updateSelectedServices() {
             const sel = [...$('serviceCards').children].filter((c) => c.classList.contains('selected'));
             $('selectedServices').value = JSON.stringify(sel.map((c) => c.dataset.id));
-            $('selectedServiceNames').value = sel.map((c) => `${c.dataset.name} (฿${c.dataset.price})`).join(', ');
+            $('selectedServiceNames').value = sel.map((c) => c.dataset.name).join(', ');
         }
 
         function updateConfirmation() {
