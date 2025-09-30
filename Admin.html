@@ -126,7 +126,7 @@
         alertMessage.textContent = 'กำลังส่งแจ้งเตือน…';
         showLoading();
 
-        fetch(`${DETAILS_SCRIPT_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
+        fetch(`${WEB_APP_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
           method: 'POST'
         })
           .then(res => {
@@ -159,7 +159,7 @@
     async function loadData() {
       showLoading();
       try {
-        const res = await fetch(`${DETAILS_SCRIPT_URL}?action=fetchBookings`);
+        const res = await fetch(`${WEB_APP_URL}?action=fetchBookings`);
         const data = await res.json();
 
         // parse & sort
@@ -209,12 +209,21 @@
       }
 
       data.forEach(item => {
+         const fullName = ((item.firstName || '') + ' ' + (item.lastName || '')).trim() || '-';
+        const date = item.date || '-';
+        const status = item.status || '-';
+        const time = item.time || '-';
+        const phonenumber = item.phonenumber || '-';
+        const idCardOrSocial = item.idCardOrSocial || '-';
+        const diseaseAllergy = item.diseaseAllergy || '-';
+        const service = item.service || '-';
+        const note = item.note || '-';
+
         const row = document.createElement('tr');
-        const fullName = (item.firstName || item.first_name || '') + ' ' + (item.lastName || item.last_name || '');
         row.innerHTML = `
-          <td class="p-2 border-b">${fullName.trim() || '-'}</td>
-          <td class="p-2 border-b">${item.date}</td>
-          <td class="p-2 border-b text-center">${item.status}</td>
+          <td class="p-2 border-b">${fullName}</td>
+          <td class="p-2 border-b">${date}</td>
+          <td class="p-2 border-b text-center">${status}</td>
           <td class="p-2 border-b text-center">
             <button class="toggleDetail bg-[#2F1A87] text-white px-2 py-1 rounded">ดู</button>
           </td>
@@ -225,23 +234,22 @@
         detailRow.classList.add('hidden');
         detailRow.innerHTML = `
           <td colspan="4" class="bg-gray-50 p-4 text-sm">
-            <p><strong>ชื่อ:</strong> ${(item.firstName || item.first_name || '-') + ' ' + (item.lastName || item.last_name || '')}</p>
-            <p><strong>เบอร์โทร:</strong> ${item.phonenumber || '-'}</p>
-            <p><strong>เลขบัตร/ประกัน:</strong> ${item.idCardOrSocial || item.id_card_or_social || '-'}</p>
-            <p><strong>โรค/แพ้:</strong> ${item.diseaseAllergy || item.disease_allergy || '-'}</p>
-            <p><strong>บริการ:</strong> ${item.service || '-'}</p>
-            <p><strong>ราคา:</strong> ${item.price || '-'}</p>
-            <p><strong>วันที่:</strong> ${item.date || '-'}</p>
-            <p><strong>เวลา:</strong> ${item.time || '-'}</p>
-            <p><strong>หมายเหตุ:</strong> ${item.note || '-'}</p>
-            <p><strong>สถานะ:</strong> ${item.status || '-'}</p>
+            <p><strong>ชื่อ:</strong> ${fullName}</p>
+            <p><strong>เบอร์โทร:</strong> ${phonenumber}</p>
+            <p><strong>เลขบัตร/ประกัน:</strong> ${idCardOrSocial}</p>
+            <p><strong>โรค/แพ้:</strong> ${diseaseAllergy}</p>
+            <p><strong>บริการ:</strong> ${service}</p>
+            <p><strong>วันที่:</strong> ${date}</p>
+            <p><strong>เวลา:</strong> ${time}</p>
+            <p><strong>หมายเหตุ:</strong> ${note}</p>
+            <p><strong>สถานะ:</strong> ${status}</p>
             <div class="mt-4 flex flex-wrap gap-2">
               <button class="actionBtn bg-yellow-500 text-white px-3 py-1 rounded" data-action="sendReminder" data-id="${item.idKey}">🔔 แจ้งเตือน</button>
               <button class="actionBtn bg-purple-600 text-white px-3 py-1 rounded" data-action="sendReminderWithPayment" data-id="${item.idKey}">🔔 แจ้งชำระ</button>
               <button class="actionBtn bg-gray-600 text-white px-3 py-1 rounded" data-action="sendReminderWithoutPayment" data-id="${item.idKey}">🔔 ฟรี</button>
-              <button class="actionBtn bg-green-500 text-white px-3 py-1 rounded" data-action="confirmBooking" data-id="${item.idKey}" ${item.status !== 'รอการยืนยัน' ? 'disabled style="opacity:.5"' : ''}>ยืนยัน</button>
-              <button class="actionBtn bg-red-500 text-white px-3 py-1 rounded" data-action="cancelBooking" data-id="${item.idKey}" ${['ยกเลิก', 'เสร็จสิ้น'].includes(item.status) ? 'disabled style="opacity:.5"' : ''}>ยกเลิก</button>
-              <button class="actionBtn bg-blue-500 text-white px-3 py-1 rounded" data-action="completeBooking" data-id="${item.idKey}" ${['ยกเลิก', 'เสร็จสิ้น'].includes(item.status) ? 'disabled style="opacity:.5"' : ''}>เสร็จสิ้น</button>
+              <button class="actionBtn bg-green-500 text-white px-3 py-1 rounded" data-action="confirmBooking" data-id="${item.idKey}" ${status !== 'รอการยืนยัน' ? 'disabled style="opacity:.5"' : ''}>ยืนยัน</button>
+              <button class="actionBtn bg-red-500 text-white px-3 py-1 rounded" data-action="cancelBooking" data-id="${item.idKey}" ${['ยกเลิก', 'เสร็จสิ้น'].includes(status) ? 'disabled style="opacity:.5"' : ''}>ยกเลิก</button>
+              <button class="actionBtn bg-blue-500 text-white px-3 py-1 rounded" data-action="completeBooking" data-id="${item.idKey}" ${['ยกเลิก', 'เสร็จสิ้น'].includes(status) ? 'disabled style="opacity:.5"' : ''}>เสร็จสิ้น</button>
             </div>
           </td>
         `;

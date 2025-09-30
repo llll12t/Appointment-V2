@@ -136,7 +136,7 @@
             paginationEl.innerHTML = '';
 
             try {
-                const res = await fetch(`${DETAILS_SCRIPT_URL}?action=fetchBookings`);
+                const res = await fetch(`${WEB_APP_URL}?action=fetchBookings`);
                 const allData = await res.json();
                 const uid = document.getElementById('useridlineFilter').value;
 
@@ -178,14 +178,14 @@
                 const pageData = currentData.slice(start, end);
 
                 pageData.forEach(item => {
-                    // Support both new and old field names for compatibility
-                    const fullName = (item.firstName || item.first_name || '') + ' ' + (item.lastName || item.last_name || '');
+                    // Use only new column names from fetchBookings
+                    const fullName = ((item.firstName || '') + ' ' + (item.lastName || '')).trim() || '-';
                     // แถวหลัก
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td class="p-2 border-b">${fullName.trim() || '-'}</td>
-                        <td class="p-2 border-b">${item.date}</td>
-                        <td class="p-2 border-b text-center">${item.status}</td>
+                        <td class="p-2 border-b">${fullName}</td>
+                        <td class="p-2 border-b">${item.date || '-'}</td>
+                        <td class="p-2 border-b text-center">${item.status || '-'}</td>
                         <td class="p-2 border-b text-center">
                             <button class="toggleDetail bg-indigo-600 text-white px-2 py-1 rounded">ดู</button>
                         </td>
@@ -198,12 +198,11 @@
                     detailRow.innerHTML = `
                         <td colspan="4" class="bg-gray-50 p-4 text-sm">
                             <div class="grid grid-cols-1 gap-1">
-                                <p><strong>ชื่อ:</strong> ${fullName.trim() || '-'}</p>
+                                <p><strong>ชื่อ:</strong> ${fullName}</p>
                                 <p><strong>เบอร์โทร:</strong> ${item.phonenumber || '-'}</p>
-                                <p><strong>เลขบัตร/ประกัน:</strong> ${item.idCardOrSocial || item.id_card_or_social || '-'}</p>
-                                <p><strong>โรค/แพ้:</strong> ${item.diseaseAllergy || item.disease_allergy || '-'}</p>
+                                <p><strong>เลขบัตร/ประกัน:</strong> ${item.idCardOrSocial || '-'}</p>
+                                <p><strong>โรค/แพ้:</strong> ${item.diseaseAllergy || '-'}</p>
                                 <p><strong>บริการ:</strong> ${item.service || '-'}</p>
-                                <p><strong>ราคา:</strong> ${item.price || '-'}</p>
                                 <p><strong>วันที่:</strong> ${item.date || '-'}</p>
                                 <p><strong>เวลา:</strong> ${item.time || '-'}</p>
                                 <p><strong>หมายเหตุ:</strong> ${item.note || '-'}</p>
@@ -277,7 +276,7 @@
         function confirmAction(message, action, id) {
             showAlert(message, () => {
                 showLoading();
-                fetch(`${DETAILS_SCRIPT_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
+                fetch(`${WEB_APP_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
                     method: 'POST',
                 })
                     .then(() => {
