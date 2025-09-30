@@ -48,7 +48,7 @@
     </div>
 
     <!-- Custom Alert -->
-    <div id="customAlertOverlay" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
+    <div id="customAlertOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
         <div class="bg-white p-6 rounded shadow-lg text-center w-72">
             <p id="customAlertMessage" class="mb-4 text-gray-700 text-sm"></p>
             <button id="customAlertOk" class="bg-indigo-600 text-white px-4 py-2 rounded">ตกลง</button>
@@ -101,10 +101,13 @@
         const showLoading = () => document.getElementById('loadingOverlay').classList.remove('hidden');
         const hideLoading = () => document.getElementById('loadingOverlay').classList.add('hidden');
         const showAlert = (msg, cb) => {
+            const overlay = document.getElementById('customAlertOverlay');
             document.getElementById('customAlertMessage').textContent = msg;
-            document.getElementById('customAlertOverlay').classList.remove('hidden');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex', 'items-center', 'justify-center');
             document.getElementById('customAlertOk').onclick = () => {
-                document.getElementById('customAlertOverlay').classList.add('hidden');
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex', 'items-center', 'justify-center');
                 if (cb) cb();
             };
         };
