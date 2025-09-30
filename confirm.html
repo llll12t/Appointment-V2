@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ยืนยันการนัดหมาย</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans Thai', sans-serif; }
+        .spinner {
+            width: 3rem; height: 3rem;
+            border: .5rem solid #e5e7eb;
+            border-top-color: #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4">
+
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="spinner mx-auto"></div>
+            <p id="loadingText" class="text-white mt-3">กำลังดำเนินการ...</p>
+        </div>
+    </div>
+
+    <div id="mainCard" class="bg-white w-full max-w-md rounded-xl shadow-lg p-6 space-y-4 hidden">
+        <h1 id="cardTitle" class="text-xl font-bold text-slate-800 text-center">จัดการนัดหมาย</h1>
+        <div class="border-t border-slate-200"></div>
+
+        <div id="detailsContainer" class="space-y-2 text-sm">
+            <div class="flex justify-between"><span class="text-slate-500">ชื่อผู้จอง:</span><strong id="detail-name" class="text-slate-700 text-right"></strong></div>
+            <div class="flex justify-between"><span class="text-slate-500">บริการ:</span><strong id="detail-service" class="text-slate-700 text-right"></strong></div>
+            <div class="flex justify-between"><span class="text-slate-500">ราคา:</span><strong id="detail-price" class="text-slate-700 text-right"></strong></div>
+            <div class="flex justify-between"><span class="text-slate-500">วันที่:</span><strong id="detail-date" class="text-slate-700 text-right"></strong></div>
+            <div class="flex justify-between"><span class="text-slate-500">เวลา:</span><strong id="detail-time" class="text-slate-700 text-right"></strong></div>
+        </div>
+
+        <div id="buttonsContainer" class="pt-2">
+             <div class="border-t border-slate-200 mb-4"></div>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button id="cancelBtn" class="w-full bg-red-100 text-red-700 hover:bg-red-200 font-bold py-3 px-4 rounded-lg transition">ยกเลิกนัดหมาย</button>
+                <button id="confirmBtn" class="w-full bg-indigo-600 text-white hover:bg-indigo-700 font-bold py-3 px-4 rounded-lg transition">ยืนยันนัดหมาย</button>
+            </div>
+        </div>
+        
+        <div id="resultContainer" class="hidden text-center py-8">
+            <p id="resultText" class="text-lg font-semibold text-slate-700 mb-4"></p>
+            <button onclick="liff.closeWindow()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2 px-6 rounded-lg">ปิด</button>
+        </div>
+    </div>
+
+    <script>
+ const LIFF_ID_CONFIRM = '2007432636-Rw2NO5DL'; // << เพิ่มบรรทัดนี้ ใส่ LIFF ID ที่เพิ่งสร้าง
+ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz4J0kgkseIWm1VA2f_Z7i88eRmk0CU4gnQZC5bITaSNDfsxzy4TY6TD6wRCZSz3Kid/exec';
+        document.addEventListener('DOMContentLoaded', async () => {
+            showLoading(true, "กำลังโหลดข้อมูล...");
+            try {
+                await liff.init({ liffId: LIFF_ID_CONFIRM });
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                    return;
+                }
+
+                console.log("LIFF Initialized.");
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                console.log("URL Params:", window.location.search);
+
+                const bookingId = urlParams.get('id');
+                if (!bookingId) {
+                    throw new Error("ไม่พบรหัสการจองใน URL");
+                }
+                
+                document.getElementById('detail-name').textContent = urlParams.get('name') || '-';
+                document.getElementById('detail-service').textContent = urlParams.get('service') || '-';
+                document.getElementById('detail-price').textContent = urlParams.get('price') ? `${urlParams.get('price')} บาท` : '-';
+                document.getElementById('detail-date').textContent = urlParams.get('date') || '-';
+                document.getElementById('detail-time').textContent = urlParams.get('time') || '-';
+                
+                document.getElementById('confirmBtn').onclick = () => handleAction('confirmBooking', bookingId);
+                document.getElementById('cancelBtn').onclick = () => handleAction('cancelBooking', bookingId);
+
+            } catch (error) {
+                console.error("Initialization Error:", error);
+                showError(error.message);
+            } finally {
+                showLoading(false);
+                document.getElementById('mainCard').classList.remove('hidden'); // <-- ทำให้ Card แสดงเสมอ
+            }
+        });
+
+        // --- วางทับฟังก์ชันนี้ทั้งหมดใน confirm.html ---
+async function handleAction(action, bookingId) {
+    showLoading(true, "กำลังดำเนินการ...");
+    try {
+        // *** จุดที่แก้ไข: เปลี่ยนรูปแบบการ fetch ให้เรียบง่ายขึ้น ***
+        // เราส่งข้อมูลทั้งหมดผ่าน URL อยู่แล้ว จึงไม่จำเป็นต้องมี headers หรือ body
+        const response = await fetch(`${WEB_APP_URL}?action=${action}&id=${bookingId}`, {
+            method: 'POST' 
+        });
+
+        const resultText = await response.text();
+        if (!response.ok) {
+            // ถ้าเซิร์ฟเวอร์ส่งข้อความ error กลับมา ให้แสดงข้อความนั้น
+            throw new Error(resultText || "การดำเนินการไม่สำเร็จ");
+        }
+
+        let message = 'ดำเนินการเรียบร้อยแล้ว';
+        if (action === 'confirmBooking') {
+            message = 'ยืนยันการนัดหมายสำเร็จแล้ว';
+        } else if (action === 'cancelBooking') {
+            message = 'ยกเลิกการนัดหมายสำเร็จแล้ว';
+        }
+        showSuccess(message);
+
+    } catch (error) {
+        // แสดงข้อความ Error ที่มาจาก Server หรือ "Load failed" กรณีเชื่อมต่อไม่ได้เลย
+        showError(`ผิดพลาด: ${error.message}`);
+    }
+}
+
+        function showLoading(isLoading, text = "กำลังดำเนินการ...") {
+            const overlay = document.getElementById('loadingOverlay');
+            document.getElementById('loadingText').textContent = text;
+            isLoading ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
+        }
+
+        function showSuccess(message) {
+            showLoading(false);
+            document.getElementById('detailsContainer').classList.add('hidden');
+            document.getElementById('buttonsContainer').classList.add('hidden');
+            document.getElementById('cardTitle').textContent = "สำเร็จ!";
+            
+            const resultContainer = document.getElementById('resultContainer');
+            document.getElementById('resultText').textContent = message;
+            resultContainer.classList.remove('hidden');
+        }
+        
+        function showError(message) {
+            showLoading(false);
+            document.getElementById('detailsContainer').classList.add('hidden');
+            document.getElementById('buttonsContainer').classList.add('hidden');
+            document.getElementById('cardTitle').textContent = "เกิดข้อผิดพลาด";
+            
+            const resultContainer = document.getElementById('resultContainer');
+            document.getElementById('resultText').textContent = message;
+            resultContainer.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
