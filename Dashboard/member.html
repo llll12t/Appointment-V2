@@ -117,31 +117,37 @@
                 <h3 class="text-lg font-medium text-slate-700 mb-4 font-thai">ฟอร์มสมาชิก</h3>
                 <form id="memberForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="md:col-span-2">
-                        <label for="form-id" class="block text-sm font-medium text-slate-700 font-thai">ไอดี</label>
-                        <input type="text" id="form-id" name="ไอดี" readonly class="mt-1 block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
-                            placeholder="สร้างอัตโนมัติ">
+                        <label for="form-id" class="block text-sm font-medium text-slate-700 font-thai">รหัส</label>
+                        <input type="text" id="form-id" name="รหัส" readonly class="mt-1 block w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder="สร้างอัตโนมัติ">
                     </div>
                     <div>
-                        <label for="form-userid" class="block text-sm font-medium text-slate-700 font-thai">UserID (LINE)</label>
-                        <input type="text" id="form-userid" name="UserID" placeholder="ถ้ามี UserID จาก LINE" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
+                        <label for="form-userid" class="block text-sm font-medium text-slate-700 font-thai">ไลน์ไอดี</label>
+                        <input type="text" id="form-userid" name="ไลน์ไอดี" placeholder="LINE UserID" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
                     </div>
                     <div>
-                        <label for="form-name" class="block text-sm font-medium text-slate-700 font-thai">ชื่อ <span class="text-red-500">*</span></label>
-                        <input type="text" id="form-name" name="ชื่อ" placeholder="ชื่อ-นามสกุล" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
+                        <label for="form-firstname" class="block text-sm font-medium text-slate-700 font-thai">ชื่อ <span class="text-red-500">*</span></label>
+                        <input type="text" id="form-firstname" name="ชื่อ" placeholder="ชื่อ" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
+                    </div>
+                    <div>
+                        <label for="form-lastname" class="block text-sm font-medium text-slate-700 font-thai">นามสกุล <span class="text-red-500">*</span></label>
+                        <input type="text" id="form-lastname" name="นามสกุล" placeholder="นามสกุล" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
                     </div>
                     <div>
                         <label for="form-phone" class="block text-sm font-medium text-slate-700 font-thai">เบอร์โทร <span class="text-red-500">*</span></label>
                         <input type="tel" id="form-phone" name="เบอร์โทร" placeholder="08xxxxxxxx" required class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
                     </div>
                     <div>
-                        <label for="form-idcard" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขบัตรประชาชน</label>   
-                        <input type="text" id="form-idcard" name="เลขที่บัตรประชาชน" placeholder="หมายเลขบัตรประชาชน 13 หลัก" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">    
+                        <label for="form-idcard" class="block text-sm font-medium text-slate-700 font-thai">เลขบัตร/ประกัน</label>
+                        <input type="text" id="form-idcard" name="เลขบัตร/ประกัน" placeholder="เลขบัตรประชาชน หรือประกันสังคม" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
                     </div>
                     <div>
-                        <label for="form-ssn" class="block text-sm font-medium text-slate-700 font-thai">หมายเลขประกันสังคม</label>       
-                        <input type="text" id="form-ssn" name="เลขที่ประกันสังคม" placeholder="หมายเลขประกันสังคม 13 หลัก" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai"> 
+                        <label for="form-disease" class="block text-sm font-medium text-slate-700 font-thai">โรค/แพ้</label>
+                        <input type="text" id="form-disease" name="โรค/แพ้" placeholder="โรคประจำตัวหรือแพ้ยา" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
                     </div>
-
+                    <div>
+                        <label for="form-note" class="block text-sm font-medium text-slate-700 font-thai">หมายเหตุ</label>
+                        <input type="text" id="form-note" name="หมายเหตุ" placeholder="หมายเหตุเพิ่มเติม" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-thai">
+                    </div>
                     <div class="md:col-span-2 flex justify-end space-x-3">
                         <button type="button" onclick="hideForm()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-2 px-4 rounded-md text-sm font-thai">ยกเลิก</button>
                         <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md text-sm flex items-center space-x-2 font-thai">
@@ -189,9 +195,8 @@
             document.getElementById('formSection').classList.remove('hidden');
             if (!isEdit) {
                 document.getElementById('memberForm').reset();
-                document.querySelector('[name="ไอดี"]').value = ''; // Clear ID for new entry
+                document.querySelector('[name="รหัส"]').value = '';
             }
-            // Scroll to form for better UX on mobile or long pages
             document.getElementById('formSection').scrollIntoView({
                 behavior: 'smooth'
             });
@@ -205,7 +210,15 @@
         document.getElementById('memberForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const data = {};
-            new FormData(this).forEach((value, key) => data[key] = value);
+            // Map ฟิลด์จากฟอร์มให้ตรงกับคอลัมน์ชีต
+            data['รหัส'] = this['รหัส'].value;
+            data['ไลน์ไอดี'] = this['ไลน์ไอดี'].value;
+            data['ชื่อ'] = this['ชื่อ'].value;
+            data['นามสกุล'] = this['นามสกุล'].value;
+            data['เบอร์โทร'] = this['เบอร์โทร'].value;
+            data['เลขบัตร/ประกัน'] = this['เลขบัตร/ประกัน'].value;
+            data['โรค/แพ้'] = this['โรค/แพ้'].value;
+            data['หมายเหตุ'] = this['หมายเหตุ'].value;
 
             Swal.fire({
                 title: 'กำลังบันทึก...',
@@ -263,37 +276,37 @@
             let html = `<table class="min-w-full divide-y divide-slate-200 text-sm">
             <thead class="bg-slate-50">
                 <tr>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">ไอดี</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">UserID (LINE)</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">รหัส</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">ไลน์ไอดี</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">ชื่อ</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">นามสกุล</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เบอร์โทร</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เลขที่บัตรประชาชน</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เลขที่ประกันสังคม</th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">วันที่บันทึก</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เลขบัตร/ประกัน</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">โรค/แพ้</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">หมายเหตุ</th>
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">เวลาบันทึก</th>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider font-thai">จัดการ</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-slate-200">`;
 
             if (dataToRender.length === 0) {
-                html += `<tr><td colspan="6" class="px-4 py-4 text-center text-slate-500 font-thai">ไม่พบข้อมูลสมาชิก</td></tr>`;
+                html += `<tr><td colspan="10" class="px-4 py-4 text-center text-slate-500 font-thai">ไม่พบข้อมูลสมาชิก</td></tr>`;
             } else {
                 dataToRender.forEach(member => {
                     html += `<tr class="hover:bg-slate-50">
-                <td class="px-4 py-3 whitespace-nowrap text-slate-700 font-mono text-xs">${member['ไอดี'] || '-'}</td>
-                <td class="px-4 py-3 whitespace-nowrap">
-                    ${member['UserID'] ? 
-                        '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 font-thai">เชื่อม LINE OA แล้ว</span>' : 
-                        '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-600 font-thai">ยังไม่เชื่อม</span>'}
-                </td>
-                <td class="px-4 py-3 whitespace-nowrap text-slate-800 font-medium font-thai">${member['ชื่อ']}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-slate-600 font-thai">${member['เบอร์โทร']}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-slate-500 text-xs font-mono">${member['เลขที่บัตรประชาชน'] || '-'}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-slate-500 text-xs font-mono">${member['เลขที่ประกันสังคม'] || '-'}</td>
-                <td class="px-4 py-3 whitespace-nowrap text-slate-500 text-xs font-thai">${member['Timestamp'] ? new Date(member['Timestamp']).toLocaleString('th-TH') : '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-700 font-mono text-xs">${member['รหัส'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-600 font-thai">${member['ไลน์ไอดี'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-800 font-medium font-thai">${member['ชื่อ'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-800 font-medium font-thai">${member['นามสกุล'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-600 font-thai">${member['เบอร์โทร'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-600 font-thai">${member['เลขบัตร/ประกัน'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-600 font-thai">${member['โรค/แพ้'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-600 font-thai">${member['หมายเหตุ'] || '-'}</td>
+                <td class="px-4 py-3 whitespace-nowrap text-slate-500 text-xs font-thai">${member['เวลาบันทึก'] ? member['เวลาบันทึก'] : '-'}</td>
                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                    <button onclick="editMember('${member['ไอดี']}')" class="text-indigo-600 hover:text-indigo-900 mr-3 font-thai">แก้ไข</button>
-                    <button onclick="deleteMember('${member['ไอดี']}')" class="text-red-600 hover:text-red-900 font-thai">ลบ</button>
+                    <button onclick="editMember('${member['รหัส']}')" class="text-indigo-600 hover:text-indigo-900 mr-3 font-thai">แก้ไข</button>
+                    <button onclick="deleteMember('${member['รหัส']}')" class="text-red-600 hover:text-red-900 font-thai">ลบ</button>
                 </td>
             </tr>`;
                 });
@@ -306,10 +319,11 @@
             const searchTerm = this.value.toLowerCase();
             const filteredMembers = allMembersData.filter(member => {
                 return (member['ชื่อ'] && member['ชื่อ'].toLowerCase().includes(searchTerm)) ||
+                    (member['นามสกุล'] && member['นามสกุล'].toLowerCase().includes(searchTerm)) ||
                     (member['เบอร์โทร'] && member['เบอร์โทร'].includes(searchTerm)) ||
-                    (member['เลขที่บัตรประชาชน'] && member['เลขที่บัตรประชาชน'].includes(searchTerm)) ||
-                    (member['เลขที่ประกันสังคม'] && member['เลขที่ประกันสังคม'].includes(searchTerm)) ||
-                    (member['ไอดี'] && member['ไอดี'].toLowerCase().includes(searchTerm));
+                    (member['เลขบัตร/ประกัน'] && member['เลขบัตร/ประกัน'].includes(searchTerm)) ||
+                    (member['หมายเหตุ'] && member['หมายเหตุ'].toLowerCase().includes(searchTerm)) ||
+                    (member['รหัส'] && member['รหัส'].toLowerCase().includes(searchTerm));
             });
             renderMemberTable(filteredMembers);
         });
@@ -317,19 +331,22 @@
 
         function editMember(id) {
             // Assuming allMembersData is up-to-date from loadMembers()
-            const memberToEdit = allMembersData.find(m => m['ไอดี'] === id);
+            const memberToEdit = allMembersData.find(m => m['รหัส'] === id);
             if (!memberToEdit) {
-                Swal.fire('ไม่พบข้อมูล', `ไม่พบสมาชิกไอดี: ${id}`, 'warning');
+                Swal.fire('ไม่พบข้อมูล', `ไม่พบสมาชิก รหัส: ${id}`, 'warning');
                 return;
             }
 
             const form = document.getElementById('memberForm');
-            // Populate form fields
-            for (const key in memberToEdit) {
-                if (form.elements[key]) {
-                    form.elements[key].value = memberToEdit[key];
-                }
-            }
+            // Map ข้อมูลให้ตรงกับ input แต่ละช่อง
+            form['รหัส'].value = memberToEdit['รหัส'] || '';
+            form['ไลน์ไอดี'].value = memberToEdit['ไลน์ไอดี'] || '';
+            form['ชื่อ'].value = memberToEdit['ชื่อ'] || '';
+            form['นามสกุล'].value = memberToEdit['นามสกุล'] || '';
+            form['เบอร์โทร'].value = memberToEdit['เบอร์โทร'] || '';
+            form['เลขบัตร/ประกัน'].value = memberToEdit['เลขบัตร/ประกัน'] || '';
+            form['โรค/แพ้'].value = memberToEdit['โรค/แพ้'] || '';
+            form['หมายเหตุ'].value = memberToEdit['หมายเหตุ'] || '';
             showForm(true); // Pass true to indicate it's an edit
         }
 
