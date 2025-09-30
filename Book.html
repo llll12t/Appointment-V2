@@ -453,13 +453,13 @@
             <div class="step hidden" id="step3">
                 <label class="block mb-3 text-lg text-center text-base font-semibold" data-translate-key="step3.title"></label>
                 <div class="flex gap-2 mb-3">
-                    <input type="text" id="first_name" name="first_name" placeholder="ชื่อจริง" class="border-element flex-1" required />
-                    <input type="text" id="last_name" name="last_name" placeholder="นามสกุล" class="border-element flex-1" required />
+                    <input type="text" id="first_name" name="first_name" data-translate-key-placeholder="step3.firstNamePlaceholder" placeholder="ชื่อจริง" class="border-element flex-1" required />
+                    <input type="text" id="last_name" name="last_name" data-translate-key-placeholder="step3.lastNamePlaceholder" placeholder="นามสกุล" class="border-element flex-1" required />
                 </div>
-                <input type="tel" id="phonenumber" name="phonenumber" placeholder="เบอร์ติดต่อ" class="mb-3 border-element" required />
-                <input type="text" id="id_card_or_social" name="id_card_or_social" placeholder="เลขที่บัตรประชาชน/เลขที่ประกันสังคม" class="mb-3 border-element" required />
-                <input type="text" id="disease_allergy" name="disease_allergy" placeholder="โรคประจำตัว/อาการแพ้ (ถ้ามี)" class="mb-3 border-element" />
-                <textarea id="note" name="note" rows="3" placeholder="หมายเหตุ (ถ้ามี)" class="mb-6 p-2 resize-none border-element"></textarea>
+                <input type="tel" id="phonenumber" name="phonenumber" data-translate-key-placeholder="step3.phonePlaceholder" placeholder="เบอร์ติดต่อ" class="mb-3 border-element" required />
+                <input type="text" id="id_card_or_social" name="id_card_or_social" data-translate-key-placeholder="step3.idCardOrSocialPlaceholder" placeholder="เลขที่บัตรประชาชน/เลขที่ประกันสังคม" class="mb-3 border-element" required />
+                <input type="text" id="disease_allergy" name="disease_allergy" data-translate-key-placeholder="step3.diseaseAllergyPlaceholder" placeholder="โรคประจำตัว/อาการแพ้ (ถ้ามี)" class="mb-3 border-element" />
+                <textarea id="note" name="note" rows="3" data-translate-key-placeholder="step3.notePlaceholder" placeholder="หมายเหตุ (ถ้ามี)" class="mb-6 p-2 resize-none border-element"></textarea>
                 <div class="flex space-x-3">
                     <button type="button" id="backToStep2" class="btn btn-secondary flex-1" data-translate-key="step3.back"></button>
                     <button type="button" id="nextToStep4" class="btn btn-primary flex-1" data-translate-key="step3.next"></button>
@@ -486,10 +486,10 @@
                             data-translate-key="step4.phoneLabel"></span><span id="confirmPhone"
                             class="font-semibold"></span></div>
                     <div class="flex justify-between items-center border-b pb-2"><span
-                            data-translate-key="step4.nationalIdLabel"></span><span id="confirmNationalId"
+                            data-translate-key="step4.idCardOrSocialLabel"></span><span id="confirmIdCardOrSocial"
                             class="font-semibold text-right"></span></div>
                     <div class="flex justify-between items-center border-b pb-2"><span
-                            data-translate-key="step4.socialSecurityLabel"></span><span id="confirmSocialSecurity"
+                            data-translate-key="step4.diseaseAllergyLabel"></span><span id="confirmDiseaseAllergy"
                             class="font-semibold text-right"></span></div>
                     <div class="flex justify-between items-start pt-1"><span
                             data-translate-key="step4.noteLabel"></span><span id="confirmNote"
@@ -514,7 +514,7 @@
     <script src="Config.js"></script>
 
     <script>
-        const ENABLE_LIFF = true;
+        const ENABLE_LIFF = false;
         const $ = (id) => document.getElementById(id);
 
         const defaultLang = 'th';
@@ -826,8 +826,8 @@
             $('confirmTime').textContent = $('time').value || '-';
             $('confirmName').textContent = `${$('first_name').value || ''} ${$('last_name').value || ''}`.trim() || '-';
             $('confirmPhone').textContent = $('phonenumber').value || '-';
-            $('confirmNationalId').textContent = $('id_card_or_social').value || '-';
-            $('confirmSocialSecurity').textContent = $('disease_allergy').value || '-';
+            $('confirmIdCardOrSocial').textContent = $('id_card_or_social').value || '-';
+            $('confirmDiseaseAllergy').textContent = $('disease_allergy').value || '-';
             $('confirmNote').textContent = $('note').value.trim() || '-';
         }
 
@@ -843,10 +843,11 @@
         };
         $('backToStep2').onclick = () => navigateToStep('step2');
         $('nextToStep4').onclick = () => {
-            if (!$('first_name').value.trim() || !$('last_name').value.trim()) return showPopup('กรุณากรอกชื่อและนามสกุล');
+            if (!$('first_name').value.trim()) return showPopup('popup.firstNameNeeded');
+            if (!$('last_name').value.trim()) return showPopup('popup.lastNameNeeded');
             if (!$('phonenumber').value.trim()) return showPopup('popup.phoneNeeded');
             if (!/^[0-9]{9,10}$/.test($('phonenumber').value.trim())) return showPopup('popup.phoneFormatError');
-            if (!$('id_card_or_social').value.trim()) return showPopup('กรุณากรอกเลขที่บัตรประชาชน/เลขที่ประกันสังคม');
+            if (!$('id_card_or_social').value.trim()) return showPopup('popup.idCardOrSocialNeeded');
             updateConfirmation();
             navigateToStep('step4');
         };
@@ -907,8 +908,10 @@
                         makeFieldBox(t('flex.dateLabel'), selectedDate ? selectedDate.split('-').reverse().join('/') : '-'),
                         makeFieldBox(t('flex.timeLabel'), $('time').value || '-'),
                         { type: 'separator', margin: 'md', color: varToHex('--text-main') },
-                        makeFieldBox(t('flex.nameLabel'), $('name').value),
-                        makeFieldBox(t('flex.phoneLabel'), $('phonenumber').value),
+                        makeFieldBox(t('flex.nameLabel'), `${$('first_name').value || ''} ${$('last_name').value || ''}`.trim() || '-'),
+                        makeFieldBox(t('flex.phoneLabel'), $('phonenumber').value || '-'),
+                        makeFieldBox('เลขบัตร/ประกัน', $('id_card_or_social').value || '-'),
+                        makeFieldBox('โรค/แพ้', $('disease_allergy').value || '-'),
                         makeFieldBox(t('flex.noteLabel'), $('note').value || '-')
                     ]
                 },
