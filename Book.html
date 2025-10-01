@@ -119,6 +119,33 @@
             animation: rotation 1s linear infinite;
         }
 
+        .service-loader {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border);
+            border-bottom-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        .loading-text {
+            color: var(--text-placeholder);
+            font-size: 0.9rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
         @keyframes rotation {
             0% {
                 transform: rotate(0deg);
@@ -346,18 +373,63 @@
             background: var(--bg-element);
             border: 1px solid var(--border);
             color: var(--text-main);
-            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
         #serviceCards .service-card:hover {
             border-color: var(--primary-light);
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(47, 26, 135, 0.15);
         }
 
         #serviceCards .service-card.selected {
             background: var(--primary);
             border-color: var(--primary);
             color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(47, 26, 135, 0.25);
+        }
+
+        .service-card .checkmark {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: #10b981;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: checkmark-pop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .service-card.selected .checkmark {
+            display: flex;
+        }
+
+        @keyframes checkmark-pop {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                transform: scale(1) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        .checkmark svg {
+            width: 14px;
+            height: 14px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
         }
 
         .btn {
@@ -366,11 +438,28 @@
             font-weight: bold;
             text-align: center;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            outline: none;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active:not(:disabled) {
             transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
         .btn-primary {
@@ -378,7 +467,7 @@
             color: #fff;
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background: var(--primary-light);
         }
 
@@ -388,8 +477,27 @@
             border: 1px solid var(--border);
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background: var(--border);
+        }
+
+        .btn-loading {
+            pointer-events: none;
+        }
+
+        .btn-loading::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin-top: -10px;
+            margin-left: -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: rotation 1s linear infinite;
         }
     </style>
 </head>
@@ -514,7 +622,7 @@
     <script src="Config.js"></script>
 
     <script>
-        const ENABLE_LIFF = true;
+        const ENABLE_LIFF = false;
         const $ = (id) => document.getElementById(id);
 
         const defaultLang = 'th';
@@ -523,8 +631,55 @@
         let monthAvailability = {}, selectedDate = '';
         let currentVisibleStep = 'step1';
         let flatpickrInstance = null;
+        let servicesLoaded = false;
 
         const t = (key) => translations[currentLang]?.[key] || key;
+
+        // ฟังก์ชันแปลชื่อบริการ (เข้มแข็ง: trim/normalize และลองหลาย fallback)
+        function normalizeServiceKey(name) {
+            if (!name && name !== 0) return '';
+            // trim whitespace and normalize multiple spaces
+            return String(name).replace(/\s+/g, ' ').trim();
+        }
+
+        function translateServiceName(serviceName, lang = currentLang) {
+            const orig = normalizeServiceKey(serviceName);
+            if (!orig) return serviceName || '';
+
+            const tryKeys = [
+                `service.${orig}`,
+                `service.${orig.replace(/\s+/g, '')}` // fallback without spaces
+            ];
+
+            for (const k of tryKeys) {
+                const v = translations[lang]?.[k];
+                if (v) return v;
+            }
+
+            // last resort: try other langs to see if any mapping exists
+            for (const L of Object.keys(translations)) {
+                for (const k of tryKeys) {
+                    const v = translations[L]?.[k];
+                    if (v) return v;
+                }
+            }
+
+            // ถ้าไม่พบ ให้คืนค่าเดิม (แต่ normalized)
+            return orig;
+        }
+        
+        // ฟังก์ชันอัปเดตภาษาของบริการ
+        function updateServiceLanguage(lang, targetContainer = null) {
+            const serviceCards = targetContainer || $('#serviceCards');
+            if (!serviceCards) return;
+
+            [...serviceCards.children].forEach(card => {
+                const originalName = normalizeServiceKey(card.dataset.originalName || card.dataset.name || '');
+                const translatedName = translateServiceName(originalName, lang);
+                const nameDiv = card.querySelector('.font-bold');
+                if (nameDiv) nameDiv.textContent = translatedName;
+            });
+        }
 
         function loadFlatpickrLocale(lang) {
             return new Promise((resolve) => {
@@ -548,19 +703,24 @@
         }
 
         async function setLanguage(lang) {
+            console.log('setLanguage called with:', lang);
             currentLang = translations[lang] ? lang : defaultLang;
+            console.log('currentLang set to:', currentLang);
             localStorage.setItem('booking_lang', currentLang);
             document.documentElement.lang = currentLang;
 
+            // สร้างฟังก์ชัน t แบบ local สำหรับภาษาใหม่
+            const tLocal = (key) => translations[currentLang]?.[key] || key;
+
             document.querySelectorAll('[data-translate-key]').forEach(el => {
-                el.textContent = t(el.dataset.translateKey);
+                el.textContent = tLocal(el.dataset.translateKey);
             });
             document.querySelectorAll('[data-translate-key-placeholder]').forEach(el => {
-                el.placeholder = t(el.dataset.translateKeyPlaceholder);
+                el.placeholder = tLocal(el.dataset.translateKeyPlaceholder);
             });
 
             // อัปเดตข้อความทักทาย
-            $('greetingPrefix').textContent = t(getGreeting(new Date().getHours()));
+            $('greetingPrefix').textContent = tLocal(getGreeting(new Date().getHours()));
 
             await loadFlatpickrLocale(currentLang);
             if (flatpickrInstance) {
@@ -572,9 +732,35 @@
             if (!selectedDate) {
                 const timeDropdownEl = $('#timeDropdown');
                 if (timeDropdownEl) {
-                    timeDropdownEl.innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">${t('step2.placeholder')}</div>`;
+                    timeDropdownEl.innerHTML = `<div class="text-placeholder text-sm text-center py-2 col-span-full">${tLocal('step2.placeholder')}</div>`;
                 }
             }
+            
+            // อัปเดตชื่อบริการ แบบ force update (รองรับกรณี race)
+            try {
+                const serviceCards = $('#serviceCards');
+                if (serviceCards) {
+                    updateServiceLanguage(currentLang, serviceCards);
+                    // อัปเดตชื่อบริการที่เลือกไว้
+                    updateSelectedServices();
+                } else {
+                    console.debug('setLanguage: #serviceCards not found yet');
+                }
+            } catch (e) {
+                console.warn('setLanguage: failed to update service names', e);
+            }
+            // รีโหลด services เสมอเมื่อเปลี่ยนภาษา เพื่อให้แน่ใจว่าชื่อและข้อมูลตรงกับภาษาปัจจุบัน
+            try {
+                console.debug('setLanguage: refetching services to refresh titles');
+                await fetchServiceData();
+            } catch (e) {
+                console.warn('setLanguage: fetchServiceData failed', e);
+            }
+            // อัปเดตข้อมูลใน step4 ถ้าอยู่ในหน้านั้น
+            if (currentVisibleStep === 'step4') {
+                updateConfirmation();
+            }
+            
         }
 
         function showLoading(on) {
@@ -588,6 +774,43 @@
                     if (!overlay.classList.contains('visible'))
                         overlay.style.display = 'none';
                 }, 300);
+            }
+        }
+
+        // inline service-loading UI (spinner inside serviceCards) and control disabling
+        function setServiceLoading(on) {
+            const container = $('serviceCards');
+            const nextBtn = $('nextToStep2');
+            const langSwitch = $('languageSwitcher');
+            if (!container) return;
+            if (on) {
+                // show enhanced loading state with spinner and text
+                container.innerHTML = `
+                    <div class="col-span-2 flex flex-col items-center justify-center py-8">
+                        <div class="flex items-center mb-3">
+                            <div class="service-loader"></div>
+                            <span class="loading-text">${t('service.loading') || 'กำลังโหลดบริการ...'}</span>
+                        </div>
+                    </div>
+                `;
+                if (nextBtn) {
+                    nextBtn.disabled = true;
+                    nextBtn.classList.add('btn-loading');
+                }
+                if (langSwitch) {
+                    langSwitch.disabled = true;
+                    langSwitch.style.opacity = '0.6';
+                }
+            } else {
+                // re-enable controls; content will be refreshed by fetchServiceData
+                if (nextBtn) {
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove('btn-loading');
+                }
+                if (langSwitch) {
+                    langSwitch.disabled = false;
+                    langSwitch.style.opacity = '1';
+                }
             }
         }
 
@@ -675,6 +898,8 @@
         }
 
         async function fetchServiceData() {
+            // show inline loading in the services area and disable related controls
+            setServiceLoading(true);
             try {
                 const res = await fetch(`${WEB_APP_URL}?action=fetchServices`);
                 if (!res.ok) throw new Error();
@@ -682,26 +907,58 @@
                 const container = $('serviceCards');
                 if (!services.length) {
                     container.innerHTML = `<p class="text-center col-span-2">${t('service.noService')}</p>`;
+                    servicesLoaded = true;
                     return;
                 }
                 container.innerHTML = '';
-                services.forEach((s) => {
+                services.forEach((s, index) => {
                     const c = document.createElement('div');
-                    c.className = 'service-card p-4 border-element rounded-lg cursor-pointer shadow-sm';
+                    c.className = 'service-card p-8 border-element rounded-lg cursor-pointer shadow-sm';
                     c.dataset.id = s.id;
                     c.dataset.name = s.name;
+                    c.dataset.originalName = normalizeServiceKey(s.name || ''); // เก็บชื่อต้นฉบับ (normalized)
                     c.dataset.price = s.price;
+                    const translatedName = translateServiceName(c.dataset.originalName, currentLang);
                     c.innerHTML = `
-              <div class="font-bold text-md mb-1 text--primary-light">${s.name}</div>
-            `;
+                        <div class="font-bold text-md mb-1 text--primary-light">${translatedName}</div>
+                        <div class="checkmark">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20,6 9,17 4,12"></polyline>
+                            </svg>
+                        </div>
+                    `;
                     c.onclick = () => {
                         c.classList.toggle('selected');
+                        // Add haptic feedback simulation
+                        c.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            c.style.transform = '';
+                        }, 150);
                         updateSelectedServices();
                     };
+                    // Staggered animation for smooth appearance
+                    c.style.opacity = '0';
+                    c.style.transform = 'translateY(20px)';
                     container.appendChild(c);
+                    setTimeout(() => {
+                        c.style.opacity = '1';
+                        c.style.transform = 'translateY(0)';
+                    }, index * 100);
+                    // Debug: log created card info
+                    try {
+                        console.debug('fetchServiceData: created card', { id: c.dataset.id, originalName: c.dataset.originalName, translated: translatedName });
+                    } catch (e) { /* ignore */ }
                 });
-            } catch {
+                
+                    // อัปเดตชื่อบริการให้ตรงกับภาษาปัจจุบันหลังสร้าง service cards
+                    updateServiceLanguage(currentLang, container);
+                    servicesLoaded = true;
+            } catch (err) {
+                console.error('fetchServiceData error', err);
                 showPopup('popup.serviceError');
+            } finally {
+                // hide inline loading and re-enable controls
+                setServiceLoading(false);
             }
         }
 
@@ -808,13 +1065,38 @@
         }
 
         function updateSelectedServices() {
-            const sel = [...$('serviceCards').children].filter((c) => c.classList.contains('selected'));
+            const serviceCardsEl = $('serviceCards');
+            if (!serviceCardsEl) return;
+            const sel = [...serviceCardsEl.children].filter((c) => c.classList.contains('selected'));
             $('selectedServices').value = JSON.stringify(sel.map((c) => c.dataset.id));
-            $('selectedServiceNames').value = sel.map((c) => c.dataset.name).join(', ');
+            $('selectedServiceNames').value = sel.map((c) => translateServiceName(normalizeServiceKey(c.dataset.originalName || c.dataset.name || ''), currentLang)).join(', ');
+            
+            // Update button state based on selection
+            const nextBtn = $('nextToStep2');
+            if (nextBtn) {
+                if (sel.length > 0) {
+                    nextBtn.classList.remove('opacity-50');
+                    nextBtn.style.background = 'var(--primary)';
+                } else {
+                    nextBtn.classList.add('opacity-50');
+                }
+            }
+            
+            // Add subtle visual feedback for selection count
+            if (sel.length > 0) {
+                serviceCardsEl.style.transform = 'scale(1.01)';
+                setTimeout(() => {
+                    serviceCardsEl.style.transform = 'scale(1)';
+                }, 200);
+            }
         }
 
         function updateConfirmation() {
-            const raw = $('selectedServiceNames').value || '-';
+            // ดึงชื่อบริการที่เลือกและแปลให้ตรงกับภาษาปัจจุบัน
+            const selectedCards = [...$('serviceCards').children].filter(c => c.classList.contains('selected'));
+            const translatedServiceNames = selectedCards.map(c => translateServiceName(c.dataset.originalName || c.dataset.name, currentLang));
+            const raw = translatedServiceNames.join(', ') || '-';
+            
             const el = $('confirmService');
             if (raw.includes(', ')) {
                 el.innerHTML = raw.split(', ').map((s) => `<div>${s}</div>`).join('');
@@ -955,14 +1237,19 @@
 
             const savedLang = localStorage.getItem('booking_lang') || navigator.language.split('-')[0];
             $('languageSwitcher').value = translations[savedLang] ? savedLang : defaultLang;
-            $('languageSwitcher').addEventListener('change', (e) => setLanguage(e.target.value));
+            
+            // แก้ไข event listener ให้ชัดเจน
+            $('languageSwitcher').addEventListener('change', async (e) => {
+                console.log('Language changed to:', e.target.value);
+                await setLanguage(e.target.value);
+                console.log('Language change completed');
+            });
 
             await setLanguage($('languageSwitcher').value);
 
             if (ENABLE_LIFF) await initLiff(); else offlineProfile();
 
             await Promise.allSettled([
-                fetchServiceData(),
                 fetchHolidayDates(),
                 fetchMonthAvailability(new Date().getFullYear(), new Date().getMonth() + 1),
             ]);
