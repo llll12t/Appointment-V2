@@ -133,16 +133,42 @@
 
         const showLoading = () => document.getElementById('loadingOverlay').classList.remove('hidden');
         const hideLoading = () => document.getElementById('loadingOverlay').classList.add('hidden');
-        const showAlert = (msg, cb) => {
+        // Customizable alert with confirm/cancel (for confirmAction)
+        const showAlert = (msg, cb, opts = {}) => {
             const overlay = document.getElementById('customAlertOverlay');
-            document.getElementById('customAlertMessage').textContent = msg;
-            overlay.classList.remove('hidden');
-            overlay.classList.add('flex', 'items-center', 'justify-center');
-            document.getElementById('customAlertOk').onclick = () => {
+            const msgEl = document.getElementById('customAlertMessage');
+            msgEl.textContent = msg;
+            // Remove old buttons if any
+            const btnArea = overlay.querySelector('.alert-btn-area');
+            if (btnArea) btnArea.remove();
+            // Create button area
+            const area = document.createElement('div');
+            area.className = 'alert-btn-area flex justify-center gap-2 mt-4';
+            // Confirm button
+            const okBtn = document.createElement('button');
+            okBtn.textContent = opts.confirmText || 'ตกลง';
+            okBtn.className = 'bg-indigo-600 text-white px-4 py-2 rounded';
+            okBtn.onclick = () => {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('flex', 'items-center', 'justify-center');
-                if (cb) cb();
+                if (cb) cb(true);
             };
+            area.appendChild(okBtn);
+            // Cancel button (optional)
+            if (opts.showCancel) {
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = opts.cancelText || 'ยกเลิก';
+                cancelBtn.className = 'bg-gray-300 text-gray-800 px-4 py-2 rounded';
+                cancelBtn.onclick = () => {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex', 'items-center', 'justify-center');
+                    if (cb) cb(false);
+                };
+                area.appendChild(cancelBtn);
+            }
+            overlay.querySelector('div.bg-white').appendChild(area);
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex', 'items-center', 'justify-center');
         };
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -320,7 +346,8 @@
         }
 
         function confirmAction(message, action, id) {
-            showAlert(message, () => {
+            showAlert(message, (confirmed) => {
+                if (!confirmed) return; // user cancelled
                 showLoading();
                 fetch(`${WEB_APP_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
                     method: 'POST',
@@ -333,17 +360,8 @@
                         console.error(err);
                         hideLoading();
                         showAlert(t('history.error'));
-    // --- Helper for status translation ---
-    function statusKey(status) {
-        if (!status) return 'all';
-        if (['รอการยืนยัน','Pending'].includes(status)) return 'pending';
-        if (['ยืนยันแล้ว','Confirmed'].includes(status)) return 'confirmed';
-        if (['ยกเลิก','Cancelled'].includes(status)) return 'cancelled';
-        if (['เสร็จสิ้น','Completed'].includes(status)) return 'completed';
-        return 'all';
-    }
                     });
-            });
+            }, { showCancel: true, confirmText: t('history.confirm'), cancelText: t('history.cancel') });
         }
     </script>
 </body>
