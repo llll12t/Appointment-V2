@@ -71,7 +71,9 @@ const translations = {
         'flex.timeLabel': 'เวลา',
         'flex.nameLabel': 'ชื่อ',
         'flex.phoneLabel': 'เบอร์',
-    'flex.noteLabel': 'หมายเหตุ',
+        'flex.idCardOrSocialLabel': 'เลขบัตร/ประกัน',
+        'flex.diseaseAllergyLabel': 'โรค/แพ้',
+        'flex.noteLabel': 'หมายเหตุ',
     // --- History page ---
     'history.title': 'รายการนัดหมายของคุณ',
     'history.loading': 'กำลังโหลดข้อมูล...',
@@ -191,7 +193,9 @@ const translations = {
         'flex.timeLabel': 'Time',
         'flex.nameLabel': 'Name',
         'flex.phoneLabel': 'Phone',
-    'flex.noteLabel': 'Note',
+        'flex.idCardOrSocialLabel': 'ID/Social Security',
+        'flex.diseaseAllergyLabel': 'Disease/Allergy',
+        'flex.noteLabel': 'Note',
     // --- History page ---
     'history.title': 'Your Appointments',
     'history.loading': 'Loading data...',
@@ -311,7 +315,9 @@ const translations = {
         'flex.timeLabel': 'အချိန်',
         'flex.nameLabel': 'အမည်',
         'flex.phoneLabel': 'ဖုန်းနံပါတ်',
-    'flex.noteLabel': 'မှတ်ချက်',
+        'flex.idCardOrSocialLabel': 'ID/လူမှုဖူလုံရေး',
+        'flex.diseaseAllergyLabel': 'ရောဂါ/မတည့်မှု',
+        'flex.noteLabel': 'မှတ်ချက်',
     // --- History page ---
     'history.title': 'သင့်ရဲ့ချိန်းဆိုမှုများ',
     'history.loading': 'ဒေတာတင်နေသည်...',
@@ -352,7 +358,17 @@ const translations = {
         'greeting.afternoon': 'ສະບາຍດີຕອນບ່າຍ',
         'greeting.evening': 'ສະບາຍດີຕອນແລງ',
         'greeting.night': 'ຝັນດີ',
-        // ... (other keys as needed)
+    // ... (other keys as needed)
+    'flex.header': 'ຢືນຢັນການຈອງສຳເລັດ',
+    'flex.altText': 'ລາຍລະອຽດການຈອງຂອງທ່ານ',
+    'flex.serviceLabel': 'ບໍລິການ',
+    'flex.dateLabel': 'ວັນທີ',
+    'flex.timeLabel': 'ເວລາ',
+    'flex.nameLabel': 'ຊື່',
+    'flex.phoneLabel': 'ເບີໂທ',
+    'flex.idCardOrSocialLabel': 'ເລກບັດ/ປະກັນ',
+    'flex.diseaseAllergyLabel': 'ໂຣກ/ແພ້',
+    'flex.noteLabel': 'ໝາຍເຫດ',
         // --- History page ---
         'history.title': 'ປະຫວັດການນັດຫມາຍຂອງທ່ານ',
         'history.loading': 'ກຳລັງໂຫຼດຂໍ້ມູນ...',
