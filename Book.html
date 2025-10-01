@@ -1171,7 +1171,16 @@
         };
 
         async function sendFlexMessage() {
-            if (!liff.isInClient()) return;
+            if (!window.liff || typeof liff.isInClient !== 'function') {
+                console.warn('LIFF SDK not loaded or not initialized');
+                alert('Flex message: LIFF SDK not loaded.');
+                return;
+            }
+            if (!liff.isInClient()) {
+                console.warn('Not in LINE client, cannot send flex message');
+                alert('Flex message can only be sent inside LINE app.');
+                return;
+            }
             const servicesRaw = $('selectedServiceNames').value || '';
             const servicesList = servicesRaw.split(', ').filter(s => s.trim().length);
             const serviceContents = servicesList.map(s => ({ type: 'box', layout: 'horizontal', spacing: 'md', contents: [{ type: 'text', text: '•', size: 'sm', color: varToHex('--text-main2'), flex: 1 }, { type: 'text', text: s, size: 'sm', wrap: true, color: varToHex('--text-main2'), flex: 9 }] }));
@@ -1202,6 +1211,7 @@
                 await liff.sendMessages([{ type: 'flex', altText: t('flex.altText'), contents: bubble }]);
             } catch (e) {
                 console.error('Error sending flex message:', e);
+                alert('ส่ง Flex message ไม่สำเร็จ: ' + (e.message || e));
             }
         }
 
@@ -1213,20 +1223,25 @@
             return {
                 type: 'box',
                 layout: 'horizontal',
-                contents: [{
-                    type: 'text',
-                    text: label + ':',
-                    color: varToHex('--text-placeholder'),
-                    size: 'sm',
-                    flex: 2,
-                }, {
-                    type: 'text',
-                    text: value,
-                    color: varToHex('--text-main'),
-                    size: 'sm',
-                    wrap: true,
-                    flex: 5,
-                },],
+                contents: [
+                    {
+                        type: 'text',
+                        text: label + ':',
+                        color: varToHex('--text-placeholder'),
+                        size: 'sm',
+                        flex: 2,
+                        align: 'start', // ชิดซ้าย
+                    },
+                    {
+                        type: 'text',
+                        text: value,
+                        color: varToHex('--text-main'),
+                        size: 'sm',
+                        wrap: true,
+                        flex: 5,
+                        align: 'end', // ชิดขวา
+                    },
+                ],
             };
         }
 
