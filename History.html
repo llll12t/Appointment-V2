@@ -51,7 +51,7 @@
     <div id="customAlertOverlay" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
         <div class="bg-white p-6 rounded shadow-lg text-center w-72">
             <p id="customAlertMessage" class="mb-4 text-gray-700 text-sm"></p>
-            <button id="customAlertOk" class="bg-indigo-600 text-white px-4 py-2 rounded">ตกลง</button>
+            <!-- ปุ่มจะถูกสร้างโดย showAlert -->
         </div>
     </div>
 
@@ -144,18 +144,19 @@
             // Create button area
             const area = document.createElement('div');
             area.className = 'alert-btn-area flex justify-center gap-2 mt-4';
-            // Confirm button
-            const okBtn = document.createElement('button');
-            okBtn.textContent = opts.confirmText || 'ตกลง';
-            okBtn.className = 'bg-indigo-600 text-white px-4 py-2 rounded';
-            okBtn.onclick = () => {
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex', 'items-center', 'justify-center');
-                if (cb) cb(true);
-            };
-            area.appendChild(okBtn);
-            // Cancel button (optional)
+            // Only show confirm/cancel if opts.showCancel, else just confirm
             if (opts.showCancel) {
+                // Confirm button
+                const okBtn = document.createElement('button');
+                okBtn.textContent = opts.confirmText || 'ตกลง';
+                okBtn.className = 'bg-indigo-600 text-white px-4 py-2 rounded';
+                okBtn.onclick = () => {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex', 'items-center', 'justify-center');
+                    if (cb) cb(true);
+                };
+                area.appendChild(okBtn);
+                // Cancel button
                 const cancelBtn = document.createElement('button');
                 cancelBtn.textContent = opts.cancelText || 'ยกเลิก';
                 cancelBtn.className = 'bg-gray-300 text-gray-800 px-4 py-2 rounded';
@@ -165,6 +166,17 @@
                     if (cb) cb(false);
                 };
                 area.appendChild(cancelBtn);
+            } else {
+                // Only confirm button (for info alert)
+                const okBtn = document.createElement('button');
+                okBtn.textContent = opts.confirmText || 'ตกลง';
+                okBtn.className = 'bg-indigo-600 text-white px-4 py-2 rounded';
+                okBtn.onclick = () => {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex', 'items-center', 'justify-center');
+                    if (cb) cb();
+                };
+                area.appendChild(okBtn);
             }
             overlay.querySelector('div.bg-white').appendChild(area);
             overlay.classList.remove('hidden');
