@@ -622,7 +622,7 @@
     <script src="Config.js"></script>
 
     <script>
-        const ENABLE_LIFF = true;
+        const ENABLE_LIFF = false;
         const $ = (id) => document.getElementById(id);
 
         const defaultLang = 'th';
@@ -1191,8 +1191,8 @@
                         { type: 'separator', margin: 'md', color: varToHex('--text-main') },
                         makeFieldBox(t('flex.nameLabel'), `${$('first_name').value || ''} ${$('last_name').value || ''}`.trim() || '-'),
                         makeFieldBox(t('flex.phoneLabel'), $('phonenumber').value || '-'),
-                        makeFieldBox('เลขบัตร/ประกัน', $('id_card_or_social').value || '-'),
-                        makeFieldBox('โรค/แพ้', $('disease_allergy').value || '-'),
+                        makeFieldBox(t('flex.idCardOrSocialLabel'), $('id_card_or_social').value || '-'),
+                        makeFieldBox(t('flex.diseaseAllergyLabel'), $('disease_allergy').value || '-'),
                         makeFieldBox(t('flex.noteLabel'), $('note').value || '-')
                     ]
                 },
