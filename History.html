@@ -202,6 +202,16 @@
             }
         }
 
+        // --- Helper for status translation ---
+        function statusKey(status) {
+            if (!status) return 'all';
+            if (['รอการยืนยัน','Pending'].includes(status)) return 'pending';
+            if (['ยืนยันแล้ว','Confirmed'].includes(status)) return 'confirmed';
+            if (['ยกเลิก','Cancelled'].includes(status)) return 'cancelled';
+            if (['เสร็จสิ้น','Completed'].includes(status)) return 'completed';
+            return 'all';
+        }
+
         function displayPage(page) {
             const tbody = document.getElementById('dataBody');
             tbody.innerHTML = '';
