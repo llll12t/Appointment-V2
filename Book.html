@@ -17,42 +17,29 @@
 
     <style>
         :root {
-            /* Primary */
-            --primary: #2f1a87;
-            --primary-light: #7a6bb6;
+            /* Brand palette - Me Smile Dental */
+            --primary: #00b8b0;
+            --primary-light: #33d1c9;
+            --accent: #b4dd2f;
             /* Backgrounds */
-            --bg: #ffffff;
-            /* main page bg */
-            --bg-card: #f8f8fb;
-            /* card & popup content */
+            --bg: #f0fffc;
+            --bg-card: #ffffff;
             --bg-element: #ffffff;
-            /* input, select, element bg */
             /* Borders */
-            --border: #e5e7eb;
-            /* gray-200 for visible border */
+            --border: #c9efe9;
             /* Overlays */
-            --overlay-bg: rgba(47, 26, 135, 0.5);
-            /* primary semi-transparent */
-            --popup-overlay: #00000066;
-            /* dark overlay behind popup */
+            --overlay-bg: rgba(0, 184, 176, 0.25);
+            --popup-overlay: rgba(0, 0, 0, 0.45);
             /* Text */
-            --text-main: #2f1a87;
-            /* gray-800 */
-            --text-main2: #654dc5;
-            /* gray-800 */
-            --text-placeholder: #9ca3af;
-            /* gray-400 */
+            --text-main: #024a4e;
+            --text-main2: #6bbf00;
+            --text-placeholder: #79a7ab;
             --text-error: #f87171;
-            /* red-400 */
             /* Badges */
-            --badge-available-bg: #dcfce7;
-            /* green-50 */
-            --badge-available-text: #059669;
-            /* green-600 */
-            --badge-full-bg: #fee2e2;
-            /* red-50 */
+            --badge-available-bg: #f2fadf;
+            --badge-available-text: #4d8a00;
+            --badge-full-bg: #ffeaea;
             --badge-full-text: #b91c1c;
-            /* red-700 */
         }
 
         /* Utility classes */
@@ -111,7 +98,7 @@
         .loader {
             width: 50px;
             height: 50px;
-            border: 5px solid #FFF;
+            border: 5px solid rgba(0, 184, 176, 0.15);
             border-bottom-color: var(--primary);
             border-radius: 50%;
             display: inline-block;
@@ -123,7 +110,7 @@
             width: 32px;
             height: 32px;
             border: 3px solid var(--border);
-            border-bottom-color: var(--primary);
+            border-bottom-color: var(--accent);
             border-radius: 50%;
             display: inline-block;
             box-sizing: border-box;
@@ -185,7 +172,8 @@
             border-radius: 0.75rem;
             width: 90%;
             max-width: 350px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 18px 30px -12px rgba(0, 184, 176, 0.25);
+            border-top: 6px solid var(--accent);
         }
 
         body {
@@ -226,7 +214,7 @@
         select:focus {
             outline: none;
             border-color: var(--primary-light);
-            box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.5);
+            box-shadow: 0 0 0 2px rgba(0, 184, 176, 0.25);
         }
 
         #inlineCalendar-wrapper {
@@ -256,7 +244,7 @@
         }
 
         .flatpickr-day:hover {
-            background-color: var(--bg-element);
+            background-color: rgba(0, 184, 176, 0.1);
         }
 
         .flatpickr-day.today {
@@ -305,7 +293,7 @@
             background: var(--bg-element);
             color: var(--text-main);
             border: 1px solid transparent;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 16px rgba(0, 184, 176, 0.12);
             cursor: pointer;
             transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
         }
@@ -313,12 +301,14 @@
         .time-option:hover {
             border-color: var(--primary-light);
             transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0, 184, 176, 0.18);
         }
 
         .time-option.selected {
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
+            box-shadow: 0 14px 28px rgba(0, 184, 176, 0.35);
         }
 
         .badge {
@@ -355,6 +345,9 @@
             padding: 1rem;
             border-radius: 0.75rem;
             transition: opacity 0.35s ease, transform 0.35s ease;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 12px 32px rgba(0, 184, 176, 0.12);
+            border: 1px solid rgba(0, 184, 176, 0.08);
         }
 
         .step:not(.step-active) {
@@ -381,7 +374,7 @@
         #serviceCards .service-card:hover {
             border-color: var(--primary-light);
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(47, 26, 135, 0.15);
+            box-shadow: 0 8px 25px rgba(0, 184, 176, 0.18);
         }
 
         #serviceCards .service-card.selected {
@@ -389,7 +382,7 @@
             border-color: var(--primary);
             color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(47, 26, 135, 0.25);
+            box-shadow: 0 6px 20px rgba(0, 184, 176, 0.35);
         }
 
         .service-card .checkmark {
@@ -398,7 +391,7 @@
             right: 8px;
             width: 24px;
             height: 24px;
-            background: #10b981;
+            background: var(--accent);
             border-radius: 50%;
             display: none;
             align-items: center;
@@ -472,13 +465,13 @@
         }
 
         .btn-secondary {
-            background: var(--bg-element);
+            background: #f5fffd;
             color: var(--text-main);
             border: 1px solid var(--border);
         }
 
         .btn-secondary:hover:not(:disabled) {
-            background: var(--border);
+            background: rgba(0, 184, 176, 0.08);
         }
 
         .btn-loading {
@@ -495,19 +488,129 @@
             margin-top: -10px;
             margin-left: -10px;
             border: 2px solid transparent;
-            border-top: 2px solid currentColor;
+            border-top: 2px solid var(--accent);
             border-radius: 50%;
             animation: rotation 1s linear infinite;
+        }
+
+        .tab-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--bg-element);
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .tab-toggle.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 8px 18px rgba(0, 184, 176, 0.35);
+        }
+
+        .tab-toggle:not(.active):hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .table-head-cell {
+            background: linear-gradient(135deg, var(--primary) 0%, #00c7bf 50%, var(--accent) 100%);
+            color: #ffffff;
+        }
+
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        #header {
+            border: 1px solid var(--border);
+            background: linear-gradient(135deg, #ffffff 0%, #f3fffb 55%, #ecffe7 100%);
+            box-shadow: 0 15px 30px rgba(0, 184, 176, 0.18);
+        }
+
+        .history-toggle {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border: none;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .history-toggle:hover {
+            background: var(--primary-light) !important;
+            transform: translateY(-1px);
+        }
+
+        .history-confirm {
+            background: var(--accent) !important;
+            color: var(--text-main) !important;
+            border: 1px solid transparent;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .history-confirm:hover:not(:disabled) {
+            background: #a3d226 !important;
+            box-shadow: 0 6px 14px rgba(180, 221, 47, 0.35);
+        }
+
+        .history-confirm:disabled,
+        .history-cancel:disabled {
+            cursor: not-allowed;
+            opacity: 0.55 !important;
+            box-shadow: none !important;
+        }
+
+        .history-cancel {
+            background: #ff7474 !important;
+            border: 1px solid transparent;
+            transition: background 0.2s ease;
+        }
+
+        .history-cancel:hover:not(:disabled) {
+            background: #ff8b8b !important;
+        }
+
+        .pagination-btn {
+            border: 1px solid var(--border);
+            background: #ffffff;
+            color: var(--text-main);
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+        }
+
+        .pagination-btn:hover {
+            background: rgba(0, 184, 176, 0.12);
+        }
+
+        .pagination-btn.is-active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 8px 18px rgba(0, 184, 176, 0.35);
         }
     </style>
 </head>
 
-<body class="bg-gradient-to-b from-gray-100 via-gray-50 to-white min-h-screen relative bg-fixed ">
+<body class="bg-gradient-to-b from-[#e0fff7] via-[#f8ffe9] to-white min-h-screen relative bg-fixed ">
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
     </div>
     <div class="popup" id="popup">
         <div class="popup-content" id="popupContent"></div>
+    </div>
+    <div id="customAlertOverlay"
+        class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50 px-4">
+        <div class="bg-white p-6 rounded-xl shadow-xl text-center w-full max-w-sm">
+            <p id="customAlertMessage" class="mb-4 text-gray-700 text-sm"></p>
+        </div>
     </div>
 
     <div id="appContainer" class="w-full max-w-md mx-auto p-4 flex-1 flex flex-col"
@@ -525,11 +628,17 @@
                     <option value="th">ไทย</option>
                     <option value="en">English</option>
                     <option value="my">မြန်မာ</option>
+                    <option value="lo">ລາວ</option>
                 </select>
             </div>
         </div>
+        <div class="grid grid-cols-2 gap-2 mt-4">
+            <button id="bookingTab" type="button" class="tab-toggle active" data-translate-key="tab.booking"></button>
+            <button id="historyTab" type="button" class="tab-toggle" data-translate-key="tab.history"></button>
+        </div>
 
-        <form id="bookingForm" novalidate class="flex flex-col flex-1 relative">
+        <section id="bookingSection" class="mt-4">
+            <form id="bookingForm" novalidate class="flex flex-col flex-1 relative">
             <div class="step step-active" id="step1">
                 <label class="block mb-3 text-lg text-center text-base font-semibold"
                     data-translate-key="step1.title"></label>
@@ -615,14 +724,51 @@
                 name="selectedServices" /><input type="hidden" id="selectedServiceNames"
                 name="selectedServiceNames" /><input type="hidden" id="userlineid" name="userlineid" value /><input
                 type="hidden" name="action" value="makeBooking" />
-        </form>
+            </form>
+        </section>
+
+        <section id="historySection" class="hidden mt-6">
+            <div class="flex flex-col gap-3">
+                <div class="flex justify-between items-center">
+                    <h2 id="historyTitle" class="text-lg font-bold" data-translate-key="history.title"></h2>
+                    <div class="flex gap-2">
+                        <select id="statusFilter" class="p-2 border-element rounded-lg bg-element text-sm">
+                            <option value="" data-tkey="history.status.all">ทั้งหมด</option>
+                            <option value="รอการยืนยัน" data-tkey="history.status.pending">รอการยืนยัน</option>
+                            <option value="ยืนยันแล้ว" data-tkey="history.status.confirmed">ยืนยันแล้ว</option>
+                            <option value="ยกเลิก" data-tkey="history.status.cancelled">ยกเลิก</option>
+                            <option value="เสร็จสิ้น" data-tkey="history.status.completed">เสร็จสิ้น</option>
+                        </select>
+                        <select id="dateSort" class="p-2 border-element rounded-lg bg-element text-sm">
+                            <option value="latest" data-tkey="history.sort.latest">วันที่ล่าสุด</option>
+                            <option value="oldest" data-tkey="history.sort.oldest">วันที่เก่าสุด</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="rounded-lg shadow bg-card border border-element overflow-hidden">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr>
+                                <th class="table-head-cell p-2 text-left" data-tkey="history.col.name">ชื่อ-นามสกุล</th>
+                                <th class="table-head-cell p-2 text-left" data-tkey="history.col.date">วันที่</th>
+                                <th class="table-head-cell p-2 text-center" data-tkey="history.col.status">สถานะ</th>
+                                <th class="table-head-cell p-2 text-center" data-tkey="history.col.view">ดู</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataBody"></tbody>
+                    </table>
+                </div>
+                <div id="pagination" class="flex justify-center items-center flex-wrap gap-2"></div>
+                <input type="hidden" id="useridlineFilter" />
+            </div>
+        </section>
     </div>
 
     <script src="language.js"></script>
     <script src="Config.js"></script>
 
     <script>
-        const ENABLE_LIFF = true;
+        const ENABLE_LIFF = false;
         const $ = (id) => document.getElementById(id);
 
         const defaultLang = 'th';
@@ -632,8 +778,25 @@
         let currentVisibleStep = 'step1';
         let flatpickrInstance = null;
         let servicesLoaded = false;
+        const historyState = {
+            records: [],
+            filtered: [],
+            page: 1,
+            itemsPerPage: 10,
+            loaded: false,
+            loading: false
+        };
+        let historyFirstLoadPending = true;
 
-        const t = (key) => translations[currentLang]?.[key] || key;
+        const t = (key) => {
+            if (translations[currentLang] && key in translations[currentLang]) {
+                return translations[currentLang][key];
+            }
+            if (translations[defaultLang] && key in translations[defaultLang]) {
+                return translations[defaultLang][key];
+            }
+            return key;
+        };
 
         // ฟังก์ชันแปลชื่อบริการ (เข้มแข็ง: trim/normalize และลองหลาย fallback)
         function normalizeServiceKey(name) {
@@ -710,13 +873,27 @@
             document.documentElement.lang = currentLang;
 
             // สร้างฟังก์ชัน t แบบ local สำหรับภาษาใหม่
-            const tLocal = (key) => translations[currentLang]?.[key] || key;
+            const tLocal = (key) => {
+                if (translations[currentLang] && key in translations[currentLang]) {
+                    return translations[currentLang][key];
+                }
+                if (translations[defaultLang] && key in translations[defaultLang]) {
+                    return translations[defaultLang][key];
+                }
+                return key;
+            };
 
             document.querySelectorAll('[data-translate-key]').forEach(el => {
                 el.textContent = tLocal(el.dataset.translateKey);
             });
             document.querySelectorAll('[data-translate-key-placeholder]').forEach(el => {
                 el.placeholder = tLocal(el.dataset.translateKeyPlaceholder);
+            });
+            document.querySelectorAll('[data-tkey]').forEach(el => {
+                el.textContent = tLocal(el.dataset.tkey);
+            });
+            document.querySelectorAll('[data-tkey-placeholder]').forEach(el => {
+                el.placeholder = tLocal(el.dataset.tkeyPlaceholder);
             });
 
             // อัปเดตข้อความทักทาย
@@ -759,6 +936,10 @@
             // อัปเดตข้อมูลใน step4 ถ้าอยู่ในหน้านั้น
             if (currentVisibleStep === 'step4') {
                 updateConfirmation();
+            }
+
+            if (historyState.loaded) {
+                applyHistoryFilters();
             }
             
         }
@@ -875,6 +1056,7 @@
                 if (p.pictureUrl) $('greetingAvatar').src = p.pictureUrl;
                 else $('greetingAvatar').style.display = 'none';
                 $('userlineid').value = p.userId;
+                setHistoryUserId(p.userId);
             } catch {
                 offlineProfile();
             }
@@ -884,6 +1066,7 @@
             $('greetingName').textContent = 'ผู้ใช้งานทดสอบ';
             $('greetingAvatar').style.display = 'none';
             $('userlineid').value = 'OFFLINE';
+            setHistoryUserId('OFFLINE');
         }
 
         async function fetchMonthAvailability(year, month) {
@@ -987,10 +1170,12 @@
             const localeMap = {
                 th: window.flatpickr.l10ns.th,
                 en: window.flatpickr.l10ns.default,
-                my: window.flatpickr.l10ns.default
+                my: window.flatpickr.l10ns.default,
+                lo: window.flatpickr.l10ns.lo || window.flatpickr.l10ns.default
             };
+            const baseLocale = localeMap[currentLang] || window.flatpickr.l10ns.default;
             const customLocale = {
-                ...localeMap[currentLang], // คัดลอกค่าภาษาที่เลือกมาทั้งหมด
+                ...(baseLocale || {}), // คัดลอกค่าภาษาที่เลือกมาทั้งหมด
                 firstDayOfWeek: 0 // กำหนดให้วันอาทิตย์ (0) เป็นวันแรก
             };
             flatpickrInstance = flatpickr('#inlineCalendar', {
@@ -1112,6 +1297,285 @@
             $('confirmNote').textContent = $('note').value.trim() || '-';
         }
 
+        function statusKey(status) {
+            if (!status) return 'all';
+            const normalized = status.toLowerCase();
+            if (['รอการยืนยัน', 'pending'].includes(status) || normalized.includes('pending')) return 'pending';
+            if (['ยืนยันแล้ว', 'confirmed'].includes(status) || normalized.includes('confirmed')) return 'confirmed';
+            if (['ยกเลิก', 'cancelled'].includes(status) || normalized.includes('cancel')) return 'cancelled';
+            if (['เสร็จสิ้น', 'completed'].includes(status) || normalized.includes('complete')) return 'completed';
+            return 'all';
+        }
+
+        function setHistoryUserId(id) {
+            const field = $('useridlineFilter');
+            if (field) field.value = id || '';
+            if (historyFirstLoadPending && $('historySection') && !$('historySection').classList.contains('hidden')) {
+                loadHistoryData(true);
+            }
+        }
+
+        function setHistoryTableMessage(key, isError = false) {
+            const tbody = $('dataBody');
+            if (!tbody) return;
+            const message = t(key);
+            tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 ${isError ? 'text-error' : 'text-placeholder'}">${message}</td></tr>`;
+        }
+
+        function showCustomAlert(msg, cb, opts = {}) {
+            const overlay = $('customAlertOverlay');
+            const container = overlay?.querySelector('.bg-white');
+            const msgEl = $('customAlertMessage');
+            if (!overlay || !container || !msgEl) return;
+            msgEl.textContent = msg;
+            const existingArea = container.querySelector('.alert-btn-area');
+            if (existingArea) existingArea.remove();
+
+            const area = document.createElement('div');
+            area.className = 'alert-btn-area flex justify-center gap-2 mt-4';
+
+            const confirmText = opts.confirmText || t('history.confirm');
+            const cancelText = opts.cancelText || t('history.cancel');
+            const showCancel = opts.showCancel;
+
+            const okBtn = document.createElement('button');
+            okBtn.textContent = confirmText;
+            okBtn.className = 'btn btn-primary w-full sm:w-auto px-6';
+            okBtn.onclick = () => {
+                hideCustomAlert();
+                if (cb) cb(true);
+            };
+            area.appendChild(okBtn);
+
+            if (showCancel) {
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = cancelText;
+                cancelBtn.className = 'btn btn-secondary w-full sm:w-auto px-6';
+                cancelBtn.onclick = () => {
+                    hideCustomAlert();
+                    if (cb) cb(false);
+                };
+                area.appendChild(cancelBtn);
+            }
+
+            container.appendChild(area);
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
+
+        function hideCustomAlert() {
+            const overlay = $('customAlertOverlay');
+            if (!overlay) return;
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
+        function switchView(target) {
+            const bookingSection = $('bookingSection');
+            const historySection = $('historySection');
+            const bookingTab = $('bookingTab');
+            const historyTab = $('historyTab');
+            if (!bookingSection || !historySection || !bookingTab || !historyTab) return;
+
+            if (target === 'history') {
+                bookingSection.classList.add('hidden');
+                historySection.classList.remove('hidden');
+                historyTab.classList.add('active');
+                bookingTab.classList.remove('active');
+                if (historyFirstLoadPending) {
+                    loadHistoryData();
+                } else {
+                    applyHistoryFilters();
+                }
+            } else {
+                historySection.classList.add('hidden');
+                bookingSection.classList.remove('hidden');
+                bookingTab.classList.add('active');
+                historyTab.classList.remove('active');
+            }
+        }
+
+        async function loadHistoryData(forceRefresh = false) {
+            if (historyState.loading) return;
+            const userId = $('useridlineFilter')?.value;
+            if (!userId) {
+                historyFirstLoadPending = true;
+                setHistoryTableMessage('history.loading');
+                return;
+            }
+            if (historyState.loaded && !forceRefresh && !historyFirstLoadPending) {
+                applyHistoryFilters();
+                return;
+            }
+            historyState.loading = true;
+            setHistoryTableMessage('history.loading');
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=fetchBookings`);
+                if (!res.ok) throw new Error('NETWORK_ERROR');
+                const allData = await res.json();
+                historyState.records = Array.isArray(allData) ? allData
+                    .filter(d => d.userlineid === userId)
+                    .map(d => ({
+                        ...d,
+                        parsedDate: d?.date ? new Date(d.date.split('-').reverse().join('-')) : new Date(NaN)
+                    })) : [];
+                historyState.loaded = true;
+                historyFirstLoadPending = false;
+                applyHistoryFilters();
+            } catch (err) {
+                console.error('History load error:', err);
+                historyState.records = [];
+                historyState.filtered = [];
+                historyState.loaded = false;
+                historyFirstLoadPending = true;
+                setHistoryTableMessage('history.error', true);
+            } finally {
+                historyState.loading = false;
+            }
+        }
+
+        function applyHistoryFilters() {
+            const sortOrder = $('dateSort')?.value || 'latest';
+            const statusFilterValue = $('statusFilter')?.value || '';
+            const statusFilterKey = statusKey(statusFilterValue);
+            const data = [...historyState.records];
+
+            data.sort((a, b) => {
+                const aDate = a.parsedDate instanceof Date && !isNaN(a.parsedDate) ? a.parsedDate : new Date(0);
+                const bDate = b.parsedDate instanceof Date && !isNaN(b.parsedDate) ? b.parsedDate : new Date(0);
+                return sortOrder === 'latest' ? bDate - aDate : aDate - bDate;
+            });
+
+            historyState.filtered = data.filter(item => {
+                if (!statusFilterValue || statusFilterKey === 'all') return true;
+                return statusKey(item.status) === statusFilterKey;
+            });
+            historyState.page = 1;
+            renderHistoryPage(historyState.page);
+        }
+
+        function renderHistoryPage(page) {
+            const tbody = $('dataBody');
+            if (!tbody) return;
+            historyState.page = page;
+            tbody.innerHTML = '';
+
+            if (!historyState.filtered.length) {
+                setHistoryTableMessage('history.nodata');
+                renderHistoryPagination();
+                return;
+            }
+
+            const start = (page - 1) * historyState.itemsPerPage;
+            const end = start + historyState.itemsPerPage;
+            const pageData = historyState.filtered.slice(start, end);
+
+            pageData.forEach(item => {
+                const fullName = `${item.firstName || ''} ${item.lastName || ''}`.trim() || '-';
+                const statusNormalized = statusKey(item.status);
+                const confirmDisabled = statusNormalized !== 'pending';
+                const cancelDisabled = ['cancelled', 'completed'].includes(statusNormalized);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="p-2 border-b">${fullName}</td>
+                    <td class="p-2 border-b">${item.date || '-'}</td>
+                    <td class="p-2 border-b text-center">${t('history.status.' + statusNormalized)}</td>
+                    <td class="p-2 border-b text-center">
+                        <button type="button" class="toggleDetail history-toggle px-3 py-1 rounded text-xs font-semibold" data-tkey="history.view">${t('history.view')}</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+
+                const detailRow = document.createElement('tr');
+                detailRow.classList.add('hidden');
+                detailRow.innerHTML = `
+                    <td colspan="4" class="bg-[#f3fffb] p-4 text-sm">
+                        <div class="grid grid-cols-1 gap-1">
+                            <p><strong>${t('history.detail.name')}</strong> ${fullName}</p>
+                            <p><strong>${t('history.detail.phone')}</strong> ${item.phonenumber || '-'}</p>
+                            <p><strong>${t('history.detail.id')}</strong> ${item.idCardOrSocial || '-'}</p>
+                            <p><strong>${t('history.detail.disease')}</strong> ${item.diseaseAllergy || '-'}</p>
+                            <p><strong>${t('history.detail.service')}</strong> ${item.service || '-'}</p>
+                            <p><strong>${t('history.detail.date')}</strong> ${item.date || '-'}</p>
+                            <p><strong>${t('history.detail.time')}</strong> ${item.time || '-'}</p>
+                            <p><strong>${t('history.detail.note')}</strong> ${item.note || '-'}</p>
+                            <p><strong>${t('history.detail.status')}</strong> ${t('history.status.' + statusNormalized)}</p>
+                            <div class="mt-3 flex gap-2 flex-wrap">
+                                <button type="button" class="confirmBtn history-confirm px-4 py-1 rounded text-xs font-semibold" ${confirmDisabled ? 'disabled' : ''} data-id="${item.idKey}">${t('history.confirm')}</button>
+                                <button type="button" class="cancelBtn history-cancel px-4 py-1 rounded text-xs font-semibold text-white" ${cancelDisabled ? 'disabled' : ''} data-id="${item.idKey}">${t('history.cancel')}</button>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(detailRow);
+
+                const toggleBtn = row.querySelector('.toggleDetail');
+                toggleBtn.onclick = () => {
+                    detailRow.classList.toggle('hidden');
+                };
+            });
+
+            tbody.querySelectorAll('.confirmBtn').forEach(btn => {
+                btn.onclick = () => {
+                    if (btn.disabled) return;
+                    confirmHistoryAction('history.confirmQ', 'confirmBooking', btn.dataset.id);
+                };
+            });
+            tbody.querySelectorAll('.cancelBtn').forEach(btn => {
+                btn.onclick = () => {
+                    if (btn.disabled) return;
+                    confirmHistoryAction('history.cancelQ', 'cancelBooking', btn.dataset.id);
+                };
+            });
+
+            renderHistoryPagination();
+        }
+
+        function renderHistoryPagination() {
+            const pagination = $('pagination');
+            if (!pagination) return;
+            pagination.innerHTML = '';
+            const totalPages = Math.ceil(historyState.filtered.length / historyState.itemsPerPage);
+            if (totalPages <= 1) return;
+
+            const createBtn = (label, page) => {
+                const btn = document.createElement('button');
+                btn.textContent = label;
+                btn.dataset.page = page;
+                btn.className = `pagination-btn${historyState.page === page ? ' is-active' : ''}`;
+                btn.onclick = () => {
+                    historyState.page = Number(btn.dataset.page);
+                    renderHistoryPage(historyState.page);
+                };
+                pagination.appendChild(btn);
+            };
+
+            createBtn('«', 1);
+            for (let i = 1; i <= totalPages; i++) {
+                createBtn(String(i), i);
+            }
+            createBtn('»', totalPages);
+        }
+
+        function confirmHistoryAction(messageKey, action, id) {
+            showCustomAlert(t(messageKey), async (confirmed) => {
+                if (!confirmed) return;
+                showLoading(true);
+                try {
+                    await fetch(`${WEB_APP_URL}?action=${action}&id=${encodeURIComponent(id)}`, {
+                        method: 'POST'
+                    });
+                    showCustomAlert(t('history.success'), null, { confirmText: t('popup.close') });
+                    await loadHistoryData(true);
+                } catch (err) {
+                    console.error('History action error:', err);
+                    showCustomAlert(t('history.error'), null, { confirmText: t('popup.close') });
+                } finally {
+                    showLoading(false);
+                }
+            }, { showCancel: true, confirmText: t('history.confirm'), cancelText: t('history.cancel') });
+        }
+
         $('nextToStep2').onclick = () => {
             if (!JSON.parse($('selectedServices').value || '[]').length) return showPopup('popup.serviceNeeded');
             navigateToStep('step2');
@@ -1133,6 +1597,19 @@
             navigateToStep('step4');
         };
         $('backToStep3').onclick = () => navigateToStep('step3');
+
+        $('bookingTab').onclick = () => switchView('booking');
+        $('historyTab').onclick = () => switchView('history');
+
+        ['statusFilter', 'dateSort'].forEach(id => {
+            const el = $(id);
+            if (el) {
+                el.addEventListener('change', () => {
+                    if (!historyState.loaded) return;
+                    applyHistoryFilters();
+                });
+            }
+        });
 
         $('bookingForm').onsubmit = async (e) => {
             e.preventDefault();
@@ -1183,14 +1660,71 @@
             }
             const servicesRaw = $('selectedServiceNames').value || '';
             const servicesList = servicesRaw.split(', ').filter(s => s.trim().length);
-            const serviceContents = servicesList.map(s => ({ type: 'box', layout: 'horizontal', spacing: 'md', contents: [{ type: 'text', text: '•', size: 'sm', color: varToHex('--text-main2'), flex: 1 }, { type: 'text', text: s, size: 'sm', wrap: true, color: varToHex('--text-main2'), flex: 9 }] }));
-            if (!serviceContents.length) { serviceContents.push({ type: 'text', text: '-', size: 'sm', color: varToHex('--text-main2') }); }
+
+            // Service list: left-aligned (unchanged)
+            const serviceContents = servicesList.map(s => ({
+                type: 'box',
+                layout: 'horizontal',
+                spacing: 'md',
+                contents: [
+                    { type: 'text', text: '•', size: 'sm', color: varToHex('--text-main2'), flex: 1, align: 'start' },
+                    { type: 'text', text: s, size: 'sm', wrap: true, color: varToHex('--text-main2'), flex: 9, align: 'start' }
+                ]
+            }));
+            if (!serviceContents.length) {
+                serviceContents.push({ type: 'text', text: '-', size: 'sm', color: varToHex('--text-main2'), align: 'start' });
+            }
+
+            // All other fields: value right-aligned
+            function makeFieldBox(label, value) {
+                return {
+                    type: 'box',
+                    layout: 'horizontal',
+                    contents: [
+                        {
+                            type: 'text',
+                            text: label + ':',
+                            color: varToHex('--text-placeholder'),
+                            size: 'sm',
+                            flex: 2,
+                            align: 'start'
+                        },
+                        {
+                            type: 'text',
+                            text: value,
+                            color: varToHex('--text-main'),
+                            size: 'sm',
+                            wrap: true,
+                            flex: 5,
+                            align: 'end'
+                        },
+                    ],
+                };
+            }
 
             const bubble = {
                 type: 'bubble',
-                header: { type: 'box', layout: 'vertical', backgroundColor: varToHex('--primary'), contents: [{ type: 'text', text: t('flex.header'), weight: 'bold', size: 'xs', align: 'center', color: '#ffffff' }] },
+                header: {
+                    type: 'box',
+                    layout: 'vertical',
+                    backgroundColor: varToHex('--primary'),
+                    contents: [
+                        {
+                            type: 'text',
+                            text: t('flex.header'),
+                            weight: 'bold',
+                            size: 'xs',
+                            align: 'center',
+                            color: '#ffffff'
+                        }
+                    ]
+                },
                 body: {
-                    type: 'box', layout: 'vertical', spacing: 'sm', paddingAll: 'xl', backgroundColor: varToHex('--bg-card'),
+                    type: 'box',
+                    layout: 'vertical',
+                    spacing: 'sm',
+                    paddingAll: 'xl',
+                    backgroundColor: varToHex('--bg-card'),
                     contents: [
                         { type: 'text', text: t('flex.serviceLabel') + ':', size: 'sm', color: varToHex('--text-main') },
                         ...serviceContents,
@@ -1217,32 +1751,6 @@
 
         function varToHex(name) {
             return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-        }
-
-        function makeFieldBox(label, value) {
-            return {
-                type: 'box',
-                layout: 'horizontal',
-                contents: [
-                    {
-                        type: 'text',
-                        text: label + ':',
-                        color: varToHex('--text-placeholder'),
-                        size: 'sm',
-                        flex: 2,
-                        align: 'start', // ชิดซ้าย
-                    },
-                    {
-                        type: 'text',
-                        text: value,
-                        color: varToHex('--text-main'),
-                        size: 'sm',
-                        wrap: true,
-                        flex: 5,
-                        align: 'end', // ชิดขวา
-                    },
-                ],
-            };
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
