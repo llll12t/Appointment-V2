@@ -357,7 +357,6 @@ const translations = {
     'history.error': 'အမှားအယွင်း',
 
     },
-   const translations = {
   // --- Cambodian (km) ---
   km: {
     'greeting.morning': 'អរុណសួស្តី',
@@ -484,5 +483,6 @@ const translations = {
     'confirm.label.time': 'ពេលវេលា:'
   }
 };
+
 
 
